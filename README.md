@@ -2,7 +2,7 @@
 
 **MeadCoScriptXJS** is a simple javascript wrapper library for use with [MeadCo's ScriptX Add-on](http://scriptx.meadroid.com) for Microsoft Internet Explorer. This library has been used with our samples system for some time. 
 The aim of the library is to hide differences between versions of ScriptX and provide easy access to some common functionality.
-The library works woth both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
+The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
 
 ##Current version
 1.0.0
