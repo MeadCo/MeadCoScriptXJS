@@ -8,7 +8,7 @@ The library works with both free and licensed ScriptX. Some convenience wrappers
 1.0.0
 
 ##NuGet Gallery
-Planned!
+[MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
 ##Quick start
 
