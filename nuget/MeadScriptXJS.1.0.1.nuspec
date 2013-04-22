@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>MeadScriptXJS</id>
+        <version>1.0.1</version>
+        <title>MeadCo ScriptX JS Library</title>
+        <authors>Pete Cole,MeadCo</authors>
+        <owners>MeadCo</owners>
+        <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+        <projectUrl>https://github.com/MeadCo/MeadCoScriptXJS</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>This library implements a javascript wrapper on MeadCo's ScriptX Add-on for Microsoft Internet Explorer. The library provides for checking successful instantiation of the Add-on and implements convenience wrappers on some common functionality.
+
+The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.</description>
+        <summary>A simple javascript wrapper library for use with MeadCo's ScriptX Add-on for Microsoft Internet Explorer, both free and licensed versions</summary>
+        <releaseNotes>v1.0.1 - Added code comments.</releaseNotes>
+        <copyright>Copyright © 2013, Mead &amp; Co Ltd</copyright>
+        <language>en-GB</language>
+        <tags>MeadCo, ScriptX</tags>
+    </metadata>
+    <files>
+        <file src="..\meadco-scriptx-1.0.1.js" target="content\scripts\meadco-scriptx-1.0.1.js" />
+        <file src="..\meadco-scriptx-1.0.1.min.js" target="content\scripts\meadco-scriptx-1.0.1.min.js" />
+    </files>
+</package>

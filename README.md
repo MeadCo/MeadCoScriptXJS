@@ -5,14 +5,14 @@ The aim of the library is to hide differences between versions of ScriptX and pr
 The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
 
 ##Current version
-1.0.0
+1.0.1
 
 ##NuGet Gallery
 [MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
 ##Quick start
 
-1. Link to meadco-scriptx-1.0.0.js `<script src="meadco-scriptx-1.0.0.js"></script>`
+1. Link to meadco-scriptx-1.0.1.js `<script src="meadco-scriptx-1.0.1.js"></script>`
 2. Initialise the library in the document ready/window loaded event handler, and initialise printing parameters. For example, when using jQuery:
 
 ```javascript
