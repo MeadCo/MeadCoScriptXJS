@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>MeadScriptXJS</id>
-        <version>1.0.2</version>
+        <version>1.0.3-Beta01</version>
         <title>MeadCo ScriptX JS Library</title>
         <authors>Pete Cole,MeadCo</authors>
         <owners>MeadCo</owners>
@@ -19,7 +19,7 @@ The library works with both free and licensed ScriptX. Some convenience wrappers
         <tags>MeadCo, ScriptX</tags>
     </metadata>
     <files>
-        <file src="..\meadco-scriptx-1.0.2.js" target="content\scripts\meadco-scriptx-1.0.2.js" />
-        <file src="..\meadco-scriptx-1.0.2.min.js" target="content\scripts\meadco-scriptx-1.0.2.min.js" />
+        <file src="..\scriptxjstest\scripts\meadco-scriptx-1.0.3.js" target="content\scripts\meadco-scriptx-1.0.3.js" />
+        <file src="..\scriptxjstest\scripts\meadco-scriptx-1.0.3.min.js" target="content\scripts\meadco-scriptx-1.0.3.min.js" />
     </files>
 </package>

@@ -10,6 +10,12 @@
 //
 // Going forward, use MeadCo.ScriptX.Printing
 //
+// v1.0.3 - 7 June 2016
+//
+// Add ability to retrieve the license error message. 
+// Fix some bugs.
+// Improve error messsage text.
+//
 // v1.0.2 - 6 August 2013
 //
 // Pagesetup and Printsetup wrappers return the wrapped function return value.
@@ -58,7 +64,9 @@
 // }
 
 var MeadCo = {
-	LibVersion: "1.0.2",
+    LibVersion: "1.0.3",
+
+    // MeadCo.ScriptX 
 	ScriptX: {
 		// Public interface
 		Printing: null,
@@ -196,6 +204,8 @@ var MeadCo = {
 				return this.GetComponentVersion("MeadCo.SecMgr");    
 		},
 
+	    // IsComponentVersion
+	    // Returns true if the installed version of a COM component is at least the given version
 		IsComponentVersion: function(strComponentName, strVersionRequired) {
 			return this._compareVersions(this.GetComponentVersion(strComponentName), strVersionRequired);
 		},
@@ -237,6 +247,7 @@ var MeadCo = {
 
 	},
 
+    // MeadCo.Licensing :: helpers for working with security manager
 	Licensing : {
 		LicMgr: null,
 		Init: function() {
@@ -254,53 +265,80 @@ var MeadCo = {
 			if ( this.Init() ) {
 				return this.LicMgr.result == 0 && this.LicMgr.validLicense;
 			}
+
+		    console.log("WARNING :: MeadCo.Licensing.Init() failed so IsLicensed will return false.");
 			return false;
 		},
+
+	    // ErrorMessage
+        // returns the error message that describes why licensing failed. returns emoty string if there was no error.
+        ErrorMessage: function() {
+            var msg = "";
+
+            console.log("MeadCo Security Manager reports licensed: " + this.IsLicensed());
+            if (!this.IsLicensed()) {
+                var eIndex = -1;
+                var msgSuffix = "";
+
+                if (this.LicMgr != null) {
+                    console.log("license result: " + this.LicMgr.result + " valid: " + this.LicMgr.validLicense);
+
+                    switch (this.LicMgr.result) {
+                        case 0:
+                            if (!this.LicMgr.validLicense)
+                                eIndex = 1;
+                            break;
+
+                        case 1:
+                            // magic value: this only applies if path param not
+                            // not given - .result==1 => license not installed
+                            eIndex = 2;
+                            break;
+
+                        case -2147220500:
+                            // magic value: this only applies if a path
+                            // was given and the license is valid and was
+                            // displayed to the user for acceptance - 
+                            // .result == -2147220500 => the user clicked cancel on the dialog
+                            eIndex = 3;
+                            break;
+
+                            // some other error, e.g. download failure - this will
+                            // have already been displayed to the user in an error box.
+                            // we could be here in the path given or not given cases if there
+                            // was an error such as reading the registry, though such errors
+                            // are unlikely.
+                        default:
+                            eIndex = 4;
+                            msgSuffix = "\nLicense manager reported: (" + this.LicMgr.result + ")";
+                            break;
+                    }
+
+                } else {
+                    eIndex = 0;
+                }
+
+                if (eIndex >= 0) {
+                    msg = this._errorLicenseMsgs[eIndex] + msgSuffix;
+                }
+            }
+
+            return msg;
+        },
 
 		// ReportError
 		// Displays an alert box with details of any licensing error with any given message appended.
 		ReportError: function(msg) {
 
-			if ( !this.IsLicensed() ) {
-				if ( this.LicMgr != null ) {
-					switch ( this.LicMgr.result ) {
-						case 0:
-							if ( !this.LicMgr.validLicense )
-								this._reportError(1,msg);
-							break;
+		    var errMsg = ErrorMessage();
+            if ( errMsg !== "" ) {
+                this._reportError(errMsg, msg);
+            }
 
-						case 1:
-							// magic value: this only applies if path param not
-							// not given - .result==1 => license not installed
-							this._reportError(2,msg);
-							break;
-
-						case -2147220500:
-							// magic value: this only applies if a path
-							// was given and the license is valid and was
-							// displayed to the user for acceptance - 
-							// .result == -2147220500 => the user clicked cancel on the dialog
-							this._reportError(3,msg);
-							break;
-
-						// some other error, e.g. download failure - this will
-						// have already been displayed to the user in an error box.
-						// we could be here in the path given or not given cases if there
-						// was an error such as reading the registry, though such errors
-						// are unlikely.
-						default:
-							this._reportError(4,"License manager reported: (" + secmgr.result + ")",msg);
-							break;
-					}
-				}
-				else
-					this._reportError(0,msg); 
-			}
 		},
 
-		_reportError: function(eIndex) {
-			var msg = this._errorLicenseMsgs[eIndex];
-
+		_reportError: function(eMsg) {
+		    var msg = eMsg;
 			for (var i=1; i<arguments.length; i++) {
 				if ( arguments[i] ) 
 					msg += "\n\n" + arguments[i];
@@ -308,10 +346,10 @@ var MeadCo = {
 			alert(msg);
 		},
 
-		_errorLicenseMsgs : new Array("Unable to locate the MeadCo License Manager object - the component is probably not installed.",
+		_errorLicenseMsgs : new Array("Unable to locate the MeadCo License Manager object - the component may not be installed.",
 				"The license for this site is not valid.",
 				"The license for this site not installed on this machine.",
-				"You did not accept the license for this application, it cannot be run.",
+				"The license for this site has not been accepted by the user.",
 				"There was an error loading the license. "
 				)
 	}
