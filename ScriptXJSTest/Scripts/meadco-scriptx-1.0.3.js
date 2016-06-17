@@ -10,7 +10,7 @@
 //
 // Going forward, use MeadCo.ScriptX.Printing
 //
-// v1.0.3 - 7 June 2016
+// v1.0.4 - 17 June 2016
 //
 // Add ability to retrieve the license error message. 
 // Fix some bugs.
@@ -330,7 +330,7 @@ var MeadCo = {
 		// Displays an alert box with details of any licensing error with any given message appended.
 		ReportError: function(msg) {
 
-		    var errMsg = ErrorMessage();
+		    var errMsg = this.ErrorMessage();
             if ( errMsg !== "" ) {
                 this._reportError(errMsg, msg);
             }
