@@ -135,6 +135,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -143,8 +144,10 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\meadco-scriptx-1.0.3.js" />
-    <Content Include="Scripts\meadco-scriptx-1.0.3.min.js" />
+    <Content Include="Scripts\meadco-scriptx-1.1.0.js" />
+    <Content Include="Scripts\meadco-scriptx-1.1.0.min.js">
+      <DependentUpon>meadco-scriptx-1.1.0.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

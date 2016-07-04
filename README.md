@@ -5,14 +5,14 @@ The aim of the library is to hide differences between versions of ScriptX and pr
 The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
 
 ##Current version
-1.0.2
+1.1.0
 
 ##NuGet Gallery
 [MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
 ##Quick start
 
-1. Link to meadco-scriptx-1.0.2.js `<script src="meadco-scriptx-1.0.2.js"></script>`
+1. Link to meadco-scriptx-1.1.0.js `<script src="meadco-scriptx-1.1.0.js"></script>`
 2. Initialise the library in the document ready/window loaded event handler, and initialise printing parameters. For example, when using jQuery:
 
 ```javascript
@@ -33,7 +33,7 @@ $(document).ready(function () {
 Please note that the library is not dependent upon jQuery or any other libraries.
 
 ## Copyright
-Copyright © 2013 [Mead & Co Ltd](http://scriptx.meadroid.com).
+Copyright © 2013-2016 [Mead & Co Ltd](http://scriptx.meadroid.com).
 
 ## License 
 **MeadCoScriptXJS** is under MIT license - http://www.opensource.org/licenses/mit-license.php
