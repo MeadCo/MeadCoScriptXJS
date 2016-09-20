@@ -18,6 +18,8 @@
 
 <div class="row">
     <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
+
 </div>
 
 <div style="display: none">
@@ -50,6 +52,12 @@
                 footer = "Footer&b&p of &P"
             }
         }
+
+        function callback()
+        {
+            
+        }
+
         // do not use $(function() {}) as the license may still be loading.
         $(window).load(function () {
             $("#libVersion").text(MeadCo.LibVersion);
@@ -65,6 +73,11 @@
                 $("#btn-test1").click(function() {
                     setSimpleFormatting();
                     MeadCo.ScriptX.PreviewPage();
+                });
+
+                $("#btn-test2").click(function () {
+                    setSimpleFormatting();
+                    MeadCo.ScriptX.PrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
                 });
             } else {
                 console.log("Warning :: Failed to initialise scriptx, is it installed?");

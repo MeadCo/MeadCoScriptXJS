@@ -132,6 +132,31 @@
         return false;
     }
 
+    // PrintURL
+    // Background download and print the document from the URL. optional print prompt before queuing the print
+    // [optional] fnCallback(status,statusData,data)
+    // [optional] data
+    // 
+    var jobIndex = 1;
+    scriptx.PrintURL = function(sUrl,bPrompt,fnCallback,data) {
+        if (scriptx.Init()) {
+            if (typeof fnCallback == "undefined") {
+                fnCallback = progressMonitor;
+            }
+            if (typeof data == "undefined") {
+                data = "Job " + jobIndex++;
+            }
+            return scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data);
+        }
+        return false;
+    }
+
+    // PrintHTML
+    // Background print the html document contained in the string. The document must be complete and well formed.
+    scriptx.PrintHTML = function(sHtml,fnCallback,data) {
+        return scriptx.PrintURL("html://" + sHtml, false, fnCallback, data);
+    }
+
     scriptx.PageSetup = function () {
         if (scriptx.Init())
             return scriptx.Printing.PageSetup();
@@ -233,6 +258,61 @@
 
         return false;
     }
+
+    // exemplar PrintHTMLEx callback that does nothing (well, it logs to the console)
+
+    // statusUpdate
+    // Display status and/or its description
+    function statusUpdate(status, txt) {
+        console.log("PrintHTML Queue status: " + status + " => " + txt);
+    }
+
+    // progressMonitor
+    // callback from BatchPrintPDF
+    function progressMonitor(status, statusData, callbackData) {
+        switch (status) {
+            case 1:
+                statusUpdate(status, "Request to print has been queued for: " + callbackData);
+                break;
+
+            case 2:
+                statusUpdate(status, "Print job started on: " + callbackData);
+                break;
+
+            case 3:
+                statusUpdate(status, "Downloading " + statusData + " for: " + callbackData);
+                break;
+
+            case 4:
+                statusUpdate(status, "Download completed to " + statusData + " for: " + callbackData);
+                break;
+
+            case 5:
+                statusUpdate(status, "Printing has started for: " + callbackData);
+                break;
+
+            case 6:
+                statusUpdate(status, "Job complete for: " + callbackData);
+                break;
+
+            case 7:
+                statusUpdate(status, "Job paused for: " + callbackData);
+                break;
+
+            case 8:
+                statusUpdate(status, "PDF is being printed: " + statusData + " for: " + callbackData);
+                break;
+
+            case -1:
+                statusUpdate(status, "Print failed because of an error: [" + statusData + "] for: " + callbackData);
+                break;
+
+            case -2:
+                statusUpdate(status, "Printing has been abandoned for: " + callbackData);
+                break;
+        }
+    }
+
 }(window.MeadCo = window.MeadCo || {}));
 
 // MeadCo.Licensing 
