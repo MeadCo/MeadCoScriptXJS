@@ -154,7 +154,7 @@
     // Background print the html document contained in the string. The document must be complete and well formed.
     // All resource references in the HTML must be fully qualified unless a base element is included.
     scriptx.BackgroundPrintHTML = function(sHtml,fnCallback,data) {
-        return scriptx.PrintURL("html://" + sHtml, false, fnCallback, data);
+        return scriptx.BackgroundPrintURL("html://" + sHtml, false, fnCallback, data);
     }
 
     scriptx.PageSetup = function () {
