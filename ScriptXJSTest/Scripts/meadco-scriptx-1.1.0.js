@@ -94,13 +94,11 @@
         return scriptx.IsComponentVersion("ScriptX.Factory", strVersion);
     }
 
-
     // Version
     // Returns the installed version number of ScriptX
     scriptx.Version = function () {
         return scriptx.GetComponentVersion("ScriptX.Factory");
     }
-
 
     // PrintPage
     // Print the current document, with optional prompting (no prompt in the internetzone requires a license)
@@ -132,13 +130,14 @@
         return false;
     }
 
-    // PrintURL
+    // BackgroundPrintURL - requires license
     // Background download and print the document from the URL. optional print prompt before queuing the print
+    // and optional callback function to monitor progress.
     // [optional] fnCallback(status,statusData,data)
     // [optional] data
     // 
     var jobIndex = 1;
-    scriptx.PrintURL = function(sUrl,bPrompt,fnCallback,data) {
+    scriptx.BackgroundPrintURL = function(sUrl,bPrompt,fnCallback,data) {
         if (scriptx.Init()) {
             if (typeof fnCallback == "undefined") {
                 fnCallback = progressMonitor;
@@ -151,9 +150,10 @@
         return false;
     }
 
-    // PrintHTML
+    // BackgroundPrintHTML - requires license
     // Background print the html document contained in the string. The document must be complete and well formed.
-    scriptx.PrintHTML = function(sHtml,fnCallback,data) {
+    // All resource references in the HTML must be fully qualified unless a base element is included.
+    scriptx.BackgroundPrintHTML = function(sHtml,fnCallback,data) {
         return scriptx.PrintURL("html://" + sHtml, false, fnCallback, data);
     }
 
@@ -176,7 +176,7 @@
         return scriptx.IsComponentVersion("ScriptX.Factory", "7.0.0.1");
     }
 
-    // GetAvailablePrinters
+    // GetAvailablePrinters - requires license
     // returns an array of the names of the printers on the system
     //
     scriptx.GetAvailablePrinters = function () {
