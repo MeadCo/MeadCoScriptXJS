@@ -56,7 +56,7 @@
 
     var scriptx = topLeveNs.ScriptX;
 
-    scriptx.LibVersion = "1.1.0";
+    scriptx.LibVersion = "1.1.1";
     scriptx.Printing = null;
     scriptx.Utils = null;
 
@@ -202,7 +202,7 @@
         var s = "(Not installed)";
 
         try {
-            document.getElementById("factory").GetComponentVersion(sComponent, a, b, c, d);
+            scriptx.Utils.GetComponentVersion(sComponent, a, b, c, d);
             s = a[0] + "." + b[0] + "." + c[0] + "." + d[0];
         }
         catch (e) {
