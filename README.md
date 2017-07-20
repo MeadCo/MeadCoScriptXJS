@@ -4,15 +4,21 @@
 The aim of the library is to hide differences between versions of ScriptX and provide easy access to some common functionality.
 The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
 
+As of version 1.2.0 this library facilitates being able to write the same code for both the ScriptX Add-on for Internet Explorer and [MeadCo's ScriptX.Print](http://scriptx.meadroid.com) browser agnostic printing services in the cloud and on premise.
+
 ## Current version
-1.1.1
+1.2.0
 
 ## NuGet Gallery
 [MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
+## Bower
+
+bower install meadco-scriptxjs
+
 ## Quick start
 
-1. Link to meadco-scriptx-1.1.1.js `<script src="meadco-scriptx-1.1.1.js"></script>`
+1. Link to meadco-scriptx-1.2.0.js `<script src="meadco-scriptx-1.2.0.js"></script>`
 2. Initialise the library in the document ready/window loaded event handler, and initialise printing parameters. For example, when using jQuery:
 
 ```javascript

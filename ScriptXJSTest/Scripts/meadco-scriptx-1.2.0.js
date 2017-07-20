@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2016, Mead & Company Ltd. All rights reserved.
+// Copyright (c) 2013-2017, Mead & Company Ltd. All rights reserved.
 //
 // Use, reproduction, distribution, and modification of this code is subject to the terms and 
 // conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
@@ -12,6 +12,12 @@
 // Going forward, use MeadCo.ScriptX.Printing
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+// v1.2 and later include support for working with MeadCo.ScriptX.Print via a polyfill
+//  - include meadco-scriptxfactory.js before this file and call MeadCo.ScriptX.Print.HTML.connect() 
+//  (see library scriptxprint-html at https://github.com/MeadCo/ScriptX.Print.Client)
+//
+//
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Usage:
@@ -47,18 +53,23 @@
 //	MeadCo.Licensing.ReportError();
 // }
 
-"use strict";
-
 // MeadCo.ScriptX 
 //
-(function (topLeveNs) {
-    topLeveNs.ScriptX = {};
+(function (topLevelNs) {
+    "use strict";
 
-    var scriptx = topLeveNs.ScriptX;
+    if (typeof topLevelNs["ScriptX"] === "undefined") {
+        console.log("intialising new ScriptX package");
+        topLevelNs.ScriptX = {};
+    }
 
-    scriptx.LibVersion = "1.1.1";
+    var scriptx = topLevelNs.ScriptX;
+
+    scriptx.LibVersion = "1.2.0";
     scriptx.Printing = null;
     scriptx.Utils = null;
+
+    console.log("Initialising MeadCo.ScriptX: " + scriptx.LibVersion);
 
     // Init()
     // Simple initialisation of the library
@@ -66,10 +77,24 @@
     //
     scriptx.Init = function () {
         if (scriptx.Printing == null) {
-            var f = document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
+            console.log("scriptx.Init()");
+            var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
             if (f && f.object != null) {
+                console.log("found factory");
                 scriptx.Utils = f.object;
                 scriptx.Printing = f.printing;
+
+                // if we are connected to the ScriptX.Print implementation
+                // then check it has connected.
+                if (typeof f.printing.PolyfillInit === "function") {
+                    console.log("found polyfillinit()");
+                    if (!f.printing.PolyfillInit()) {
+                        console.log("**warning** polyfill failed.")
+                        scriptx.Printing = null;
+                    }
+                }
+            } else {
+                console.log("** Warning -- no factory **");
             }
         }
         return scriptx.Printing != null;
@@ -111,8 +136,9 @@
     // PreviewPage
     // Preview the current document
     scriptx.PreviewPage = function () {
-        if (scriptx.Init())
+        if (scriptx.Init()) {
             scriptx.Printing.Preview();
+        }
     }
 
     // PreviewFrame
@@ -137,7 +163,7 @@
     // [optional] data
     // 
     var jobIndex = 1;
-    scriptx.BackgroundPrintURL = function(sUrl,bPrompt,fnCallback,data) {
+    scriptx.BackgroundPrintURL = function (sUrl, bPrompt, fnCallback, data) {
         if (scriptx.Init()) {
             if (typeof fnCallback == "undefined") {
                 fnCallback = progressMonitor;
@@ -153,7 +179,7 @@
     // BackgroundPrintHTML - requires license
     // Background print the html document contained in the string. The document must be complete and well formed.
     // All resource references in the HTML must be fully qualified unless a base element is included.
-    scriptx.BackgroundPrintHTML = function(sHtml,fnCallback,data) {
+    scriptx.BackgroundPrintHTML = function (sHtml, fnCallback, data) {
         return scriptx.BackgroundPrintURL("html://" + sHtml, false, fnCallback, data);
     }
 
@@ -318,6 +344,8 @@
 // MeadCo.Licensing 
 //
 (function (topLeveNs) {
+    "use strict";
+
     topLeveNs.Licensing = {};
 
     var licensing = topLeveNs.Licensing;
@@ -327,7 +355,7 @@
 
     licensing.Init = function () {
         if (licensing.LicMgr == null) {
-            var l = document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
+            var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
             if (l && l.object)
                 licensing.LicMgr = l.object;
         }
