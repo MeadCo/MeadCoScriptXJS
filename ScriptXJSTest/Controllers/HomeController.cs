@@ -18,7 +18,7 @@ namespace ScriptXJSTest.Controllers
         [HttpGet]
         public FileStreamResult Script(string filename)
         {
-            string absoluteName = Path.Combine(HostingEnvironment.MapPath("~"), Path.Combine("..\\..\\src", filename));
+            string absoluteName = Path.Combine(HostingEnvironment.MapPath("~"), Path.Combine("..\\src", filename));
             Stream fileStream = new FileStream(absoluteName, FileMode.Open);
             return File(fileStream, "application/javascript");
         }

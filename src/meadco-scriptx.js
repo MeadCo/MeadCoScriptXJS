@@ -13,8 +13,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// v1.1.3 and later include support for working with MeadCo.ScriptX.Print via a polyfill
+// v1.2.0 and later include support for working with MeadCo.ScriptX.Print via a polyfill
 //  - include meadco-scriptxfactory.js before this file and call MeadCo.ScriptX.Print.HTML.connect() 
+//  see https://github.com/MeadCo/ScriptX.Print.Client
 //
 //
 
@@ -64,7 +65,7 @@
 
     var scriptx = topLevelNs.ScriptX;
 
-    scriptx.LibVersion = "1.1.6";
+    scriptx.LibVersion = "1.2.0";
     scriptx.Printing = null;
     scriptx.Utils = null;
 
