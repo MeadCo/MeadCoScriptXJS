@@ -19,7 +19,6 @@ The library works with both free and licensed ScriptX. Some convenience wrappers
         <tags>MeadCo, ScriptX, Print</tags>
     </metadata>
     <files>
-        <file src="..\scriptxjstest\scripts\meadco-scriptx-1.2.0.js" target="content\scripts\meadco-scriptx-1.2.0.js" />
-        <file src="..\scriptxjstest\scripts\meadco-scriptx-1.2.0.min.js" target="content\scripts\meadco-scriptx-1.2.0.min.js" />
+        <file src="..\src\meadco-scriptx.js" target="content\scripts\meadco-scriptx-1.2.0.js" />
     </files>
 </package>

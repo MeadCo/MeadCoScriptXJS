@@ -9,10 +9,12 @@ As of version 1.2.0 this library facilitates being able to write the same code f
 ## Current version
 1.2.0
 
-## NuGet Gallery
+## Packages
+
+### NuGet Gallery
 [MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
-## Bower
+### Bower
 
 bower install meadco-scriptxjs
 
@@ -39,7 +41,7 @@ $(document).ready(function () {
 Please note that the library is not dependent upon jQuery or any other libraries.
 
 ## Copyright
-Copyright © 2013-2016 [Mead & Co Ltd](http://scriptx.meadroid.com).
+Copyright © 2013-2017 [Mead & Co Ltd](http://scriptx.meadroid.com).
 
 ## License 
 **MeadCoScriptXJS** is under MIT license - http://www.opensource.org/licenses/mit-license.php

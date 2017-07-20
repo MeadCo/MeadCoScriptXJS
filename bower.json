@@ -1,0 +1,22 @@
+{
+  "name": "meadco-scriptxjs",
+  "homepage": "https://github.com/MeadCo/MeadCoScriptXJS",
+  "authors": [
+    "Pete Cole <pcole@meadroid.com>"
+  ],
+  "description": "Wrapper library for working with MeadCo ScriptX add-on for Internet Explorer and ScriptX.Print service",
+  "main": "meadco-scriptx.js",
+  "keywords": [
+    "print",
+    "html",
+    "scriptx"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    ".*",
+    "Nuget",
+    "ScriptXJSTest",
+    "packages"
+  ]
+}

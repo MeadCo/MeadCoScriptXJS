@@ -1,18 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptXJSTest", "ScriptXJSTest\ScriptXJSTest.csproj", "{2356B209-2432-42FD-AD6F-3E5FD5D20B05}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A0446394-5620-4E6A-BE83-051BCDAAB03A}"
 	ProjectSection(SolutionItems) = preProject
+		bower.json = bower.json
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{B96BAD4D-D2BC-4C44-8C69-94424E0BFB87}"
 	ProjectSection(SolutionItems) = preProject
 		nuget\MeadScriptXJS.nuspec = nuget\MeadScriptXJS.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{808509DA-3D69-472E-8EEA-770605729882}"
+	ProjectSection(SolutionItems) = preProject
+		src\meadco-scriptx.js = src\meadco-scriptx.js
 	EndProjectSection
 EndProject
 Global
