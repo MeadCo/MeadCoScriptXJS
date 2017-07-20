@@ -47,10 +47,9 @@
 
     <script type="text/javascript">
         function setSimpleFormatting() {
-            with (MeadCo.ScriptX.Printing) {
-                header = "Page heading",
-                footer = "Footer&b&p of &P"
-            }
+            var p = MeadCo.ScriptX.Printing;
+            p.header = "Page heading";
+            p.footer = "Footer&b&p of &P";
         }
 
         function callback()
