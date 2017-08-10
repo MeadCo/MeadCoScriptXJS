@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Async Test Page";
 }
 
 <div class="jumbotron">
@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <p>This is a simple test page for the library (<span data-purpose="libversion"></span>). ScriptX must already be installed.</p>
+        <p>This is a simple test page for the async functions in the library (<span data-purpose="libversion"></span>). ScriptX must already be installed.</p>
         <h3>Installed version</h3>
         <p>The following version of ScriptX has been found: <span class="text-danger" data-purpose="sxversion">** UNKNOWN **</span>. The license is <span class="text-danger" id="licCheck">** INVALID **</span> <span id="errMsg"></span></p>
     </div>
@@ -19,21 +19,20 @@
 <div class="row">
     <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
     <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
-    <div class="col-md-9">@Html.ActionLink("Test Async","Async",null,new { @class="btn btn-default"})</div>
+    <div class="col-md-9">@Html.ActionLink("Home", "Index", null, new { @class = "btn btn-default" })</div>
 </div>
 
 <div style="display: none">
     <!-- ScriptX Objects. Assumed installed so no codebase -->
-
     <!-- MeadCo Security Manager to apply the license to enable advanced features -->
     <!-- This license is good for localhost testing but expires and changes frequently. **** Do NOT Use **** -->
     <!-- Contact MeadCo at http://scriptx/meadroid.com to obtain you own license. -->
 
     <object classid="clsid:5445be81-b796-11d2-b931-002018654e2e" id="secmgr">
-        <param name="GUID" value="{C4DB5D29-BE52-46B9-9DDF-46A167170F81}"/>
-        <param name="Path" value="http://licenses.meadroid.com/download/{C4DB5D29-BE52-46B9-9DDF-46A167170F81}/mlf"/>
-        <param name="Revision" value="0"/>
-        <param name="PerUser" value="true"/>
+        <param name="GUID" value="{C4DB5D29-BE52-46B9-9DDF-46A167170F81}" />
+        <param name="Path" value="http://licenses.meadroid.com/download/{C4DB5D29-BE52-46B9-9DDF-46A167170F81}/mlf" />
+        <param name="Revision" value="0" />
+        <param name="PerUser" value="true" />
     </object>
 
     <!-- MeadCo ScriptX -->
@@ -43,7 +42,7 @@
 </div>
 @section scripts
 {
-   <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
+    <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
 
     <script type="text/javascript">
         function setSimpleFormatting() {
@@ -54,15 +53,21 @@
 
         function callback()
         {
-            
+
         }
 
         // do not use $(function() {}) as the license may still be loading.
-        $(window).on("load",function () {
+        $(window).on("load", function () {
+            console.log("starting window.onload");
             $("#libVersion").text(MeadCo.LibVersion);
-            if (MeadCo.ScriptX.Init()) {
-                $("span[data-purpose='sxversion']").each(function (index) { $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger"); });
-                $("span[data-purpose='libversion']").each(function (index) { $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger"); });
+            MeadCo.ScriptX.InitAsync().then(function () {
+                console.log("Init succeeded to: " + MeadCo.ScriptX.Connector);
+                $("span[data-purpose='sxversion']").each(function(index) {
+                    $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger");
+                });
+                $("span[data-purpose='libversion']").each(function(index) {
+                    $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger");
+                });
 
                 if (MeadCo.Licensing.IsLicensed()) {
                     $("#licCheck").text("VALID").addClass("text-success").removeClass("text-danger");
@@ -75,15 +80,14 @@
                     MeadCo.ScriptX.PreviewPage();
                 });
 
-                $("#btn-test2").click(function () {
+                $("#btn-test2").click(function() {
                     setSimpleFormatting();
                     MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
                 });
-            } else {
+            }).catch(function() {
                 console.log("Warning :: Failed to initialise scriptx, is it installed?");
-            }
+            });
         });
     </script>
 
 }
- 
