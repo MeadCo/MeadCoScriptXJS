@@ -7,12 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptXJSTest", "ScriptXJST
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A0446394-5620-4E6A-BE83-051BCDAAB03A}"
 	ProjectSection(SolutionItems) = preProject
-		bower.json = bower.json
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{B96BAD4D-D2BC-4C44-8C69-94424E0BFB87}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{B96BAD4D-D2BC-4C44-8C69-94424E0BFB87}"
 	ProjectSection(SolutionItems) = preProject
+		bower.json = bower.json
 		nuget\MeadScriptXJS.nuspec = nuget\MeadScriptXJS.nuspec
 	EndProjectSection
 EndProject
