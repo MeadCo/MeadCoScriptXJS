@@ -291,7 +291,7 @@
 
 })(window);
 
-// MeadCo.ScriptX 
+// MeadCo.ScriptX - singleton
 //
 (function (topLevelNs) {
     "use strict";
@@ -310,6 +310,7 @@
     scriptx.LibVersion = "1.3.0";
     scriptx.Connector = scriptx.CONNECTED_NONE;
 
+    scriptx.Factory = null;
     scriptx.Printing = null;
     scriptx.Utils = null;
 
@@ -324,25 +325,22 @@
     scriptx.Init = function () {
         if (scriptx.Printing == null) {
             console.log("scriptx.Init()");
-            var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
-            if (f && f.object != null) {
-                console.log("found factory");
-                scriptx.Connector = scriptx.CONNECTED_ADDON;
-                scriptx.Utils = f.object;
-                scriptx.Printing = f.printing;
-
+            if (findFactory()) {
                 // if we are connected to the ScriptX.Print implementation
                 // then check it has connected.
-                if (typeof f.printing.PolyfillInit === "function") {
+                if (typeof scriptx.Printing.PolyfillInit === "function") {
                     console.log("found ScriptX.Print Services");
-                    console.warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
-                    if (!f.printing.PolyfillInit()) {
+                    console
+                        .warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
+                    if (!scriptx.Printing.PolyfillInit()) {
                         console.log("**warning** polyfill failed.");
                         scriptx.Printing = null;
                         scriptx.Connector = scriptx.CONNECTED_NONE;
                     } else {
                         scriptx.Connector = scriptx.CONNECTED_SERVICE;
                     }
+                } else {
+                    scriptx.Connector = scriptx.CONNECTED_ADDON;
                 }
             } else {
                 console.log("** Warning -- no factory **");
@@ -360,31 +358,28 @@
             console.log("unknown state ...");
             prom = new Promise(function(resolve, reject) {
                 console.log("looking for state ...");
-                var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
-                if (f && f.object == null) {
-                    console.log("found factory");
-                    scriptx.Connector = scriptx.CONNECTED_ADDON;
-                    scriptx.Utils = f.object;
-                    scriptx.Printing = f.printing;
-
-                    if (typeof f.printing.PolyfillInit === "function") {
+                if (findFactory()) {
+                    console.log("look for Polyfill ..");
+                    if (typeof scriptx.Printing.PolyfillInit === "function") {
                         console.log("found ScriptX.Print Services");
                         window.setTimeout(function() {
-                                if (!f.printing.PolyfillInit()) {
-                                    console.log("**warning** polyfill failed.");
+                                if (!scriptx.Printing.PolyfillInit()) {
+                                    console.warn("polyfill failed.");
                                     scriptx.Printing = null;
                                     scriptx.Connector = scriptx.CONNECTED_NONE;
                                     reject();
                                 } else {
+                                    console.log("scriptx.print services connected");
                                     scriptx.Connector = scriptx.CONNECTED_SERVICE;
                                     resolve();
                                 }
                             },
                             100);
-                    }
-                    else     
+                    } else {
+                        scriptx.Connector = scriptx.CONNECTED_ADDON;
+                        console.log("no polyfill, using add-on");
                         resolve();
-
+                    }
                 } else {
                     console.log("** Warning -- no factory **");
                     reject();
@@ -577,6 +572,21 @@
 
     // Private implementation
 
+    // findFactory
+    //
+    // hook up and instance of 'factory', either the add-on or polyfill.
+    function findFactory(parameters) {
+        var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
+        if (f && f.object != null) {
+            scriptx.Factory = f;
+            scriptx.Utils = f.object;
+            scriptx.Printing = f.printing;
+            console.log("found factory");
+            return true;
+        }
+        return false;
+    }
+
     // compareVersions
     //
     // Return true if v1 is later than or equal to v2
@@ -665,7 +675,7 @@
 
 }(window.MeadCo = window.MeadCo || {}));
 
-// MeadCo.Licensing 
+// MeadCo.Licensing - singleton
 //
 (function (topLeveNs) {
     "use strict";
