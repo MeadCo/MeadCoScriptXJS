@@ -10,7 +10,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "0.0.6.8";
+    var moduleversion = "1.1.0.2";
 
     var mPageOrientation = {
         DEFAULT: 0,
@@ -294,7 +294,7 @@
         connect: function (serverUrl, licenseGuid) {
             MeadCo.log("Print.HTML connection request");
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
-            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",
+            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",false,
                 function (data) {
                     MeadCo.log("got default html settings");
                     updateSettingsWithServerDefaults(data.htmlPrintSettings);
@@ -303,6 +303,21 @@
                         MeadCo.ScriptX.Print.printerName = "default";
                     }
                 });
+        },
+
+        connectAsync: function (serverUrl, licenseGuid,resolve,reject) {
+            MeadCo.log("Print.HTML connection request");
+            MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
+            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",true,
+                function (data) {
+                    MeadCo.log("got default html settings");
+                    updateSettingsWithServerDefaults(data.htmlPrintSettings);
+                    if (data.deviceSettings != null) {
+                        // note, this will cause a download of device settings.
+                        MeadCo.ScriptX.Print.printerName = "default";
+                    }
+                    resolve();
+                },reject);
         },
 
         get version() { return moduleversion }

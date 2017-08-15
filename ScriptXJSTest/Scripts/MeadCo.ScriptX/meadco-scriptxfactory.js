@@ -9,6 +9,8 @@
 // we anti-polyfill <object id="factory" />
 // enabling old code to run in modern browsers
 //
+// static singleton instances.
+//
 ; (function (name, definition,undefined) {
 
     if ( this[name] != undefined || document.getElementById(name) != null ) {
@@ -36,7 +38,7 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "0.0.5.15";
+    var moduleversion = "1.1.0.3";
     var emulatedVersion = "8.0.0.0";
     var module = this;
     var printApi = MeadCo.ScriptX.Print;
@@ -147,8 +149,13 @@
         module.factory.log("Looking for auto connect");
         $("[data-meadco-server]").each(function () {
             var $this = $(this);
-            module.factory.log("Auto connect to: " + $this.data("meadco-server") + "with license: " + $this.data("meadco-license"));
-            printHtml.connect($this.data("meadco-server"), $this.data("meadco-license"));
+            module.factory.log("Auto connect to: " + $this.data("meadco-server") + ", with license: " + $this.data("meadco-license") + ", sync: " + $this.data("meadco-syncinit"));
+            var sync = ("" + $this.data("meadco-syncinit")).toLowerCase(); // defaults to true if not specified
+            if (sync === "false") {
+                printApi.connectLite($this.data("meadco-server"), $this.data("meadco-license"));
+            } else {
+                printHtml.connect($this.data("meadco-server"), $this.data("meadco-license"));
+            }
             return false;
         });
     }
@@ -513,8 +520,8 @@
             // for now ignore value parameter and return an array of paper sizes in the Forms property
 
             return {
-                Forms : ["A3", "A4", "A5", "Letter"],
-                Bins : ["Automatically select", "Printer auto select", "Manual Feed Tray", "Tray 1", "Tray 2", "Tray 3", "Tray 4"],
+                Forms : ["A3", "A4", "A5", "Letter"], // TODO: fill properly
+                Bins: ["Automatically select", "Printer auto select", "Manual Feed Tray", "Tray 1", "Tray 2", "Tray 3", "Tray 4"], // TODO: fill properly
                 get Name() {
                     printApi.reportFeatureNotImplemented("printerControl.Name");
                 },
@@ -600,7 +607,16 @@
         // helpers for wrapper MeadCoJS
         PolyfillInit: function () {
             return MeadCo.ScriptX.Print.isConnected;
+        },
+
+        PolyfillInitAsync: function (resolve, reject) {
+            if (MeadCo.ScriptX.Print.isConnected) {
+                resolve();
+            } else {
+                printHtml.connectAsync("", "", resolve, reject);
+            }
         }
+
     };
 
 });

@@ -10,15 +10,13 @@
 
 <div class="row">
     <div class="col-md-12">
-        <p>This is a simple test page for the async functions in the library (<span data-purpose="libversion"></span>). A ScriptX.Print Service should be available.</p>
+        <p>This is a simple test page for the async functions in the library (<span data-purpose="libversion"></span>) with sync (deprecated) startup. A ScriptX.Print Service should be available.</p>
         <h3>Installed version</h3>
         <p>The following (emulation) version of ScriptX has been found: <span class="text-danger" data-purpose="sxversion">** UNKNOWN **</span>. The license is <span class="text-danger" id="licCheck">** INVALID **</span> <span id="errMsg"></span></p>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
-    <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
     <div class="col-md-9">@Html.ActionLink("Home", "Index", null, new { @class = "btn btn-default" })</div>
 </div>
 
@@ -28,7 +26,7 @@
     <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxlicense.js"></script>
     <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint.js"></script>
     <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>  
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-server="https://localhost:44315/" data-meadco-license="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-server="https://localhost:44315/api/v1/printhtml" data-meadco-license="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
     
     <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
 

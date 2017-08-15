@@ -9,7 +9,7 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print', function () {
-    var version = "0.0.6.9";
+    var version = "1.1.0.2";
     var printerName = "";
     var deviceSettings = {};
     var module = this;
@@ -112,9 +112,20 @@
     function connectToServer(serverUrl, clientLicenseGuid) {
         setServer(serverUrl, clientLicenseGuid);
         // note that this will silently fail if no advanced printing license
-        // TODO: Warning, this is synchronous
         getDeviceSettings({ name: "default" });
     }
+
+    function connectToServerAsync(serverUrl, clientLicenseGuid,resolve,reject) {
+        if ( serverUrl.length > 0 && clientLicenseGuid.length > 0 )
+            setServer(serverUrl, clientLicenseGuid);
+
+        // note that this will silently fail if no advanced printing license
+        getDeviceSettings({ 
+            name: "default", 
+            done: resolve, 
+            fail: reject});
+    }
+
 
     function printAtServer(requestData, responseInterface) {
 
@@ -179,7 +190,7 @@
         }
     }
 
-    function getFromServer(sApi,onSuccess,onFail) {
+    function getFromServer(sApi,async,onSuccess,onFail) {
         if (module.jQuery) {
             var serviceUrl = server + sApi;
             MeadCo.log(".ajax() get: " + serviceUrl);
@@ -188,7 +199,7 @@
                     method: "GET",
                     dataType: "json",
                     cache: false,
-                    async: false, // TODO: deprecated
+                    async: async, 
                     headers: {
                         "Authorization": "Basic " + btoa(licenseGuid + ":")
                     }
@@ -311,7 +322,8 @@
                 {
                     dataType: "json",
                     method: "GET",
-                    async: false, // TODO: deprecated
+                    cache: false,
+                    async: typeof oRequest.done === "function", // => async if we have a callback
                     headers: {
                         "Authorization": "Basic " + btoa(licenseGuid + ":")
                     }
@@ -341,11 +353,14 @@
                     }
                 });
         } else {
-            throw new Error("MeadCo.ScriptX.Print : no known ajax helper available");
+            if (typeof oRequest.fail === "function") {
+                oRequest.fail("MeadCo.ScriptX.Print : no known ajax helper available");
+            }
+            else
+                throw new Error("MeadCo.ScriptX.Print : no known ajax helper available");   
         }
 
     }
-
 
     MeadCo.log("MeadCo.ScriptX.Print loaded: " + version);
     if (!module.jQuery) {
@@ -395,8 +410,13 @@
             connectToServer(serverUrl, licenseGuid);
         },
 
-        connectLite : function(serverUrl, licenseGuid) {
-            setServer(serverUrl, licenseGuid);
+        connectLite: function (serverUrl, licenseGuid) {
+            if (arguments.length === 2 && serverUrl.length > 0 && licenseGuid.length > 0)
+                setServer(serverUrl, licenseGuid);
+        },
+
+        connectAsync: function (serverUrl, licenseGuid,resolve, reject) {
+            connectToServerAsync(serverUrl, licenseGuid, resolve, reject);
         },
 
         get isConnected() {

@@ -330,10 +330,9 @@
                 // then check it has connected.
                 if (typeof scriptx.Printing.PolyfillInit === "function") {
                     console.log("found ScriptX.Print Services");
-                    console
-                        .warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
+                    console.warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
                     if (!scriptx.Printing.PolyfillInit()) {
-                        console.log("**warning** polyfill failed.");
+                        console.warn("factory polyfillInit failed (no server connection?).");
                         scriptx.Printing = null;
                         scriptx.Connector = scriptx.CONNECTED_NONE;
                     } else {
@@ -343,13 +342,19 @@
                     scriptx.Connector = scriptx.CONNECTED_ADDON;
                 }
             } else {
-                console.log("** Warning -- no factory **");
+                console.warn("no factory found");
             }
         }
 
         return scriptx.Printing != null;
     }
 
+    // InitAsync
+    // Simple initialisation of the library using Async code
+    // Returns a Promise : MeadCo.ScriptX.InitAsync().then().catch()
+    //
+    // Use this when you may connect to ScriptX.Print services.
+    //
     scriptx.InitAsync = function () {
         var prom;
 
@@ -358,30 +363,21 @@
             console.log("unknown state ...");
             prom = new Promise(function(resolve, reject) {
                 console.log("looking for state ...");
-                if (findFactory()) {
-                    console.log("look for Polyfill ..");
-                    if (typeof scriptx.Printing.PolyfillInit === "function") {
-                        console.log("found ScriptX.Print Services");
-                        window.setTimeout(function() {
-                                if (!scriptx.Printing.PolyfillInit()) {
-                                    console.warn("polyfill failed.");
-                                    scriptx.Printing = null;
-                                    scriptx.Connector = scriptx.CONNECTED_NONE;
-                                    reject();
-                                } else {
-                                    console.log("scriptx.print services connected");
-                                    scriptx.Connector = scriptx.CONNECTED_SERVICE;
-                                    resolve();
-                                }
-                            },
-                            100);
+                if ( findFactory() ) {
+                    console.log("found a factory, look for Polyfill ..");
+                    if (typeof scriptx.Printing.PolyfillInitAsync === "function") {
+                        console.log("found async ScriptX.Print Services");
+                        scriptx.Printing.PolyfillInitAsync(function() {
+                            scriptx.Connector = scriptx.CONNECTED_SERVICE;
+                            resolve();
+                        }, reject);
                     } else {
                         scriptx.Connector = scriptx.CONNECTED_ADDON;
                         console.log("no polyfill, using add-on");
                         resolve();
                     }
                 } else {
-                    console.log("** Warning -- no factory **");
+                    console.warn("no factory found");
                     reject();
                 }
             });
@@ -494,6 +490,8 @@
     //
     // A wrapper to hide differences between Add-on and ScriptX.Print Services 
     //
+    // Returns a Promise :: MeadCo.ScriptX.WaitForSpoolingComplete().then(...)
+    //
     scriptx.WaitForSpoolingComplete = function() 
     {
         if (scriptx.Connector === scriptx.CONNECTED_SERVICE) {
@@ -510,8 +508,7 @@
                     scriptx.Printing.WaitforSpoolingComplete();
                     resolve();
                 }, 1);
-            });
-       
+            });     
     }
 
     // HasOrientation
