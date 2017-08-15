@@ -303,12 +303,14 @@
 
     var scriptx = topLevelNs.ScriptX;
 
-    scriptx.CONNECTED_NONE = 0;
-    scriptx.CONNECTED_ADDON = 1;
-    scriptx.CONNECTED_SERVICE = 2;
+    scriptx.Connection = {
+        NONE: 0,
+        ADDON: 1,
+        SERVICE:2       
+    }
 
     scriptx.LibVersion = "1.3.0";
-    scriptx.Connector = scriptx.CONNECTED_NONE;
+    scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
     scriptx.Printing = null;
@@ -334,12 +336,12 @@
                     if (!scriptx.Printing.PolyfillInit()) {
                         console.warn("factory polyfillInit failed (no server connection?).");
                         scriptx.Printing = null;
-                        scriptx.Connector = scriptx.CONNECTED_NONE;
+                        scriptx.Connector = scriptx.Connection.NONE;
                     } else {
-                        scriptx.Connector = scriptx.CONNECTED_SERVICE;
+                        scriptx.Connector = scriptx.Connection.SERVICE;
                     }
                 } else {
-                    scriptx.Connector = scriptx.CONNECTED_ADDON;
+                    scriptx.Connector = scriptx.Connection.ADDON;
                 }
             } else {
                 console.warn("no factory found");
@@ -368,11 +370,11 @@
                     if (typeof scriptx.Printing.PolyfillInitAsync === "function") {
                         console.log("found async ScriptX.Print Services");
                         scriptx.Printing.PolyfillInitAsync(function() {
-                            scriptx.Connector = scriptx.CONNECTED_SERVICE;
+                            scriptx.Connector = scriptx.Connection.SERVICE;
                             resolve();
                         }, reject);
                     } else {
-                        scriptx.Connector = scriptx.CONNECTED_ADDON;
+                        scriptx.Connector = scriptx.Connection.ADDON;
                         console.log("no polyfill, using add-on");
                         resolve();
                     }
@@ -494,7 +496,7 @@
     //
     scriptx.WaitForSpoolingComplete = function() 
     {
-        if (scriptx.Connector === scriptx.CONNECTED_SERVICE) {
+        if (scriptx.Connector === scriptx.Connection.SERVICE ) {
             return new Promise(function(resolve, reject) {
                 window.setTimeout(function() {
                         resolve();
