@@ -306,11 +306,11 @@
     scriptx.Connection = {
         NONE: 0,
         ADDON: 1,
-        SERVICE:2       
+        SERVICE: 2
     }
 
     scriptx.LibVersion = "1.3.0";
-    scriptx.Connector = scriptx.Connection.NONE;
+    scriptx.Connector = scriptx.CONNECTED_NONE;
 
     scriptx.Factory = null;
     scriptx.Printing = null;
@@ -332,9 +332,10 @@
                 // then check it has connected.
                 if (typeof scriptx.Printing.PolyfillInit === "function") {
                     console.log("found ScriptX.Print Services");
-                    console.warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
+                    console
+                        .warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
                     if (!scriptx.Printing.PolyfillInit()) {
-                        console.warn("factory polyfillInit failed (no server connection?).");
+                        console.log("**warning** polyfill failed.");
                         scriptx.Printing = null;
                         scriptx.Connector = scriptx.Connection.NONE;
                     } else {
@@ -344,32 +345,26 @@
                     scriptx.Connector = scriptx.Connection.ADDON;
                 }
             } else {
-                console.warn("no factory found");
+                console.log("** Warning -- no factory **");
             }
         }
 
         return scriptx.Printing != null;
     }
 
-    // InitAsync
-    // Simple initialisation of the library using Async code
-    // Returns a Promise : MeadCo.ScriptX.InitAsync().then().catch()
-    //
-    // Use this when you may connect to ScriptX.Print services.
-    //
     scriptx.InitAsync = function () {
         var prom;
 
         console.log("scriptx.InitAsync()");
         if (scriptx.Printing == null) {
             console.log("unknown state ...");
-            prom = new Promise(function(resolve, reject) {
+            prom = new Promise(function (resolve, reject) {
                 console.log("looking for state ...");
-                if ( findFactory() ) {
-                    console.log("found a factory, look for Polyfill ..");
+                if (findFactory()) {
+                    console.log("look for Polyfill ..");
                     if (typeof scriptx.Printing.PolyfillInitAsync === "function") {
                         console.log("found async ScriptX.Print Services");
-                        scriptx.Printing.PolyfillInitAsync(function() {
+                        scriptx.Printing.PolyfillInitAsync(function () {
                             scriptx.Connector = scriptx.Connection.SERVICE;
                             resolve();
                         }, reject);
@@ -379,12 +374,12 @@
                         resolve();
                     }
                 } else {
-                    console.warn("no factory found");
+                    console.log("** Warning -- no factory **");
                     reject();
                 }
             });
         } else {
-            prom = new Promise(function(resolve, reject) {
+            prom = new Promise(function (resolve, reject) {
                 resolve();
             });
         }
@@ -476,6 +471,9 @@
         return scriptx.BackgroundPrintURL("html://" + sHtml, false, fnCallback, data);
     }
 
+    // Page/Print Setup - these will work with both add-on and service
+    // but return value will be wrong for service since dialogs are async
+    // If the return value matters use xxxx2 api below.
     scriptx.PageSetup = function () {
         if (scriptx.Init())
             return scriptx.Printing.PageSetup();
@@ -488,29 +486,73 @@
         return false;
     }
 
+    // Promise versions to work with async dialogs with service
+    // These work with both add-on and service.
+    //
+    scriptx.PageSetup2 = function () {
+        return new Promise(function (resolve, reject) {
+            if (scriptx.Init()) {
+
+                if (scriptx.Connector === scriptx.Connection.SERVICE) {
+                    scriptx.Printing.PageSetup(function (dlgOK) {
+                        if (dlgOK)
+                            resolve();
+                        else
+                            reject();
+                    });
+                } else {
+                    if (scriptx.Printing.PageSetup()) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                }
+            }
+            reject();
+        });
+    }
+
+    scriptx.PrintSetup2 = function () {
+        return new Promise(function (resolve, reject) {
+            if (scriptx.Init()) {
+                if (scriptx.Connector === scriptx.Connection.SERVICE) {
+                    scriptx.Printing.PrintSetup(function (dlgOK) {
+                        if (dlgOK)
+                            resolve();
+                        else
+                            reject();
+                    });
+                } else {
+                    if (scriptx.Printing.PrintSetup()) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                }
+            }
+            reject();
+        });
+    }
+
+
     // WaitForSpoolingComplete 
     //
     // A wrapper to hide differences between Add-on and ScriptX.Print Services 
     //
-    // Returns a Promise :: MeadCo.ScriptX.WaitForSpoolingComplete().then(...)
-    //
-    scriptx.WaitForSpoolingComplete = function() 
-    {
-        if (scriptx.Connector === scriptx.Connection.SERVICE ) {
-            return new Promise(function(resolve, reject) {
-                window.setTimeout(function() {
-                        resolve();
-                    },
-                    5000);
+    scriptx.WaitForSpoolingComplete = function () {
+        if (scriptx.Connector === scriptx.Connection.SERVICE) {
+            return new Promise(function (resolve, reject) {
+                scriptx.Printing.WaitForSpoolingComplete(-1, resolve);
             });
         }
 
-        return new Promise(function(resolve, reject) {
-                window.setTimeout(function() {
-                    scriptx.Printing.WaitforSpoolingComplete();
-                    resolve();
-                }, 1);
-            });     
+        return new Promise(function (resolve, reject) {
+            window.setTimeout(function () {
+                scriptx.Printing.WaitForSpoolingComplete();
+                resolve();
+            }, 1);
+        });
+
     }
 
     // HasOrientation
@@ -697,7 +739,7 @@
 
     licensing.InitAsync = function () {
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             if (licensing.LicMgr == null) {
                 var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
                 if (l && l.object)
