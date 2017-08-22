@@ -74,10 +74,18 @@
 
     // protected API
     var module = this;
-    var version = "1.1.0.1";
+    var version = "1.1.1.0";
 
     var log = function (str) {
         console.log("MeadCo :: " + str);
+    }
+
+    var warn = function (str) {
+        console.warn("MeadCo :: " + str);
+    }
+
+    var error = function (str) {
+        console.warn("MeadCo :: " + str);
     }
 
     // extend the namespace
@@ -120,6 +128,9 @@
     // public API.
     return {
         log: log,
+        warn: warn,
+        error: error,
+
         get version() { return version },
 
         // allow things such as MeadCo.createNS("MeadCo.ScriptX.Print.UI");

@@ -35,11 +35,11 @@
 })('secmgr', function () {
 
     // protected API
-    var moduleversion = "1.1.0.1";
+    var moduleversion = "1.1.0.4";
     var emulatedVersion = "8.0.0.2";
     var module = this;
     var license = {};
-
+    var lastError = "Not loaded";
 
     var server = "";            // url to the server
     var licenseGuid = "";
@@ -48,16 +48,16 @@
         console.log("secmgr anti-polyfill :: " + str);
     }
 
-    function setLicensingServer(serverUrl, clientLicenseGuid) {
-        MeadCo.log("Licensing server requested: " + serverUrl + " with license: " + clientLicenseGuid);
+    function setSubscriptionServer(serverUrl, clientLicenseGuid) {
+        MeadCo.log("Subscription server requested: " + serverUrl + " with license: " + clientLicenseGuid);
         server = serverUrl;
         licenseGuid = clientLicenseGuid;
     }
 
-    function getLicenseFromServer(onFail) {
+    function getSubscriptionFromServer(resolve, reject) {
 
         if (server.length <= 0) {
-            throw new Error("MeadCo.ScriptX.Licensing : licensing server URL is not set or is invalid");
+            throw new Error("MeadCo.ScriptX.Licensing : Subscription server URL is not set or is invalid");
         }
 
         if (module.jQuery) {
@@ -68,17 +68,21 @@
                     dataType: "json",
                     jsonp: false,
                     cache: false,
-                    async: false, // TODO: deprecated 
+                    async: typeof resolve === "function",
                     headers: {
                         "Authorization": "Basic " + btoa(licenseGuid + ":")
                     }
                 }).done(function (data) {
+                    lastError = "";
                     $.extend(license, data);
+                    if (typeof resolve === "function")
+                        resolve(license);
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
-                    MeadCo.log("**warning: failure in MeadCo.ScriptX.Licensing.getLicenseFromServer: " + errorThrown);
-                    if (typeof onFail == "function")
-                        onFail(errorThrown);
+                    MeadCo.log("**warning: failure in MeadCo.ScriptX.Licensing.getSubscriptionFromServer: " + errorThrown);
+                    lastError = errorThrown;
+                    if (typeof reject == "function")
+                        reject(errorThrown);
                 });
             return license;
         }
@@ -114,6 +118,17 @@
 
     log("'secmgr' loaded.");
 
+    if (this.jQuery) {
+        MeadCo.log("Looking for auto connect");
+        $("[data-meadco-subscriptionserver]").each(function () {
+            var $this = $(this);
+            MeadCo.log("Auto connect to: " + $this.data("meadco-subscriptionserver") + ", with license: " + $this.data("meadco-subscription") + ", sync: " + $this.data("meadco-syncinit"));
+            var sync = ("" + $this.data("meadco-syncinit")).toLowerCase(); // defaults to true if not specified
+            setSubscriptionServer($this.data("meadco-subscriptionserver"), $this.data("meadco-subscription"));
+            return false;
+        });
+    }
+
     // public API.
     return {
         log: log,
@@ -122,19 +137,23 @@
         },
 
         get result() {
-            return 0;
+            return lastError === "" ? 0 : 5; // => ok or not found
         },
 
         get validLicense() {
-            return true;
+            return typeof license.Id !== "undefined";
         },
 
         get License() {
-            var license = getLicenseFromServer();
+            var license = getSubscriptionFromServer();
             return license;
         },
 
-        connect: setLicensingServer,
+        GetLicenseAsync: function(resolve, reject) {
+            getSubscriptionFromServer(resolve, reject);
+        },
+
+        connect: setSubscriptionServer
 
     };
 });

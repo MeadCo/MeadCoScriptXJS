@@ -9,20 +9,21 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print', function () {
-    var version = "1.1.0.2";
+    var version = "1.1.0.6";
     var printerName = "";
     var deviceSettings = {};
     var module = this;
 
+    var activePrintQueue = []; // current job queue
 
     var server = ""; // url to the server, server is CORS restricted
     var licenseGuid = "";
     var bConnected = false;
 
     var enumContentType = {
-        URL: 1,
-        HTML: 2,
-        INNERTHTML: 4
+        URL: 1, // the url will be downloaded and printed
+        HTML: 2, // the passed string is assumed to be a complete html document .. <html>..</html>
+        INNERTHTML: 4 // the passed string is a complete html document but missing the html tags
     };
 
     var enumResponseStatus = {
@@ -49,7 +50,65 @@
         ABANDONED: -2
     };
 
-    function printHtmlAtServer(contentType, content, htmlPrintSettings,fnDone) {
+    function queueJob(data) {
+        activePrintQueue.push(data);
+        MeadCo.log("ScriptX.Print queueJob, jobCount: " + activePrintQueue.length);
+    }
+
+    function jobCount() {
+        MeadCo.log("ScriptX.Print jobCount: " + activePrintQueue.length);
+        return activePrintQueue.length;
+    }
+
+    function findJob(id) {
+        var i;
+        for (i = 0; i < activePrintQueue.length; i++) {
+            if (activePrintQueue[i].jobIdentifier === id) {
+                return activePrintQueue[i];
+            }
+        }
+        return null;
+    }
+
+    function updateJob(data) {
+        var i;
+        for (i = 0; i < activePrintQueue.length; i++) {
+            if (activePrintQueue[i].jobIdentifier === data.jobIdentifier) {
+                var fnCallBack = data.fnNotify;
+                if (typeof fnCallBack !== "function") 
+                    data.fnNotify = activePrintQueue[i].fnNotify;
+
+                if (typeof data.fnNotify === "function" && (data.status === enumResponseStatus.QUEUEDTOFILE || data.status !== activePrintQueue[i].status) ) {
+                    data.fnNotify(data);
+                }
+
+                activePrintQueue[i] = data;
+                return;
+            }
+        }
+        console.warn("Unable to find job: " + data.jobIdentifier + " to update it");
+
+    }
+
+    function removeJob(id) {
+        var i;
+        for (i = 0; i < activePrintQueue.length; i++) {
+            if (activePrintQueue[i].jobIdentifier === id) {
+                activePrintQueue.splice(i, 1);
+                MeadCo.log("ScriptX.Print remove job, jobCount: " + activePrintQueue.length);
+                return;
+            }
+        }
+        console.warn("Unable to find job: " + id + " to remove it");
+    }
+
+    function progress(requestData, status, information) {
+        if (typeof requestData.OnProgress === "function") {
+            requestData.OnProgress(status, information, requestData.UserData);
+        }
+    }
+
+    function printHtmlAtServer(contentType, content, htmlPrintSettings, fnDone, fnNotify, fnCallback, data) {
         MeadCo.log("started MeadCo.ScriptX.Print.print.printHtmlAtServer() Type: " + contentType + ", printerName: " + printerName);
         var devInfo;
 
@@ -63,12 +122,15 @@
             ContentType: contentType,
             Content: content,
             Settings: htmlPrintSettings,
-            DeviceSettings: devInfo
+            DeviceSettings: devInfo,
+            OnProgress: fnCallback,
+            UserData: data
         }
 
         printAtServer(requestData,
         {
-            fail: function(jqXhr, textStatus, errorThrown) {
+            fail: function (jqXhr, textStatus, errorThrown) {
+                progress(requestData,enumPrintStatus.ERROR);
                 MeadCo.ScriptX.Print.reportServerError(errorThrown);
                 if (typeof fnDone === "function") {
                     fnDone(jqXhr);
@@ -77,10 +139,18 @@
 
             queuedToFile: function(data) {
                 MeadCo.log("default handler on queued to file response");
-                waitForJobComplete(data.jobIdentifier,
+                progress(requestData, enumPrintStatus.QUEUED);
+
+                if (typeof fnNotify === "function") {
+                    data.fnNotify = fnNotify;
+                    updateJob(data);
+                }
+
+                waitForJobComplete(requestData,data.jobIdentifier,
                     -1,
                     function (data) {
                         MeadCo.log("Will download printed file");
+                        progress(requestData, enumPrintStatus.COMPLETED);
                         window.open(server + "/download/" + data.jobIdentifier, "_self");
                         if (typeof fnDone === "function") {
                             fnDone(null);
@@ -89,14 +159,17 @@
             },
 
             queuedToDevice: function(data) {
+                progress(requestData, enumPrintStatus.QUEUED);
                 MeadCo.log("print was queued to device");
             },
 
             softError: function(data) {
+                progress(requestData, enumPrintStatus.ERROR);
                 MeadCo.log("print has soft error");
             },
 
-            ok: function(data) {
+            ok: function (data) {
+                progress(requestData, enumPrintStatus.COMPLETED);
                 MeadCo.log("printed ok, no further information");
             }
         });
@@ -133,8 +206,14 @@
             throw new Error("MeadCo.ScriptX.Print : print server URL is not set or is invalid");
         }
 
+        var fakeJob = {
+            jobIdentifier: Date.now()
+        };
+
+
         if (module.jQuery) {
             MeadCo.log(".ajax() post to: " + server);
+            queueJob(fakeJob); // essentially a lock on the queue to stop it looking empty while we await the result
             module.jQuery.ajax(server + "/print",
                 {
                     data: requestData,
@@ -146,6 +225,8 @@
                 })
                 .done(function (data) {
                     MeadCo.log("Success response: " + data.status);
+                    queueJob(data);
+                    removeJob(fakeJob.jobIdentifier);
                     switch (data.status) {
                     case enumResponseStatus.QUEUEDTOFILE:
                         responseInterface.queuedToFile(data);
@@ -172,7 +253,7 @@
                         "], [" +
                         jqXhr.responseText +
                         "]");
-
+                    removeJob(fakeJob.jobIdentifier);
                     if (typeof jqXhr.responseText !== "undefined") {
                         errorThrown = jqXhr.responseText;
                     }
@@ -229,10 +310,10 @@
         }
     }
 
-    function waitForJobComplete(jobId, timeOut,functionComplete) {
+    function waitForJobComplete(requestData,jobId, timeOut,functionComplete) {
         MeadCo.log("WaitForJobComplete: " + jobId);
         var counter = 0;
-        var interval = 500;
+        var interval = 1000;
         var bWaiting = false;
         var intervalId = window.setInterval(function() {
                 if (!bWaiting) {
@@ -252,6 +333,7 @@
                             case enumPrintStatus.COMPLETED:
                                 MeadCo.log("clear interval: " + intervalId);
                                 window.clearInterval(intervalId);
+                                removeJob(jobId);
                                 functionComplete(data);
                                 break;
 
@@ -262,7 +344,8 @@
                             case enumPrintStatus.QUEUED:
                             case enumPrintStatus.STARTING:
                             case enumPrintStatus.PAUSED:
-
+                                progress(requestData, data.status, data.message);
+                                updateJob(data);
                                 // keep going
                                 if (timeOut > 0 && (++counter * interval) > timeOut) {
                                     window.clearInterval(intervalId);
@@ -273,13 +356,17 @@
 
                            case enumPrintStatus.ERROR:
                            case enumPrintStatus.ABANDONED:
-                                MeadCo.log("error status in waitForJobComplete so clear interval: " + intervalId);
-                                window.clearInterval(intervalId);
-                                MeadCo.ScriptX.Print.reportServerError("The print failed.\n\n" + data.message);
-                                break;
+                               MeadCo.log("error status in waitForJobComplete so clear interval: " + intervalId);
+                               progress(requestData, data.status, data.message);
+                               updateJob(data);
+                               window.clearInterval(intervalId);
+                               MeadCo.ScriptX.Print.reportServerError("The print failed.\n\n" + data.message);
+                               break;
 
-                            default:
+                           default:
+                                progress(requestData, data.status, data.message);
                                 MeadCo.log("unknown status in waitForJobComplete so clear interval: " + intervalId);
+                                removeJob(jobId);
                                 window.clearInterval(intervalId);
                                 break;
                             }
@@ -302,6 +389,7 @@
                             }
 
                             MeadCo.log("error: " + errorThrown + " in waitForJobComplete so clear interval: " + intervalId);
+                            removeJob(jobId);
                             window.clearInterval(intervalId);
                         });
                 } else {
@@ -311,6 +399,13 @@
             interval);
 
         MeadCo.log("intervalId: " + intervalId);
+    }
+
+    function addDeviceSettings(data) {
+        deviceSettings[data.printerName] = data;
+        if (data.isDefault && printerName.length === 0) {
+            printerName = data.printerName;
+        }
     }
 
     function getDeviceSettings(oRequest) {
@@ -330,10 +425,7 @@
                 })
                 .done(function (data) {
                     bConnected = true;
-                    deviceSettings[data.printerName] = data;
-                    if ( data.isDefault && printerName.length === 0) {
-                        printerName = data.printerName;
-                    }
+                    addDeviceSettings(data);
                     if (typeof oRequest.done === "function") {
                         oRequest.done(data);
                     }
@@ -419,6 +511,11 @@
             connectToServerAsync(serverUrl, licenseGuid, resolve, reject);
         },
 
+        connectDevice: function(deviceInfo) {
+            bConnected = true;
+            addDeviceSettings(deviceInfo);
+        },
+
         get isConnected() {
             return bConnected;
         },
@@ -436,6 +533,24 @@
         reportFeatureNotImplemented: function (featureDescription) {
             MeadCo.log("Call to not implemented: " + featureDescription);
             alert(featureDescription + "\n\nis not available.");
+        },
+
+        get queue() {
+            return activePrintQueue;
+        },
+
+        get activeJobs() {
+            return jobCount();
+        },
+
+        ensureSpoolingStatus: function () {
+            var lock = { jobIdentifier: Date.now };
+            queueJob(lock);
+            return lock;
+        },
+
+        freeSpoolStatus: function(lock) {
+            removeJob(lock.jobIdentifier);
         }
     };
 

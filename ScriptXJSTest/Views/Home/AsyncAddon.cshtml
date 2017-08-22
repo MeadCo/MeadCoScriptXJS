@@ -42,7 +42,7 @@
 </div>
 @section scripts
 {
-    <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
+    <script src="@Url.Action("Script", new {filename = "meadco-scriptx.js"})"></script>
 
     <script type="text/javascript">
         function setSimpleFormatting() {
@@ -51,48 +51,48 @@
             p.footer = "Footer&b&p of &P";
         }
 
-        function callback()
-        {
+        function callback() {
 
         }
 
         // do not use $(function() {}) as the license may still be loading.
-        $(window).on("load", function () {
-            console.log("starting window.onload");
-            $("#libVersion").text(MeadCo.LibVersion);
-            MeadCo.ScriptX.InitAsync().then(function () {
-                console.log("Init succeeded to: " + MeadCo.ScriptX.Connector);
-                $("span[data-purpose='sxversion']").each(function(index) {
-                    $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger");
-                });
-                $("span[data-purpose='libversion']").each(function(index) {
-                    $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger");
-                });
+        $(window).on("load",
+            function() {
+                console.log("starting window.onload");
+                $("#libVersion").text(MeadCo.LibVersion);
+                MeadCo.ScriptX.InitAsync().then(function() {
+                    console.log("Init succeeded to: " + MeadCo.ScriptX.Connector);
+                    $("span[data-purpose='sxversion']").each(function(index) {
+                        $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger");
+                    });
+                    $("span[data-purpose='libversion']").each(function(index) {
+                        $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger");
+                    });
 
-                if (MeadCo.Licensing.IsLicensed()) {
-                    $("#licCheck").text("VALID").addClass("text-success").removeClass("text-danger");
-                } else {
-                    $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
-                }
+                    MeadCo.Licensing.IsLicensedAsync().then(function(l) {
+                        $("#licCheck").text("VALID: " + l.company).addClass("text-success").removeClass("text-danger");
 
-                $("#btn-test1").click(function() {
-                    setSimpleFormatting();
-                    MeadCo.ScriptX.PreviewPage();
-                });
+                        $("#btn-test1").click(function () {
+                            setSimpleFormatting();
+                            MeadCo.ScriptX.PreviewPage();
+                        });
 
-                $("#btn-test2").click(function() {
-                    setSimpleFormatting();
-                    MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
-                });
+                        $("#btn-test2").click(function () {
+                            setSimpleFormatting();
+                            MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
+                        });
+                    }).catch(function() {
+                        $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
+                    });
             }).catch(function() {
-                console.log("Warning :: Failed to initialise scriptx, is it installed?");
-                if (MeadCo.ScriptX.Init()) {
-                    console.error("Sync init succeeded!!!!");
-                } else {
-                    console.log("Sync init also failed, looks like not installed.");
-                }
-            });
+            console.log("Warning :: Failed to initialise scriptx, is it installed?");
+            if (MeadCo.ScriptX.Init()) {
+                console.error("Sync init succeeded!!!!");
+            } else {
+                console.log("Sync init also failed, looks like not installed.");
+            }
         });
+    });
     </script>
 
 }

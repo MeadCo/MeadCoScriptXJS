@@ -10,7 +10,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "1.1.0.2";
+    var moduleversion = "1.1.0.5";
 
     var mPageOrientation = {
         DEFAULT: 0,
@@ -229,7 +229,6 @@
         }
 
         return $html.html();
-
     }
 
     function documentHtml() {
@@ -258,8 +257,8 @@
 
     }
 
-    function printHtmlAtServer(a, b, c, d) {
-        MeadCo.ScriptX.Print.printHtml(a, b, c, d);
+    function printHtmlAtServer(contentType, content, htmlPrintSettings, fnDone, fnNotify, fnCallback, data) {
+        MeadCo.ScriptX.Print.printHtml(contentType, content, htmlPrintSettings, fnDone, fnNotify, fnCallback, data);
     }
 
     MeadCo.log("MeadCo.ScriptX.Print.HTML " + moduleversion + " loaded.");
@@ -276,45 +275,52 @@
 
         settings: iSettings,
 
-        printFromUrl: function (sUrl) {
-            MeadCo.log("html.printFromUrl: " + sUrl);
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.URL, sUrl, settingsCache);
-        },
-
         printDocument: function(bPrompt,fnCallOnDone) {
             MeadCo.log("html.printDocument. *warning* ignoring bPrompt");
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, documentContent(), settingsCache,fnCallOnDone);
+            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, documentContent(),settingsCache,fnCallOnDone);
         },
 
-        printFrame : function(sFrame, bPrompt) {
+        printFrame: function (sFrame, bPrompt, fnCallOnDone) {
             MeadCo.log("html.printFrame: " + sFrame + " *warning* ignoring bPrompt");
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, frameContent(sFrame), settingsCache);
+            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, frameContent(sFrame), settingsCache, fnCallOnDone);
+        },
+
+        printFromUrl: function (sUrl, fnCallback, data) {
+            MeadCo.log("html.printFromUrl: " + sUrl);
+            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.URL, sUrl, settingsCache, null,null,fnCallback, data);
+        },
+
+        printHtml: function (sHtml, fnCallback, data) {
+            MeadCo.log("html.printHtml(string)");
+            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.HTML, sHtml, settingsCache, null, null,fnCallback, data);
+        },
+
+        connectLite : function(serverUrl, licenseGuid) {
+            MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
         },
 
         connect: function (serverUrl, licenseGuid) {
-            MeadCo.log("Print.HTML connection request");
+            MeadCo.warn("Print.HTML SYNC connection request");
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
             MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",false,
                 function (data) {
                     MeadCo.log("got default html settings");
                     updateSettingsWithServerDefaults(data.htmlPrintSettings);
                     if (data.deviceSettings != null) {
-                        // note, this will cause a download of device settings.
-                        MeadCo.ScriptX.Print.printerName = "default";
+                        MeadCo.ScriptX.Print.connectDevice(data.deviceSettings);
                     }
                 });
         },
 
         connectAsync: function (serverUrl, licenseGuid,resolve,reject) {
-            MeadCo.log("Print.HTML connection request");
+            MeadCo.log("Print.HTML ASYNC connection request");
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
             MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",true,
                 function (data) {
                     MeadCo.log("got default html settings");
                     updateSettingsWithServerDefaults(data.htmlPrintSettings);
                     if (data.deviceSettings != null) {
-                        // note, this will cause a download of device settings.
-                        MeadCo.ScriptX.Print.printerName = "default";
+                        MeadCo.ScriptX.Print.connectDevice(data.deviceSettings);
                     }
                     resolve();
                 },reject);

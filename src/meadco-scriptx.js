@@ -759,11 +759,28 @@
     // Returns true if the document is licensed and advanced functionality will be available
     licensing.IsLicensed = function () {
         if (licensing.Init()) {
-            return licensing.LicMgr.result == 0 && licensing.LicMgr.validLicense;
+            return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
         }
 
         console.log("WARNING :: MeadCo.Licensing.Init() failed so IsLicensed will return false.");
         return false;
+    }
+
+    // IsLicensedAsync
+    // Returns a promise with a resolve of the loaded license detail
+    //
+    licensing.IsLicensedAsync = function () {
+        return new Promise(function(resolve, reject) {
+            if (licensing.Init()) {
+                if (typeof licensing.LicMgr.GetLicenseAsync === "function") {
+                    licensing.LicMgr.GetLicenseAsync(resolve, reject);
+                } else {
+                    resolve(licensing.LicMgr.License);
+                }
+            } else {
+                reject();
+            }
+        });
     }
 
     // ErrorMessage
@@ -772,7 +789,8 @@
 			"The license for this site is not valid.",
 			"The license for this site not installed on this machine.",
 			"The license for this site has not been accepted by the user.",
-			"There was an error loading the license. "
+			"There was an error loading the license. ",
+            "Unable to connect to the ScriptX.Print subscription server"
 			);
 
     licensing.ErrorMessage = function () {
@@ -790,6 +808,10 @@
                     case 0:
                         if (!licensing.LicMgr.validLicense)
                             eIndex = 1;
+                        break;
+
+                    case 5: // scriptx.print service error
+                        eIndex = 5;
                         break;
 
                     case 1:
