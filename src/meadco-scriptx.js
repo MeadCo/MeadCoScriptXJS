@@ -759,6 +759,7 @@
     // Returns true if the document is licensed and advanced functionality will be available
     licensing.IsLicensed = function () {
         if (licensing.Init()) {
+            var l = licensing.LicMgr.License;
             return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
         }
 
