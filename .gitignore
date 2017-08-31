@@ -166,3 +166,7 @@ pip-log.txt
 .DS_Store
 /packages
 /bower_components
+
+#other
+node_modules/
+

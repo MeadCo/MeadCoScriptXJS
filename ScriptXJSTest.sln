@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptXJSTest", "ScriptXJST
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{A0446394-5620-4E6A-BE83-051BCDAAB03A}"
 	ProjectSection(SolutionItems) = preProject
+		.npmrc = .npmrc
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -14,11 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 	ProjectSection(SolutionItems) = preProject
 		bower.json = bower.json
 		nuget\MeadScriptXJS.nuspec = nuget\MeadScriptXJS.nuspec
+		package.json = package.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{808509DA-3D69-472E-8EEA-770605729882}"
 	ProjectSection(SolutionItems) = preProject
 		src\meadco-scriptx.js = src\meadco-scriptx.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{82416DBC-2138-4691-A844-A70762D742D4}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Global
