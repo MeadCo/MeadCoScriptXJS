@@ -19,7 +19,9 @@
 <div class="row">
     <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
     <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
-
+    <div class="col-md-2">@Html.ActionLink("Test Addon Async","AsyncAddon",null,new { @class="btn btn-default"})</div>
+    <div class="col-md-3">@Html.ActionLink("Test Services Sync (deprecated)", "SyncService", null, new { @class = "btn btn-default" })</div>
+    <div class="col-md-5">@Html.ActionLink("Test Services Async", "AsyncService", null, new { @class = "btn btn-default" })</div>
 </div>
 
 <div style="display: none">
@@ -58,14 +60,14 @@
         }
 
         // do not use $(function() {}) as the license may still be loading.
-        $(window).load(function () {
+        $(window).on("load",function () {
             $("#libVersion").text(MeadCo.LibVersion);
             if (MeadCo.ScriptX.Init()) {
                 $("span[data-purpose='sxversion']").each(function (index) { $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger"); });
                 $("span[data-purpose='libversion']").each(function (index) { $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger"); });
 
                 if (MeadCo.Licensing.IsLicensed()) {
-                    $("#licCheck").text("VALID").addClass("text-success").removeClass("text-danger");
+                    $("#licCheck").text("VALID: " + MeadCo.Licensing.LicMgr.License.company).addClass("text-success").removeClass("text-danger");
                 } else {
                     $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
                 }

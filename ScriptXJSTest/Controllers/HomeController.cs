@@ -15,6 +15,21 @@ namespace ScriptXJSTest.Controllers
             return View();
         }
 
+        public ActionResult AsyncAddon()
+        {
+            return View();
+        }
+
+        public ActionResult AsyncService()
+        {
+            return View();
+        }
+
+        public ActionResult SyncService()
+        {
+            return View();
+        }
+
         [HttpGet]
         public FileStreamResult Script(string filename)
         {

@@ -2,23 +2,26 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>MeadScriptXJS</id>
-        <version>1.2.0</version>
+        <version>1.3.0</version>
         <title>MeadCo ScriptX JS Library</title>
         <authors>Pete Cole,MeadCo</authors>
         <owners>MeadCo</owners>
         <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
         <projectUrl>https://github.com/MeadCo/MeadCoScriptXJS</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>This library implements a javascript wrapper on MeadCo's ScriptX Add-on for Microsoft Internet Explorer. The library provides for checking successful instantiation of the Add-on and implements convenience wrappers on some common functionality.
+        <description>This library implements a javascript wrapper on MeadCo's ScriptX Add-on for Microsoft Internet Explorer and ScriptX.Print Services for any browser, any device. The library provides for checking successful instantiation of the Add-on and implements convenience wrappers on some common functionality.
 
-The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.</description>
-        <summary>A simple javascript wrapper library for use with MeadCo's ScriptX Add-on for Microsoft Internet Explorer, both free and licensed versions</summary>
-        <releaseNotes>v1.2.0 - Support for polyfill to ScriptX.Print.</releaseNotes>
+The library works with both free and subscription ScriptX. Some convenience wrappers require a subscription.</description>
+        <summary>A simple javascript wrapper library for use with MeadCo's ScriptX Add-on for Microsoft Internet Explorer and ScriptX.Print Services for any browser, any device. Both free and licensed versions.</summary>
+        <releaseNotes>v1.3.0 - Support for async in ScriptX.Print Service.</releaseNotes>
         <copyright>Copyright © 2013, 2017, Mead &amp; Co Ltd</copyright>
         <language>en-GB</language>
         <tags>MeadCo, ScriptX, Print</tags>
+		    <dependencies>
+			    <dependency id="MeadScriptXPrintHtml" version="1.0.9" />
+		    </dependencies>            
     </metadata>
     <files>
-        <file src="..\src\meadco-scriptx.js" target="content\scripts\meadco-scriptx-1.2.0.js" />
+        <file src="..\src\meadco-scriptx.js" target="content\scripts\meadco-scriptx-1.3.0.js" />
     </files>
 </package>

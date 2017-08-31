@@ -144,6 +144,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\MeadCo.ScriptX\jQuery-MeadCo.ScriptX.Print.UI.js" />
+    <Content Include="Scripts\MeadCo.ScriptX\meadco-core.js" />
+    <Content Include="Scripts\MeadCo.ScriptX\meadco-scriptxfactory.js" />
+    <Content Include="Scripts\MeadCo.ScriptX\meadco-scriptxlicense.js" />
+    <Content Include="Scripts\MeadCo.ScriptX\meadco-scriptxprint.js" />
+    <Content Include="Scripts\MeadCo.ScriptX\meadco-scriptxprinthtml.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -160,6 +166,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\AsyncAddon.cshtml" />
+    <Content Include="Views\Home\AsyncService.cshtml" />
+    <Content Include="Views\Home\SyncService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -169,7 +178,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
