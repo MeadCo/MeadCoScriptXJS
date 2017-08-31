@@ -18,7 +18,7 @@ The library works with both free and subscription ScriptX. Some convenience wrap
         <language>en-GB</language>
         <tags>MeadCo, ScriptX, Print</tags>
 		    <dependencies>
-			    <dependency id="MeadScriptXPrintHtml" version="1.0.9" />
+			    <dependency id="MeadScriptXPrintHtml" version="1.1.1" />
 		    </dependencies>            
     </metadata>
     <files>
