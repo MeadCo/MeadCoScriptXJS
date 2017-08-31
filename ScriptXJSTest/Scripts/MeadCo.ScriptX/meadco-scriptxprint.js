@@ -9,7 +9,7 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print', function () {
-    var version = "1.1.0.6";
+    var version = "1.1.0.8";
     var printerName = "";
     var deviceSettings = {};
     var module = this;
@@ -108,6 +108,16 @@
         }
     }
 
+    // call api on server to print the content
+    //
+    // contentType - enum type of content given (html snippet, url)
+    // content - string
+    // htmlPrintSettings - html settings to use, the function will use device settings for the current print
+    // fnDone(errorXhr) - function called when printing complete (and output returned), arg is null on no error.
+    // fnNotify(data) - callback when job associated with this print is updated (data is server result)
+    // fnCallback(status,sInformation,data) - callback when job status is updated 
+    // data - date to give to fnCallback
+    //
     function printHtmlAtServer(contentType, content, htmlPrintSettings, fnDone, fnNotify, fnCallback, data) {
         MeadCo.log("started MeadCo.ScriptX.Print.print.printHtmlAtServer() Type: " + contentType + ", printerName: " + printerName);
         var devInfo;
@@ -130,7 +140,7 @@
         printAtServer(requestData,
         {
             fail: function (jqXhr, textStatus, errorThrown) {
-                progress(requestData,enumPrintStatus.ERROR);
+                progress(requestData,enumPrintStatus.ERROR,errorThrown);
                 MeadCo.ScriptX.Print.reportServerError(errorThrown);
                 if (typeof fnDone === "function") {
                     fnDone(jqXhr);
@@ -149,11 +159,14 @@
                 waitForJobComplete(requestData,data.jobIdentifier,
                     -1,
                     function (data) {
-                        MeadCo.log("Will download printed file");
-                        progress(requestData, enumPrintStatus.COMPLETED);
-                        window.open(server + "/download/" + data.jobIdentifier, "_self");
+                        if (data != null) {
+                            MeadCo.log("Will download printed file");
+                            progress(requestData, enumPrintStatus.COMPLETED);
+                            window.open(server + "/download/" + data.jobIdentifier, "_self");
+                        }
+
                         if (typeof fnDone === "function") {
-                            fnDone(null);
+                            fnDone(data != null ? "Server error" : null);
                         }
                     });
             },
@@ -358,9 +371,10 @@
                            case enumPrintStatus.ABANDONED:
                                MeadCo.log("error status in waitForJobComplete so clear interval: " + intervalId);
                                progress(requestData, data.status, data.message);
-                               updateJob(data);
+                               removeJob(data);
                                window.clearInterval(intervalId);
                                MeadCo.ScriptX.Print.reportServerError("The print failed.\n\n" + data.message);
+                               functionComplete(null);
                                break;
 
                            default:
@@ -368,6 +382,7 @@
                                 MeadCo.log("unknown status in waitForJobComplete so clear interval: " + intervalId);
                                 removeJob(jobId);
                                 window.clearInterval(intervalId);
+                                functionComplete(null);
                                 break;
                             }
                         })
@@ -389,8 +404,10 @@
                             }
 
                             MeadCo.log("error: " + errorThrown + " in waitForJobComplete so clear interval: " + intervalId);
+                            progress(requestData,enumPrintStatus.ERROR,errorThrown);
                             removeJob(jobId);
                             window.clearInterval(intervalId);
+                            functionComplete(null);
                         });
                 } else {
                     MeadCo.log("** info : still waiting for last status request to complete");
@@ -544,13 +561,38 @@
         },
 
         ensureSpoolingStatus: function () {
-            var lock = { jobIdentifier: Date.now };
+            var lock = { jobIdentifier: Date.now() };
             queueJob(lock);
             return lock;
         },
 
         freeSpoolStatus: function(lock) {
             removeJob(lock.jobIdentifier);
+        },
+
+        WaitForSpoolingComplete: function (iTimeout, fnComplete) {
+            MeadCo.log("Started WaitForSpoolingComplete(" + iTimeout + ")");
+            if (typeof fnComplete !== "function") {
+                throw "WaitForSpoolingComplete requires a completion callback";
+            }
+
+            var timerId;
+            var startTime = Date.now();
+            var interval = 250;
+
+            var intervalId = window.setInterval(function () {
+                if (jobCount() === 0) {
+                    MeadCo.log("WaitForSpoolingComplete - complete");
+                    window.clearInterval(intervalId);
+                    fnComplete(true);
+                } else {
+                    if (iTimeout >= 0 && Date.now() - startTime > iTimeout) {
+                        MeadCo.log("WaitForSpoolingComplete - timeout");
+                        window.clearInterval(intervalId);
+                        fnComplete(jobCount() === 0);
+                    }
+                }
+            },interval);
         }
     };
 

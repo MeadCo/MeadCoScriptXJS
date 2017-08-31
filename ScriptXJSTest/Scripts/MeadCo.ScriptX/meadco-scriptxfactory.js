@@ -38,7 +38,7 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.1.0.8";
+    var moduleversion = "1.1.0.9";
     var emulatedVersion = "8.0.0.0";
     var module = this;
     var printApi = MeadCo.ScriptX.Print;
@@ -155,7 +155,9 @@
                         MeadCo.log("promptAndPrint requesting print ...");
                         fnNotifyStarted(fnPrint());
                     }
-                    fnNotifyStarted(false);
+                    else 
+                        fnNotifyStarted(false);
+
                     printApi.freeSpoolStatus(lock);
                 });
 
@@ -204,7 +206,7 @@
         return promptAndPrint(bPrompt,
             function () {
                 MeadCo.log("printHtmlContent requesting print ...");
-                return sHtml.length > 0 ? printHtml.printHtml(sHtml, fnCallback, data) : printHtml.printFromUrl(sUrl, fnCallback, data);
+                return sHtml.length > 0 ? printHtml.printHtml(sHtml, bPrompt, null, fnCallback, data) : printHtml.printFromUrl(sUrl, bPrompt, null, fnCallback, data);
             },fnNotifyStarted);
     }
 
@@ -688,27 +690,7 @@
         },
 
         WaitForSpoolingComplete: function (iTimeout, fnComplete) {
-            if (typeof fnComplete !== "function") {
-                throw "WaitForSpoolingComplete requires a completion callback";
-            }
-
-            var timerId;
-            var startTime = Date.now();
-            var interval = 250;
-
-            var intervalId = window.setInterval(function () {
-                    if (printApi.activeJobs === 0) {
-                        window.clearInterval(intervalId);
-                        fnComplete(true);
-                    } else {
-                        if (iTimeout >= 0 && Date.now() - startTime > iTimeout) {
-                            window.clearInterval(intervalId);
-                            fnComplete(printApi.activeJobs === 0);
-                        }
-                    }
-                },
-                interval);
-
+            printApi.WaitForSpoolingComplete(iTimeout, fnComplete);
         },
 
         // helpers for wrapper MeadCoJS

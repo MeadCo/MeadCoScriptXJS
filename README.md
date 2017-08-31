@@ -6,8 +6,10 @@ The library works with both free and licensed ScriptX. Some convenience wrappers
 
 As of version 1.2.0 this library facilitates being able to write the same code for both the ScriptX Add-on for Internet Explorer and [MeadCo's ScriptX.Print](http://scriptx.meadroid.com) browser agnostic printing services in the cloud and on premise.
 
+1.3.0 Support for async in ScriptX.Print service
+
 ## Current version
-1.2.0
+1.3.0
 
 ## Packages
 
@@ -20,7 +22,7 @@ bower install meadco-scriptxjs
 
 ## Quick start
 
-1. Link to meadco-scriptx-1.2.0.js `<script src="meadco-scriptx-1.2.0.js"></script>`
+1. Link to meadco-scriptx-1.3.0.js `<script src="meadco-scriptx-1.3.0.js"></script>`
 2. Initialise the library in the document ready/window loaded event handler, and initialise printing parameters. For example, when using jQuery:
 
 ```javascript

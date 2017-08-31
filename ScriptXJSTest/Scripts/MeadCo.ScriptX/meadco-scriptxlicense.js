@@ -9,11 +9,11 @@
 // we anti-polyfill <object id="secmgr" /> 
 // enabling old code to run in modern browsers
 //
-; (function (name, definition,undefined) {
+; (function (name, definition, undefined) {
 
-    if ( this[name] != undefined || document.getElementById(name) != null ) {
+    if (this[name] != undefined || document.getElementById(name) != null) {
         console.log("MeadCo security manager anti-polyfill believes it may not be requred.");
-        if ( this[name] != undefined ) {
+        if (this[name] != undefined) {
             console.log("this[" + name + "] is defined");
         }
         if (document.getElementById(name) != null) {
@@ -35,7 +35,7 @@
 })('secmgr', function () {
 
     // protected API
-    var moduleversion = "1.1.0.4";
+    var moduleversion = "1.1.0.5";
     var emulatedVersion = "8.0.0.2";
     var module = this;
     var license = {};
@@ -44,7 +44,7 @@
     var server = "";            // url to the server
     var licenseGuid = "";
 
-    function log (str) {
+    function log(str) {
         console.log("secmgr anti-polyfill :: " + str);
     }
 
@@ -52,6 +52,8 @@
         MeadCo.log("Subscription server requested: " + serverUrl + " with license: " + clientLicenseGuid);
         server = serverUrl;
         licenseGuid = clientLicenseGuid;
+        license = {};
+        lastError = "Not loaded";
     }
 
     function getSubscriptionFromServer(resolve, reject) {
@@ -89,7 +91,7 @@
     }
 
     // extend the namespace
-    module.extendSecMgrNamespace = function(name, definition) {
+    module.extendSecMgrNamespace = function (name, definition) {
         var theModule = definition();
 
         log("MeadCo security manager extending namespace2: " + name);
@@ -141,15 +143,15 @@
         },
 
         get validLicense() {
-            return typeof license.Id !== "undefined";
+            return typeof license.guid !== "undefined";
         },
 
         get License() {
-            var license = getSubscriptionFromServer();
-            return license;
+            var l = typeof license.guid !== "undefined" ? license : getSubscriptionFromServer();
+            return l;
         },
 
-        GetLicenseAsync: function(resolve, reject) {
+        GetLicenseAsync: function (resolve, reject) {
             getSubscriptionFromServer(resolve, reject);
         },
 
