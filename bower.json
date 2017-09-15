@@ -18,7 +18,7 @@
     "scriptx"
   ],
   "dependencies": {
-    "scriptxprint-html": ">=1.0.6",
+    "scriptxprint-html": ">=1.2.1",
     "promise-polyfill":  ">=6.0.2" 
   },
   "license": "MIT",
