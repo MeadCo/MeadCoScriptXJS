@@ -206,7 +206,7 @@
         return promptAndPrint(bPrompt,
             function () {
                 MeadCo.log("printHtmlContent requesting print ...");
-                return sHtml.length > 0 ? printHtml.printHtml(sHtml, bPrompt, null, fnCallback, data) : printHtml.printFromUrl(sUrl, bPrompt, null, fnCallback, data);
+                return sHtml.length > 0 ? printHtml.printHtml(sHtml, null, fnCallback, data) : printHtml.printFromUrl(sUrl, null, fnCallback, data);
             }, fnNotifyStarted);
     }
 
@@ -250,7 +250,13 @@
         module.factory.log("overwriting module.print");
         module.print = function () {
             module.factory.log("window.print() called and being handled.");
-            printHtml.printDocument(true);
+            // printHtml.printDocument(true);
+            promptAndPrint(
+                true,
+                function () {
+                    return printHtml.printDocument();
+                },
+                function() {});
         }
     }
 
@@ -399,10 +405,10 @@
                 function () {
                     if (sOrOFrame != null) {
                         var sFrame = typeof (sOrOFrame) === 'string' ? sOrOFrame : sOrOFrame.id;
-                        return printHtml.printFrame(sFrame, bPrompt);
+                        return printHtml.printFrame(sFrame);
                     }
 
-                    return printHtml.printDocument(bPrompt);
+                    return printHtml.printDocument();
                 },
                 fnNotifyStarted);
         },

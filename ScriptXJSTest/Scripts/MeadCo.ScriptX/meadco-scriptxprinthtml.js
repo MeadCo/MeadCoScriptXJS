@@ -275,23 +275,19 @@
 
         settings: iSettings,
 
-        printDocument: function (bPrompt, fnCallOnDone, fnCallback, data) {
-            MeadCo.log("html.printDocument. *warning* ignoring bPrompt");
+        printDocument: function (fnCallOnDone, fnCallback, data) {
             printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, documentContent(), settingsCache, fnCallOnDone, fnCallback, data);
         },
 
-        printFrame: function (sFrame, bPrompt, fnCallOnDone, fnCallback, data) {
-            MeadCo.log("html.printFrame: " + sFrame + " *warning* ignoring bPrompt");
+        printFrame: function (sFrame, fnCallOnDone, fnCallback, data) {
             printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, frameContent(sFrame), settingsCache, fnCallOnDone, fnCallback, data);
         },
 
-        printFromUrl: function (sUrl, bPrompt, fnCallOnDone, fnCallback, data) {
-            MeadCo.log("html.printFromUrl: " + sUrl + " *warning* ignoring bPrompt");
+        printFromUrl: function (sUrl, fnCallOnDone, fnCallback, data) {
             printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.URL, sUrl, settingsCache, fnCallOnDone, fnCallback, data);
         },
 
-        printHtml: function (sHtml, bPrompt, fnCallOnDone, fnCallback, data) {
-            MeadCo.log("html.printHtml(string)" + " *warning* ignoring bPrompt");
+        printHtml: function (sHtml, fnCallOnDone, fnCallback, data) {
             printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.HTML, sHtml, settingsCache, fnCallOnDone, fnCallback, data);
         },
 
