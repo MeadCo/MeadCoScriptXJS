@@ -393,6 +393,14 @@
                 }
             });
 
+        $("#dlg-printersettings")
+            .off('hidden.bs.modal')
+            .on('hidden.bs.modal', function() {
+                if (typeof fnCallBack === "function") {
+                    fnCallBack(false);
+                }
+            });
+
         setPrinterSettings();
         $('#dlg-printersettings').modal('show');
 

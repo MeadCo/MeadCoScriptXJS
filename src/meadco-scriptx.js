@@ -203,7 +203,8 @@
                     resolve(scriptx.Printing.Print(bPrompt));
                 }
             }
-            reject();
+            else 
+                reject();
         });
     }
 
@@ -242,7 +243,8 @@
                     resolve(scriptx.PrintFrame(frame,bPrompt));
                 }
             }
-            reject();
+            else
+                reject();
         });
     }
 
@@ -286,7 +288,8 @@
                     resolve(scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data));
                 }
             }
-            reject();
+            else
+                reject();
         });
     }
 
@@ -335,7 +338,8 @@
                     }
                 }
             }
-            reject();
+            else
+                reject();
         });
     }
 
@@ -357,7 +361,8 @@
                     }
                 }
             }
-            reject();
+            else
+                reject();
         });
     }
 

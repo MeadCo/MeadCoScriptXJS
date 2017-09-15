@@ -18,8 +18,8 @@
 
 <div class="row">
     <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test4">Prompt print</button></div>
     <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
-    <div class="col-md-2"><button class="btn btn-default" id="btn-test3">PrintHTMLEx</button></div>
     <div class="col-md-8">@Html.ActionLink("Home", "Index", null, new { @class = "btn btn-default" })</div>
 </div>
 
@@ -33,6 +33,9 @@
     @*<script src="~/Scripts/promise.min.js"></script>*@
 
     <script src="@Url.Action("Script", new {filename = "meadco-scriptx.js"})"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/jQuery-MeadCo.ScriptX.Print.UI.js"></script>
+
 
     <script type="text/javascript">
         function setSimpleFormatting() {
@@ -51,7 +54,8 @@
                     $("span[data-purpose='sxversion']").text(MeadCo.ScriptX.Version()).addClass("text-success")
                         .removeClass("text-danger");
 
-                    MeadCo.Licensing.IsLicensedAsync().then(function(l) {
+                    MeadCo.Licensing.IsLicensedAsync().then(function (l) {
+
                         $("#licCheck").text("VALID: " + l.company).addClass("text-success").removeClass("text-danger");
 
                         $("#btn-test1").click(function () {
@@ -62,6 +66,16 @@
                         $("#btn-test2").click(function () {
                             setSimpleFormatting();
                             MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
+                        });
+
+                        $("#btn-test4").click(function () {
+                            setSimpleFormatting();
+                            MeadCo.ScriptX.PrintPage2(true).then(function(bStarted) {
+                                console.log("Print started: " + bStarted);
+                                MeadCo.ScriptX.WaitForSpoolingComplete().then(function() {
+                                    console.log("printing completed.");
+                                });
+                            });
                         });
 
                     }).catch(function() {
