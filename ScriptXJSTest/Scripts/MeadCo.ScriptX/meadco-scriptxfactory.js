@@ -11,11 +11,11 @@
 //
 // static singleton instances.
 //
-; (function (name, definition,undefined) {
+; (function (name, definition, undefined) {
 
-    if ( this[name] != undefined || document.getElementById(name) != null ) {
+    if (this[name] != undefined || document.getElementById(name) != null) {
         console.log("ScriptX factory anti-polyfill believes it may not be requred.");
-        if ( this[name] != undefined ) {
+        if (this[name] != undefined) {
             console.log("this[" + name + "] is defined");
         }
         if (document.getElementById(name) != null) {
@@ -38,17 +38,17 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.1.0.9";
+    var moduleversion = "1.1.0.10";
     var emulatedVersion = "8.0.0.0";
     var module = this;
     var printApi = MeadCo.ScriptX.Print;
 
-    function log (str) {
+    function log(str) {
         console.log("factory anti-polyfill :: " + str);
     }
 
     // extend the namespace
-    module.extendFactoryNamespace = function(name, definition) {
+    module.extendFactoryNamespace = function (name, definition) {
         var theModule = definition();
 
         log("MeadCo factory extending namespace: " + name);
@@ -83,11 +83,11 @@
         log: log,
 
         // 'factory' functions
-        GetComponentVersion: function(sComponent, a, b, c, d) {
+        GetComponentVersion: function (sComponent, a, b, c, d) {
             log("factory.object.getcomponentversion: " + sComponent);
             var v = emulatedVersion;
 
-            switch( sComponent.toLowerCase() ) {
+            switch (sComponent.toLowerCase()) {
                 case "scriptx.factory":
                     v = emulatedVersion;
                     break;
@@ -97,11 +97,11 @@
                     break;
 
                 case "meadco.secmgr":
-                try {
-                    v = module.secmgr.version;
-                } catch (e) {
-                }
-                break;
+                    try {
+                        v = module.secmgr.version;
+                    } catch (e) {
+                    }
+                    break;
 
                 case "meadco.triprint":
                     try {
@@ -121,11 +121,11 @@
         get ScriptXVersion() { return emulatedVersion },
         get SecurityManagerVersion() { return emulatedVersion },
 
-        baseURL : function(sRelative) {
+        baseURL: function (sRelative) {
             return window.location.href.substring(0, window.location.href.length - window.location.pathname.length);
         },
 
-        relativeURL : function(sUrl) {
+        relativeURL: function (sUrl) {
             throw "MeadCo.ScriptX.Print :: relativeUrl is not implemented yet.";
         }
     };
@@ -155,7 +155,7 @@
                         MeadCo.log("promptAndPrint requesting print ...");
                         fnNotifyStarted(fnPrint());
                     }
-                    else 
+                    else
                         fnNotifyStarted(false);
 
                     printApi.freeSpoolStatus(lock);
@@ -171,7 +171,7 @@
         return true;
     }
 
-    function printHtmlContent(sUrl, bPrompt,fnNotifyStarted, fnCallback, data) {
+    function printHtmlContent(sUrl, bPrompt, fnNotifyStarted, fnCallback, data) {
         var sHtml = "";
 
         // if requesting snippet then trim to just the html
@@ -206,8 +206,8 @@
         return promptAndPrint(bPrompt,
             function () {
                 MeadCo.log("printHtmlContent requesting print ...");
-                return sHtml.length > 0 ? printHtml.printHtml(sHtml, bPrompt, null, fnCallback, data) : printHtml.printFromUrl(sUrl, bPrompt, null, fnCallback, data);
-            },fnNotifyStarted);
+                return sHtml.length > 0 ? printHtml.printHtml(sHtml, null, fnCallback, data) : printHtml.printFromUrl(sUrl, null, fnCallback, data);
+            }, fnNotifyStarted);
     }
 
     if (this.jQuery) {
@@ -248,9 +248,15 @@
 
     if (typeof module.print === "function") {
         module.factory.log("overwriting module.print");
-        module.print = function() {
+        module.print = function () {
             module.factory.log("window.print() called and being handled.");
-            printHtml.printDocument(true);
+            // printHtml.printDocument(true);
+            promptAndPrint(
+                true,
+                function () {
+                    return printHtml.printDocument();
+                },
+                function() {});
         }
     }
 
@@ -355,7 +361,7 @@
 
         // No longer relevant, has returned true since IE 6 and was
         // a proxy for testing if the browser was IE5.5 or later!
-        IsTemplateSupported : function() {
+        IsTemplateSupported: function () {
             return true;
         },
 
@@ -385,7 +391,7 @@
             }
         },
 
-        Preview : function(sOrOFrame) {
+        Preview: function (sOrOFrame) {
             printApi.reportFeatureNotImplemented("Preview");
         },
 
@@ -396,13 +402,13 @@
             if (typeof (sOrOFrame) === 'undefined') sOrOFrame = null;
 
             return promptAndPrint(bPrompt,
-                function() {
+                function () {
                     if (sOrOFrame != null) {
                         var sFrame = typeof (sOrOFrame) === 'string' ? sOrOFrame : sOrOFrame.id;
-                        return printHtml.printFrame(sFrame, bPrompt);
+                        return printHtml.printFrame(sFrame);
                     }
 
-                    return printHtml.printDocument(bPrompt);
+                    return printHtml.printDocument();
                 },
                 fnNotifyStarted);
         },
@@ -411,14 +417,14 @@
             if (typeof fnNotifyStarted === "undefined") {
                 fnNotifyStarted = function (bStarted) { }
             }
-            return printHtmlContent(sUrl, bPrompt,fnNotifyStarted);
+            return printHtmlContent(sUrl, bPrompt, fnNotifyStarted);
         },
 
         PrintHTMLEx: function (sUrl, bPrompt, fnCallback, data, fnNotifyStarted) {
             if (typeof fnNotifyStarted === "undefined") {
                 fnNotifyStarted = function (bStarted) { }
             }
-            return printHtmlContent(sUrl, bPrompt, fnNotifyStarted , fnCallback, data);
+            return printHtmlContent(sUrl, bPrompt, fnNotifyStarted, fnCallback, data);
         },
 
 
@@ -451,11 +457,11 @@
         },
 
         set paperSource2(sPaperSource) {
-            printApi.reportFeatureNotImplemented("set paperSource2");
+            printApi.deviceSettings.paperSourceName = sPaperSource;
         },
 
         get paperSource2() {
-            printApi.reportFeatureNotImplemented("get paperSource2");
+            return printApi.deviceSettings.paperSourceName;
         },
 
         get pageWidth() {
@@ -463,7 +469,7 @@
         },
 
         get pageHeight() {
-            return printApi.deviceSettings.paperPageSize.height         ;
+            return printApi.deviceSettings.paperPageSize.height;
         },
 
         set copies(nCopies) {
@@ -588,7 +594,7 @@
             if (index === 0) {
                 return this.CurrentPrinter;
             }
-            // TODO: Support many printers
+                // TODO: Support many printers
             else if (!index) {
                 return new Array(this.CurrentPrinter);
             }
@@ -597,11 +603,11 @@
             }
         },
 
-        EnumJobs : function(sPrinterName,iIndex,jobNameOut) {
+        EnumJobs: function (sPrinterName, iIndex, jobNameOut) {
             printApi.reportFeatureNotImplemented("EnumJobs");
         },
 
-        GetJobsCount : function(sPrinterName) {
+        GetJobsCount: function (sPrinterName) {
             return printApi.activeJobs;
         },
 
@@ -609,7 +615,7 @@
             // for now ignore value parameter and return an array of paper sizes in the Forms property
 
             return {
-                Forms : ["A3", "A4", "A5", "Letter"], // TODO: fill properly
+                Forms: ["A3", "A4", "A5", "Letter"], // TODO: fill properly
                 Bins: ["Automatically select", "Printer auto select", "Manual Feed Tray", "Tray 1", "Tray 2", "Tray 3", "Tray 4"], // TODO: fill properly
                 get Name() {
                     printApi.reportFeatureNotImplemented("printerControl.Name");
@@ -641,19 +647,19 @@
                 get isShared() {
                     printApi.reportFeatureNotImplemented("printerControl.isShared");
                 },
-                Purge: function() {
+                Purge: function () {
                     printApi.reportFeatureNotImplemented("printerControl.Purge()");
                 },
-                Pause: function() {
+                Pause: function () {
                     printApi.reportFeatureNotImplemented("printerControl.Pause()");
                 },
-                Resume: function() {
+                Resume: function () {
                     printApi.reportFeatureNotImplemented("printerControl.Resume()");
                 }
             };
         },
 
-        GetMarginMeasure: function() {
+        GetMarginMeasure: function () {
             return settings.page.units === printHtml.PageMarginUnits.INCHES ? 2 : 1;
         },
 
@@ -665,7 +671,7 @@
             settings.viewScale = value;
         },
 
-        IsSpooling : function() {
+        IsSpooling: function () {
             printApi.reportFeatureNotImplemented("IsSpooling");
         },
 

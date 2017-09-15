@@ -17,16 +17,22 @@
 </div>
 
 <div class="row">
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
+    <div class="col-md-9">@Html.ActionLink("Home", "Index", null, new { @class = "btn btn-default" })</div>
+</div>
+
+<div class="row">
     <div class="col-md-9">@Html.ActionLink("Home", "Index", null, new { @class = "btn btn-default" })</div>
 </div>
 
 @section scripts
 {
     <script src="~/Scripts/MeadCo.ScriptX/meadco-core.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxlicense.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxlicense.js" data-meadco-subscriptionserver="https://localhost:44315/api/v1/licensing" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}">></script>
     <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint.js"></script>
     <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>  
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-server="https://localhost:44315/api/v1/printhtml" data-meadco-license="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-printhtmlserver="https://localhost:44315/api/v1/printhtml" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
     
     <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
 

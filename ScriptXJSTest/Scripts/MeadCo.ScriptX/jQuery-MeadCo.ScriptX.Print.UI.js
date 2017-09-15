@@ -25,7 +25,7 @@
 
     var ui = MeadCo.createNS("MeadCo.ScriptX.Print.UI");
 
-    ui.moduleversion = "1.1.0.3";
+    ui.moduleversion = "1.1.1.0";
 
     // MeadCo.ScriptX.Print.UI.AttachPrintAction(
     //  el - clickable html element
@@ -390,6 +390,14 @@
                 $('#dlg-printersettings').modal('hide');
                 if (typeof fnCallBack === "function") {
                     fnCallBack(true);
+                }
+            });
+
+        $("#dlg-printersettings")
+            .off('hidden.bs.modal')
+            .on('hidden.bs.modal', function () {
+                if (typeof fnCallBack === "function") {
+                    fnCallBack(false);
                 }
             });
 
