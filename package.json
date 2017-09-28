@@ -15,7 +15,6 @@
     "src/*.js"
   ],
   "dependencies": {
-    "jquery": ">=3.0.0",
     "scriptxprint-html": ">=1.2.1"
   }
 }
