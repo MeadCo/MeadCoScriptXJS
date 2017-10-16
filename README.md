@@ -65,7 +65,7 @@ The same code will work when the add-on is present, but the add-on will be used 
 <script src="/scripts/MeadCo.ScriptX/scriptxlicense.js"></script>
 
 <!-- A promise library will be required if targetting IE. -->
-<script type="text/javascript>
+<script type="text/javascript">
    $(window).on('load', function () {
      MeadCo.ScriptX.InitAsync().then(function {
        MeadCo.ScriptX.Printing.header = 
