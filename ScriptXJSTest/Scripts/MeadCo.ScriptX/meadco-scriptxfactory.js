@@ -38,7 +38,7 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.1.0.10";
+    var moduleversion = "1.3.1.0";
     var emulatedVersion = "8.0.0.0";
     var module = this;
     var printApi = MeadCo.ScriptX.Print;
@@ -259,6 +259,143 @@
                 function() {});
         }
     }
+
+    var iEnhancedFormatting = {
+        get allPagesHeader() {
+            return settings.extraHeadersAndFooters.allPagesHeader;
+        },
+        set allPagesHeader(v) {
+            settings.extraHeadersAndFooters.allPagesHeader = v;
+        },
+
+        get allPagesFooter() {
+            return settings.extraHeadersAndFooters.allPagesFooter;
+        },
+        set allPagesFooter(v) {
+            settings.extraHeadersAndFooters.allPagesFooter = v;
+        },
+
+        get firstPageHeader() {
+            return settings.extraHeadersAndFooters.firstPageHeader;
+        },
+        set firstPageHeader(v) {
+            settings.extraHeadersAndFooters.firstPageHeader = v;
+        },
+
+        get firstPageFooter() {
+            return settings.extraHeadersAndFooters.firstPageFooter;
+        },
+        set firstPageFooter(v) {
+            settings.extraHeadersAndFooters.firstPageFooter = v;
+        },
+
+        get extraFirstPageFooter() {
+            return settings.extraHeadersAndFooters.extraFirstPageFooter;
+        },
+        set extraFirstPageFooter(v) {
+            settings.extraHeadersAndFooters.extraFirstPageFooter = v;
+        },
+
+        get allHeaderHeight() {
+            return settings.extraHeadersAndFooters.allHeaderHeight;
+        },
+        set allHeaderHeight(v) {
+            if (typeof v !== "number") {
+                throw "Invalid argument";
+            }
+            settings.extraHeadersAndFooters.allHeaderHeight = v;
+        },
+
+        get allFooterHeight() {
+            return settings.extraHeadersAndFooters.allFooterHeight;
+        },
+        set allFooterHeight(v) {
+            if (typeof v !== "number") {
+                throw "Invalid argument";
+            }
+            settings.extraHeadersAndFooters.allFooterHeight = v;
+        },
+
+        get firstHeaderHeight() {
+            return settings.extraHeadersAndFooters.firstHeaderHeight;
+        },
+        set firstHeaderHeight(v) {
+            if (typeof v !== "number") {
+                throw "Invalid argument";
+            }
+            settings.extraHeadersAndFooters.firstHeaderHeight = v;
+        },
+
+        get firstFooterHeight() {
+            return settings.extraHeadersAndFooters.firstFooterHeight;
+        },
+        set firstFooterHeight(v) {
+            if (typeof v !== "number") {
+                throw "Invalid argument";
+            }
+            settings.extraHeadersAndFooters.firstFooterHeight = v;
+        },
+
+        get extraFirstFooterHeight() {
+            return settings.extraHeadersAndFooters.extraFirstFooterHeight;
+        },
+        set extraFirstFooterHeight(v) {
+            if (typeof v !== "number") {
+                throw "Invalid argument";
+            }
+            settings.extraHeadersAndFooters.extraFirstFooterHeight = v;
+        },
+
+        get pageRange() {
+            return settings.pageRange;
+        },
+        set pageRange(v) {
+            settings.pageRange = v;
+        },
+
+        get printingPass() {
+            var v = "";
+            switch (settings.printingPass) {
+            case printHtml.PrintingPasses.ALL:
+                v = "all";
+                break;
+
+            case printHtml.PrintingPasses.ODD:
+                v = "odd";
+                break;
+
+            case printHtml.PrintingPasses.EVEN:
+                v = "even";
+                break;
+
+            case printHtml.PrintingPasses.ODDANDEVEN:
+                v = "odd&even";
+                break;
+            }
+            return v;
+        },
+
+        set printingPass(v) {
+            var x = printHtml.PrintingPasses.ALL;
+            if (typeof v === "string") {
+                switch (v.toLowerCase()) {
+                case "odd":
+                    x = printHtml.PrintingPasses.ODD;
+                    break;
+
+                case "even":
+                    x = printHtml.PrintingPasses.EVEN;
+                    break;
+
+                case "odd&even":
+                    x = printHtml.PrintingPasses.ODDANDEVEN;
+                    break;
+                }
+            }
+            settings.printingPass = x;
+        }
+    };
+
 
     // public API
     return {
@@ -489,19 +626,19 @@
         },
 
         set duplex(duplex) {
-            printApi.reportFeatureNotImplemented("set Duplex");
+            printApi.deviceSettings.duplex = duplex;
         },
 
         get duplex() {
-            printApi.reportFeatureNotImplemented("get Duplex");
+            return printApi.deviceSettings.duplex;
         },
 
         set duplex2(duplex) {
-            printApi.reportFeatureNotImplemented("set Duplex2");
+            printApi.deviceSettings.duplex = duplex;
         },
 
         get duplex2() {
-            printApi.reportFeatureNotImplemented("get Duplex2");
+            return printApi.deviceSettings.duplex;
         },
 
         set onbeforeprint(fn) {
@@ -532,6 +669,10 @@
             printApi.printerName = sPrinterName;
         },
 
+        get printer() {
+            return printApi.printerName;
+        },
+
         set printer(sPrinterName) {
             printApi.printerName = sPrinterName;
         },
@@ -557,95 +698,139 @@
         },
 
         set unprintableLeft(n) {
-            printApi.reportFeatureNotImplemented("set unprintableLeft");
+            printApi.deviceSettings.unprintableMargins.left = n;
         },
 
         get unprintableLeft() {
-            printApi.reportFeatureNotImplemented("get unprintableLeft");
+            return printApi.deviceSettings.unprintableMargins.left;
         },
 
         set unprintableRight(n) {
-            printApi.reportFeatureNotImplemented("set unprintableRight");
+            printApi.deviceSettings.unprintableMargins.right = n;
         },
 
         get unprintableRight() {
-            printApi.reportFeatureNotImplemented("get unprintableRight");
+            return printApi.deviceSettings.unprintableMargins.right;
         },
 
         set unprintableTop(n) {
-            printApi.reportFeatureNotImplemented("set unprintableTop");
+            printApi.deviceSettings.unprintableMargins.top = n;
         },
 
         get unprintableTop() {
-            printApi.reportFeatureNotImplemented("get unprintableTop");
+            return printApi.deviceSettings.unprintableMargins.top;
         },
 
         set unprintableBottom(n) {
-            printApi.reportFeatureNotImplemented("set unprintableBottom");
+            printApi.deviceSettings.unprintableMargins.bottom = n;
         },
 
         get unprintableBottom() {
-            printApi.reportFeatureNotImplemented("get unprintableBottom");
+            return printApi.deviceSettings.unprintableMargins.bottom;
         },
-
 
         // advanced methods :: require a subscription/license.
         EnumPrinters: function (index) {
-            if (index === 0) {
-                return this.CurrentPrinter;
+            var arP = printApi.availablePrinterNames;
+
+            if (!arP || arP.length === 0) {
+                if (index === 0) {
+                    return this.CurrentPrinter;
+                }
+            } else {
+                if (index < arP.length) {
+                    return arP[index];
+                }
             }
-                // TODO: Support many printers
-            else if (!index) {
-                return new Array(this.CurrentPrinter);
-            }
-            else {
-                return "";
-            }
+
+            return "";
         },
 
         EnumJobs: function (sPrinterName, iIndex, jobNameOut) {
-            printApi.reportFeatureNotImplemented("EnumJobs");
+
+            var jobs = printApi.queue;
+            var i;
+            var plist = new Array();
+
+            sPrinterName = sPrinterName.toLowerCase();
+            for (i = 0; i < jobs.length; i++) {
+                if (jobs[i].printerName.toLowerCase() === sPrinterName) {
+                    plist.push(jobs[i]);
+                }
+            }
+
+            if (iIndex < plist.length) {
+                jobNameOut.name = plist[iIndex].jobName;
+                return plist[iIndex].status;
+            }
+
+            return 0;
         },
 
         GetJobsCount: function (sPrinterName) {
-            return printApi.activeJobs;
+            // return printApi.activeJobs;
+            var jobs = printApi.queue;
+            var i;
+            var c = 0;
+
+            sPrinterName = sPrinterName.toLowerCase();
+            for (i = 0; i < jobs.length; i++) {
+                if (jobs[i].printerName.toLowerCase() === sPrinterName)
+                    c++;
+            }
+
+            return c;
         },
 
-        printerControl: function (value) {
-            // for now ignore value parameter and return an array of paper sizes in the Forms property
-
+        printerControl: function (printerName) {
             return {
-                Forms: ["A3", "A4", "A5", "Letter"], // TODO: fill properly
-                Bins: ["Automatically select", "Printer auto select", "Manual Feed Tray", "Tray 1", "Tray 2", "Tray 3", "Tray 4"], // TODO: fill properly
-                get Name() {
-                    printApi.reportFeatureNotImplemented("printerControl.Name");
+                get Forms() {
+                    return printApi.deviceSettingsFor(printerName).forms;
                 },
-                get Jobs() {
-                    printApi.reportFeatureNotImplemented("printerControl.Jobs");
+
+                get Bins() {
+                    return printApi.deviceSettingsFor(printerName).bins;
                 },
+
+                get forms() {
+                    return printApi.deviceSettingsFor(printerName).forms;
+                },
+
+                get bins() {
+                    return printApi.deviceSettingsFor(printerName).bins;
+                },
+
+                get name() {
+                    return printerName;
+                },
+
                 get port() {
-                    printApi.reportFeatureNotImplemented("printerControl.port");
+                    return printApi.deviceSettingsFor(printerName).port;
                 },
                 get attributes() {
-                    printApi.reportFeatureNotImplemented("printerControl.attributes");
+                    return printApi.deviceSettingsFor(printerName).attributes;
                 },
                 get serverName() {
-                    printApi.reportFeatureNotImplemented("printerControl.serverName");
+                    return printApi.deviceSettingsFor(printerName).serverName;
                 },
                 get shareName() {
-                    printApi.reportFeatureNotImplemented("printerControl.shareName");
+                    return printApi.deviceSettingsFor(printerName).shareName;
                 },
                 get location() {
-                    printApi.reportFeatureNotImplemented("printerControl.location");
+                    return printApi.deviceSettingsFor(printerName).location;
                 },
                 get isLocal() {
-                    printApi.reportFeatureNotImplemented("printerControl.isLocal");
+                    return printApi.deviceSettingsFor(printerName).isLocal;
                 },
                 get isNetwork() {
-                    printApi.reportFeatureNotImplemented("printerControl.isNetwork");
+                    return printApi.deviceSettingsFor(printerName).isNetwork;
                 },
                 get isShared() {
-                    printApi.reportFeatureNotImplemented("printerControl.isShared");
+                    return printApi.deviceSettingsFor(printerName).isShared;
+                },
+
+                get Jobs() {
+                    printApi.reportFeatureNotImplemented("printerControl.Jobs");
                 },
                 Purge: function () {
                     printApi.reportFeatureNotImplemented("printerControl.Purge()");
@@ -672,15 +857,19 @@
         },
 
         IsSpooling: function () {
-            printApi.reportFeatureNotImplemented("IsSpooling");
+            return printApi.isSpooling();
         },
 
         OwnQueue: function () {
-            printApi.reportFeatureNotImplemented("OwnQueue");
+            // NOTE: No-op, no concept of 'out of process' here
         },
 
-        SetPageRange: function () {
-            printApi.reportFeatureNotImplemented("SetPageRange");
+        SetPageRange: function (bSelectionOnly, iFrom, iTo) {
+            if (bSelectionOnly) {
+                printApi.reportFeatureNotImplemented("SetPageRange selection only");
+            }
+
+            settings.pageRange = "" + iFrom + "-" + iTo;
         },
 
         SetPreviewZoom: function () {
@@ -688,6 +877,8 @@
         },
 
         Sleep: function () {
+            // If you need this, please implement your own for the browsers you are deploying to 
+            // Contact MeadCo for assistance if required.
             printApi.reportFeatureNotImplemented("Sleep");
         },
 
@@ -696,8 +887,10 @@
         },
 
         WaitForSpoolingComplete: function (iTimeout, fnComplete) {
-            printApi.WaitForSpoolingComplete(iTimeout, fnComplete);
+            printApi.waitForSpoolingComplete(iTimeout, fnComplete);
         },
+
+        enhancedFormatting: iEnhancedFormatting,
 
         // helpers for wrapper MeadCoJS
         PolyfillInit: function () {

@@ -71,7 +71,7 @@
                     });
 
                     MeadCo.Licensing.IsLicensedAsync().then(function(l) {
-                        $("#licCheck").text("VALID: " + l.company).addClass("text-success").removeClass("text-danger");
+                        $("#licCheck").text("VALID: [" + l.company + "]").addClass("text-success").removeClass("text-danger");
 
                         $("#btn-test1").click(function () {
                             setSimpleFormatting();

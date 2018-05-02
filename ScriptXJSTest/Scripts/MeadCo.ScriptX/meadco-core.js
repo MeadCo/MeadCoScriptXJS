@@ -74,7 +74,7 @@
 
     // protected API
     var module = this;
-    var version = "1.1.1.0";
+    var version = "1.3.1.0";
 
     var log = function (str) {
         console.log("MeadCo :: " + str);

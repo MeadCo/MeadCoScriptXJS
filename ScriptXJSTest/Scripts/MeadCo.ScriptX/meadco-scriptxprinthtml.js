@@ -10,7 +10,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "1.1.0.6";
+    var moduleversion = "1.3.1.0";
 
     var mPageOrientation = {
         DEFAULT: 0,
@@ -30,6 +30,13 @@
         FALSE: 2
     };
 
+    var mPrintingPass = {
+        ALL: 1,
+        ODD: 2,
+        EVEN: 3,
+        ODDANDEVEN: 4
+    };
+
     var settingsCache =
     {
         header: null,
@@ -43,7 +50,7 @@
         shortDateFormat: "",
         longDateFormat: "",
         printBackgroundColorsAndImages: false,
-        pageSettings: {
+        page: {
             orientation: mPageOrientation.PORTRAIT,
             units: mPageMarginUnits.DEFAULT,
             margins: {
@@ -52,7 +59,12 @@
                 bottom: "",
                 right: ""
             }
-        }
+        },
+        extraHeadersAndFooters: {
+        },
+        pageRange: "",
+        printingPass: mPrintingPass.ALL,
+        jobTitle: ""
     };
 
     var iSettings =
@@ -118,58 +130,158 @@
             return settingsCache.printBackgroundColorsAndImages;
         },
 
+        extraHeadersAndFooters: {
+            get allPagesHeader() {
+                return settingsCache.extraHeadersAndFooters.allPagesHeader;
+            },
+            set allPagesHeader(v) {
+                settingsCache.extraHeadersAndFooters.allPagesHeader = v;
+            },
+
+            get allPagesFooter() {
+                return settingsCache.extraHeadersAndFooters.allPagesFooter;
+            },
+            set allPagesFooter(v) {
+                settingsCache.extraHeadersAndFooters.allPagesFooter = v;
+            },
+
+            get firstPageHeader() {
+                return settingsCache.extraHeadersAndFooters.firstPageHeader;
+            },
+            set firstPageHeader(v) {
+                settingsCache.extraHeadersAndFooters.firstPageHeader = v;
+            },
+
+            get firstPageFooter() {
+                return settingsCache.extraHeadersAndFooters.firstPageFooter;
+            },
+            set firstPageFooter(v) {
+                settingsCache.extraHeadersAndFooters.firstPageFooter = v;
+            },
+
+            get extraFirstPageFooter() {
+                return settingsCache.extraHeadersAndFooters.extraFirstPageFooter;
+            },
+            set extraFirstPageFooter(v) {
+                settingsCache.extraHeadersAndFooters.extraFirstPageFooter = v;
+            },
+
+            get allHeaderHeight() {
+                return settingsCache.extraHeadersAndFooters.allHeaderHeight;
+            },
+            set allHeaderHeight(v) {
+                if (typeof v !== "number") {
+                    throw "Invalid argument";
+                }
+                settingsCache.extraHeadersAndFooters.allHeaderHeight = v;
+            },
+
+            get allFooterHeight() {
+                return settingsCache.extraHeadersAndFooters.allFooterHeight;
+            },
+            set allFooterHeight(v) {
+                if (typeof v !== "number") {
+                    throw "Invalid argument";
+                }
+                settingsCache.extraHeadersAndFooters.allFooterHeight = v;
+            },
+
+            get firstHeaderHeight() {
+                return settingsCache.extraHeadersAndFooters.firstHeaderHeight;
+            },
+            set firstHeaderHeight(v) {
+                if (typeof v !== "number") {
+                    throw "Invalid argument";
+                }
+                settingsCache.extraHeadersAndFooters.firstHeaderHeight = v;
+            },
+
+            get firstFooterHeight() {
+                return settingsCache.extraHeadersAndFooters.firstFooterHeight;
+            },
+            set firstFooterHeight(v) {
+                if (typeof v !== "number") {
+                    throw "Invalid argument";
+                }
+                settingsCache.extraHeadersAndFooters.firstFooterHeight = v;
+            },
+
+            get extraFirstFooterHeight() {
+                return settingsCache.extraHeadersAndFooters.extraFirstFooterHeight;
+            },
+            set extraFirstFooterHeight(v) {
+                if (typeof v !== "number") {
+                    throw "Invalid argument";
+                }
+                settingsCache.extraHeadersAndFooters.extraFirstFooterHeight = v;
+            }
+        },
+
         page: {
             set orientation(enumOrientation) {
-                settingsCache.pageSettings.orientation = enumOrientation;
+                settingsCache.page.orientation = enumOrientation;
             },
 
             get orientation() {
-                return settingsCache.pageSettings.orientation;
+                return settingsCache.page.orientation;
             },
 
             set units(enumUnits) {
-                settingsCache.pageSettings.units = enumUnits;
+                settingsCache.page.units = enumUnits;
             },
 
             get units() {
-                return settingsCache.pageSettings.units;
+                return settingsCache.page.units;
             },
 
             margins: {
                 set left(n) {
-                    settingsCache.pageSettings.margins.left = n;
+                    settingsCache.page.margins.left = n;
                 },
 
                 get left() {
-                    return settingsCache.pageSettings.margins.left;
+                    return settingsCache.page.margins.left;
                 },
 
                 set top(n) {
-                    settingsCache.pageSettings.margins.top = n;
+                    settingsCache.page.margins.top = n;
                 },
 
                 get top() {
-                    return settingsCache.pageSettings.margins.top;
+                    return settingsCache.page.margins.top;
                 },
 
                 set bottom(n) {
-                    settingsCache.pageSettings.margins.bottom = n;
+                    settingsCache.page.margins.bottom = n;
                 },
 
                 get bottom() {
-                    return settingsCache.pageSettings.margins.bottom;
+                    return settingsCache.page.margins.bottom;
                 },
 
                 set right(n) {
-                    settingsCache.pageSettings.margins.right = n;
+                    settingsCache.page.margins.right = n;
                 },
 
                 get right() {
-                    return settingsCache.pageSettings.margins.right;
+                    return settingsCache.page.margins.right;
                 }
 
             }
+        },
+
+        get pageRange() { return settingsCache.pageRange; },
+        set pageRange(v) { settingsCache.pageRange = v; },
+
+        get printingPass() { return settingsCache.printingPass; },
+        set printingPass(v) {
+            if (typeof v === "number" && v >= mPrintingPass.ALL && v <= mPrintingPass.ODDANDEVEN) {
+                settingsCache.printingPass = v;
+                return;
+            }
+            throw "Invalid argument";
         }
+
     };
 
     function updateSettingsWithServerDefaults(sDefaults) {
@@ -219,13 +331,13 @@
         $("script", $html).remove();
         $("object", $html).remove();
 
-        if (!$("head>base",$html).length) {
+        if (!$("head>base", $html).length) {
             MeadCo.log("No base element, fabricating one to: " + getBaseHref());
-            var base = $("<base />",
+            var base = $("<base>",
             {
                 href: getBaseHref()
             });
-            $("head", $html).append(base);
+            $("head", $html).prepend(base);
         }
 
         return $html.html();
@@ -257,8 +369,10 @@
 
     }
 
-    function printHtmlAtServer(contentType, content, htmlPrintSettings, fnDone, fnCallback, data) {
-        MeadCo.ScriptX.Print.printHtml(contentType, content, htmlPrintSettings, fnDone, null, fnCallback, data);
+    function printHtmlAtServer(contentType, content, title, fnDone, fnCallback, data) {
+        var htmlPrintSettings = settingsCache;
+        htmlPrintSettings.jobTitle = title;
+        return MeadCo.ScriptX.Print.printHtml(contentType, content, htmlPrintSettings, fnDone, null, fnCallback, data);
     }
 
     MeadCo.log("MeadCo.ScriptX.Print.HTML " + moduleversion + " loaded.");
@@ -272,54 +386,55 @@
         PageMarginUnits: mPageMarginUnits,
         PageOrientation: mPageOrientation,
         CollateOptions: mCollateOptions,
+        PrintingPasses: mPrintingPass,
 
         settings: iSettings,
 
         printDocument: function (fnCallOnDone, fnCallback, data) {
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, documentContent(), settingsCache, fnCallOnDone, fnCallback, data);
+            return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, documentContent(), document.title, fnCallOnDone, fnCallback, data);
         },
 
         printFrame: function (sFrame, fnCallOnDone, fnCallback, data) {
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, frameContent(sFrame), settingsCache, fnCallOnDone, fnCallback, data);
+            return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERTHTML, frameContent(sFrame), document.title, fnCallOnDone, fnCallback, data);
         },
 
         printFromUrl: function (sUrl, fnCallOnDone, fnCallback, data) {
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.URL, sUrl, settingsCache, fnCallOnDone, fnCallback, data);
+            return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.URL, sUrl, sUrl, fnCallOnDone, fnCallback, data);
         },
 
         printHtml: function (sHtml, fnCallOnDone, fnCallback, data) {
-            printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.HTML, sHtml, settingsCache, fnCallOnDone, fnCallback, data);
+            return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.HTML, sHtml, "HTML snippet", fnCallOnDone, fnCallback, data);
         },
 
-        connectLite : function(serverUrl, licenseGuid) {
+        connectLite: function (serverUrl, licenseGuid) {
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
         },
 
         connect: function (serverUrl, licenseGuid) {
             MeadCo.warn("Print.HTML SYNC connection request");
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
-            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",false,
+            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=" + settingsCache.page.units, false,
                 function (data) {
                     MeadCo.log("got default html settings");
-                    updateSettingsWithServerDefaults(data.htmlPrintSettings);
-                    if (data.deviceSettings != null) {
-                        MeadCo.ScriptX.Print.connectDevice(data.deviceSettings);
+                    updateSettingsWithServerDefaults(data.settings);
+                    if (data.device != null) {
+                        MeadCo.ScriptX.Print.connectDeviceAndPrinters(data.device, data.availablePrinters);
                     }
                 });
         },
 
-        connectAsync: function (serverUrl, licenseGuid,resolve,reject) {
+        connectAsync: function (serverUrl, licenseGuid, resolve, reject) {
             MeadCo.log("Print.HTML ASYNC connection request");
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
-            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=0",true,
+            MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=" + settingsCache.page.units, true,
                 function (data) {
                     MeadCo.log("got default html settings");
-                    updateSettingsWithServerDefaults(data.htmlPrintSettings);
-                    if (data.deviceSettings != null) {
-                        MeadCo.ScriptX.Print.connectDevice(data.deviceSettings);
+                    updateSettingsWithServerDefaults(data.settings);
+                    if (data.device != null) {
+                        MeadCo.ScriptX.Print.connectDeviceAndPrinters(data.device, data.availablePrinters);
                     }
                     resolve();
-                },reject);
+                }, reject);
         },
 
         get version() { return moduleversion }

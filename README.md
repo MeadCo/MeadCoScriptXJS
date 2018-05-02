@@ -10,16 +10,16 @@ As of version 1.2.0 this library facilitates being able to write the same code f
 1.4.0 Adds support for async in ScriptX Services
 
 ## Current version
-1.4.0
+1.5.0
 
 ## Packages
 
 ### NuGet Gallery
 [MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
-### Bower
+### NPM (inc. Yarn)
 
-bower install meadco-scriptxjs
+npm install meadco-scriptxjs --save
 
 ## Quick start Add-on only
 

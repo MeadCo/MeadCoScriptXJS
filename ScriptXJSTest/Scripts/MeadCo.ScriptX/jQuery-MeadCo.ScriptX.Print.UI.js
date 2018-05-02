@@ -25,7 +25,7 @@
 
     var ui = MeadCo.createNS("MeadCo.ScriptX.Print.UI");
 
-    ui.moduleversion = "1.1.1.0";
+    ui.moduleversion = "1.3.1.0";
 
     // MeadCo.ScriptX.Print.UI.AttachPrintAction(
     //  el - clickable html element
@@ -267,7 +267,7 @@
 
         // grab the paper size options from printerControl
         var $paperselect = $('#fld-papersize');
-        var printerControl = MeadCo.ScriptX.Printing.printerControl();
+        var printerControl = MeadCo.ScriptX.Printing.printerControl(MeadCo.ScriptX.Printing.currentPrinter);
         $('#fld-papersize > option').remove();
         for (var i in printerControl.Forms) {
             $paperselect.append("<option>" + printerControl.Forms[i] + "</option>");
@@ -376,8 +376,8 @@
                 $('#dlg-printersettings [data-trigger="spinner"]').spinner();
             }
 
-            $('#dlg-printersettings #fld-printerselect').on('changed.bs.select', function (ev) {
-                setPrinterSettings();
+            $('#dlg-printersettings #fld-printerselect').change(function (ev) {
+                onSelectPrinter($(this).val());
             });
         }
 
@@ -401,7 +401,9 @@
                 }
             });
 
-        setPrinterSettings();
+
+        fillPrintersList();
+        showPrinterSettings();
         $('#dlg-printersettings').modal('show');
 
         if (sClass === "selectpicker") {
@@ -409,14 +411,13 @@
         }
     };
 
-    function setPrinterSettings() {
-        var $dlg = $('#dlg-printersettings');
-        var printHtml = MeadCo.ScriptX.Print.HTML;
-        var printer = MeadCo.ScriptX.Printing;
+    // show available sources and options 
+    function showPrinterSettings() {
 
-        fillAndSetPrintersList();
         fillAndSetBinsList();
 
+        var $dlg = $('#dlg-printersettings');
+        var printer = MeadCo.ScriptX.Printing;
         $dlg.find('#fld-collate').prop('checked', printer.collate);
         $dlg.find('#fld-copies').val(printer.copies);
 
@@ -462,20 +463,45 @@
         }
     }
 
-    function fillAndSetPrintersList() {
+    // fill printers dropdown with those available
+    function fillPrintersList() {
         var printer = MeadCo.ScriptX.Printing;
-        var printersArray = printer.EnumPrinters();
         var $printers = $('#fld-printerselect');
 
         $('#fld-printerselect > option').remove();
-        for (var i = 0; i < printersArray.length; i++) {
-            $printers.append("<option>" + printersArray[i]);
+
+        var name;
+        for (var i = 0; (name = printer.EnumPrinters(i)).length > 0 ; i++) {
+            $printers.append("<option>" + name);
         }
 
         $printers.val(printer.currentPrinter);
         if ($printers.hasClass("selectpicker")) {
             $printers.selectpicker('refresh');
         }
+    }
+
+    function onSelectPrinter(printerName) {
+        var printer = MeadCo.ScriptX.Printing;
+        var currentPrinterName = printer.currentPrinter;
+        var currentSource = printer.paperSource;
+
+        try {
+            // select the printer to get its default source and size.
+            printer.currentPrinter = printerName;
+            fillAndSetBinsList();
+        } catch (e) {
+            alert("Sorry, an error has occurred:\n\n" + e.description);
+        }
+
+        // revert the current printer in ScriptX
+        try {
+            printer.currentPrinter = currentPrinterName;
+            printer.paperSource = currentSource;
+        } catch (e) {
+            alert("Sorry, an error has occurred restoring current printer settings:\n\n" + e.description);
+        }
+
     }
 
     function fillAndSetBinsList() {

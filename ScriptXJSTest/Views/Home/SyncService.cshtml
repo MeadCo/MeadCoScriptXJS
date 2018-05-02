@@ -62,7 +62,7 @@
                 });
 
                 if (MeadCo.Licensing.IsLicensed()) {
-                    $("#licCheck").text("VALID").addClass("text-success").removeClass("text-danger");
+                    $("#licCheck").text("VALID: [" + MeadCo.Licensing.LicMgr.License.company + "]").addClass("text-success").removeClass("text-danger");
                 } else {
                     $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
                 }

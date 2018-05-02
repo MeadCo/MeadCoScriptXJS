@@ -13,7 +13,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-// v1.4.0 require a promise polyfill if not implemented in the browser
+// v1.4.0 and later require a promise polyfill if not implemented in the browser
 //  we recommend (and test with) https://github.com/taylorhakes/promise-polyfill
 //
 // v1.3.0 and later introduce an async model to enable async scenarios with ScriptX.Print Services.
@@ -76,8 +76,8 @@
         SERVICE: 2
     }
 
-    scriptx.LibVersion = "1.4.0";
-    scriptx.Connector = scriptx.CONNECTED_NONE;
+    scriptx.LibVersion = "1.5.0";
+    scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
     scriptx.Printing = null;
@@ -454,7 +454,7 @@
             scriptx.Factory = f;
             scriptx.Utils = f.object;
             scriptx.Printing = f.printing;
-            console.log("found factory");
+            console.log("found a scriptx factory");
             return true;
         }
         return false;
@@ -557,39 +557,85 @@
 
     var licensing = topLeveNs.Licensing;
 
-    licensing.LibVersion = "1.3.0";
+    licensing.Connection = {
+        NONE: 0,
+        ADDON: 1,
+        SERVICE: 2
+    }
+
+    licensing.LibVersion = "1.4.0";
     licensing.LicMgr = null;
+    licensing.Connector = licensing.Connection.NONE;
 
     licensing.Init = function () {
         if (licensing.LicMgr == null) {
-            var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
-            if (l && l.object)
-                licensing.LicMgr = l.object;
+            console.log("licensing.Init()");
+            if ( findSecMgr() ) {
+                // what have we connected to?
+
+                // if we are connected to the ScriptX.Print implementation
+                // then check it has connected.
+                if (typeof licensing.LicMgr.PolyfillInit === "function") {
+                    console.log("found secmgr services");
+                    console
+                        .warn("Synchronous initialisation is deprecated - please update to MeadCo.Licensing.InitAsync().");
+                    if ( !licensing.LicMgr.PolyfillInit() ) {
+                        console.log("**warning** polyfill failed.");
+                        licensing.LicMgr = null;
+                        licensing.Connector = licensing.Connection.NONE;
+                    } else {
+                        licensing.Connector = licensing.Connection.SERVICE;
+                    }
+                } else {
+                    licensing.Connector = licensing.Connection.ADDON;
+                }
+            } else {
+                console.log("** Warning -- no secmgr **");
+            }
         }
         return licensing.LicMgr != null && typeof (licensing.LicMgr.result) != "undefined";
     }
 
     licensing.InitAsync = function () {
+        var prom;
+
+        console.log("licensing.InitAsync()");
 
         return new Promise(function (resolve, reject) {
             if (licensing.LicMgr == null) {
-                var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
-                if (l && l.object)
-                    licensing.LicMgr = l.object;
+                if (findSecMgr()) {
+                    console.log("Look for polyfill");
+                    if (typeof licensing.LicMgr.PolyfillInitAsync === "function") {
+                        console.log("Found async secmgr services");
+                        licensing.LicMgr.PolyfillInitAsync(function () {
+                            console.log("polyfill initialised ok");
+                            licensing.Connector = licensing.Connection.SERVICE;
+                            resolve();
+                        }, reject);
+                    } else {
+                        console.log("No polyfill, using as add-on");
+                        licensing.Connector = licensing.Connection.ADDON;
+                        resolve();
+                    }
+                } else {
+                    console.log("** Warning -- no secmgr **");
+                    reject();
+                }
+            } else {
+                if (licensing.Connector === licensing.Connection.NONE) {
+                    reject();
+                } else {
+                    resolve();
+                }
             }
-
-            if (licensing.LicMgr != null && typeof (licensing.LicMgr.result) != "undefined")
-                resolve();
-            else
-                reject();
         });
 
     }
 
-
     // IsLicensed
     // Returns true if the document is licensed and advanced functionality will be available
     licensing.IsLicensed = function () {
+
         if (licensing.Init()) {
             var l = licensing.LicMgr.License;
             return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
@@ -603,16 +649,16 @@
     // Returns a promise with a resolve of the loaded license detail
     //
     licensing.IsLicensedAsync = function () {
-        return new Promise(function(resolve, reject) {
-            if (licensing.Init()) {
-                if (typeof licensing.LicMgr.GetLicenseAsync === "function") {
-                    licensing.LicMgr.GetLicenseAsync(resolve, reject);
-                } else {
-                    resolve(licensing.LicMgr.License);
-                }
-            } else {
-                reject();
-            }
+        return new Promise(function (resolve, reject) {
+            licensing.InitAsync()
+                .then(function() {
+                    if (typeof licensing.LicMgr.GetLicenseAsync === "function") {
+                        licensing.LicMgr.GetLicenseAsync(resolve, reject);
+                    } else {
+                        resolve(licensing.LicMgr.License);
+                    }
+                })
+                .catch(function () { reject(); });
         });
     }
 
@@ -695,6 +741,7 @@
 
     }
 
+    // private implementation
     function reportError(eMsg) {
         var msg = eMsg;
         for (var i = 1; i < arguments.length; i++) {
@@ -702,6 +749,18 @@
                 msg += "\n\n" + arguments[i];
         }
         alert(msg);
+    }
+
+    // try to find the Security Manager add-on on the page.
+    // 
+    function findSecMgr() {
+        var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
+        if (l && l.object != null) {
+            licensing.LicMgr = l.object;
+            console.log("Found a secmgr");
+            return licensing.LicMgr != null && typeof (licensing.LicMgr.result) != "undefined";
+        }
+        return false;
     }
 
 }(window.MeadCo = window.MeadCo || {}));
