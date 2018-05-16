@@ -1,13 +1,17 @@
 # MeadCoScriptXJS
 
-**MeadCoScriptXJS** is a simple javascript wrapper library for use with [MeadCo's ScriptX Add-on/Services](http://scriptx.meadroid.com) for Microsoft Internet Explorer and any browser on any device. This library has been used with our samples system for some time. 
+**MeadCoScriptXJS** is a simple javascript wrapper library for use with [MeadCo's ScriptX Add-on/Services](https://www.meadroid.com)
+ to achieve consistent printed output using any browser on any device. This library has been used with our samples system for some time. 
 
 The aim of the library is to hide differences between versions of ScriptX and provide easy access to some common functionality.
 The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
 
-As of version 1.2.0 this library facilitates being able to write the same code for both the [ScriptX Add-on](http://scriptx.meadroid.com) for Internet Explorer and [MeadCo's ScriptX Services](https://scriptx.services.meadroid.com) browser agnostic printing services in the cloud and on premise. The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo/ScriptX.Print.Client) is required for this to work.
+As of version 1.2.0 this library facilitates being able to write the same code for both the 
+[ScriptX Add-on](http://scriptx.meadroid.com) for Internet Explorer and 
+[MeadCo's ScriptX Services](https://scriptxservices.meadroid.com) browser agnostic printing services in the cloud, on premise and on Windows PC. 
+The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo/ScriptX.Print.Client) is required for this to work.
 
-1.4.0 Adds support for async in ScriptX Services
+v1.5.0 Adds support for ScriptX Services on Windows PC.
 
 ## Current version
 1.5.0
@@ -17,11 +21,25 @@ As of version 1.2.0 this library facilitates being able to write the same code f
 ### NuGet Gallery
 [MeadCo ScriptX JS Library](http://nuget.org/packages/MeadScriptXJS/)
 
-### NPM (inc. Yarn)
+### NPM Use
 
+```
 npm install meadco-scriptxjs --save
+```
 
-## Quick start Add-on only
+### CDN Use
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/meadco/MeadCoScriptXJS/src/meadco-scriptx.js"></script>
+```
+
+or 
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/meadco/MeadCoScriptXJS/src/meadco-scriptx.min.js"></script>
+```
+
+## Quick start for working with ScriptX Add-on only
 
 1. Link to meadco-scriptx.js `<script src="meadco-scriptx.js"></script>`
 2. Initialise the library in the document ready/window loaded event handler, and initialise printing parameters. For example, when using jQuery:
@@ -42,27 +60,30 @@ $(window).on('load', function () {
 ```
 Please note that the library is not dependent upon jQuery or any other libraries.
 
-## Quick start - browser indepenent services
+## Quick start - ScriptX.Services for any browser
 
 1. Link to the required libraries with service connection details
 2. Initialise the library
-3. Initilise print parameter
+3. Initilise print parameters
 
 The same code will work when the add-on is present, but the add-on will be used in preference.
 
+A promise polyfill is required if the browser does not support promises (for example Internet Explorer). 
+We recommend (and test with) [Promise Polyfill](https://github.com/taylorhakes/promise-polyfill)
+
 ```javascript
-<script src="/scripts/meadco-scriptx.js"></script>
+<script src="/scripts/meadco-scriptx.min.js"></script>
 
 <!-- ScriptX Services client emulation libraries - depend on jQuery -->
 <script src="/scripts/jquery-3.1.1.js"></script>
 
 <script src="/scripts/MeadCo.ScriptX/core.js"></script>
+<script src="/scripts/MeadCo.ScriptX/scriptxlicense.js"></script>
 <script src="/scripts/MeadCo.ScriptX/scriptxprint.js"></script>
 <script src="/scripts/MeadCo.ScriptX/scriptxprinthtml.js"></script>
 <script src="/scripts/MeadCo.ScriptX/scriptxfactory.js" 
-        data-meadco-server="https://scriptx.services.meadroid.com" 
+        data-meadco-server="https://scriptxservices.meadroid.com" 
         data-meadco-license="xxx-xxx-xxxxxxx-xxx"></script>
-<script src="/scripts/MeadCo.ScriptX/scriptxlicense.js"></script>
 
 <!-- A promise library will be required if targetting IE. -->
 <script type="text/javascript">
@@ -81,7 +102,7 @@ The same code will work when the add-on is present, but the add-on will be used 
 </script>
 ```
 ## Copyright
-Copyright © 2013-2017 [Mead & Co Ltd](http://scriptx.meadroid.com).
+Copyright © 2013-2018 [Mead & Co Ltd](http://www.meadroid.com).
 
 ## License 
 **MeadCoScriptXJS** is under MIT license - http://www.opensource.org/licenses/mit-license.php
