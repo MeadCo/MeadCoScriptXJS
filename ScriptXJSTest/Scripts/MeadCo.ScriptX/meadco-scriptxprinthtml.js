@@ -64,7 +64,8 @@
         },
         pageRange: "",
         printingPass: mPrintingPass.ALL,
-        jobTitle: ""
+        jobTitle: "",
+        documentUrl: document.URL
     };
 
     var iSettings =
@@ -291,6 +292,8 @@
             : navigator.language;
         settingsCache.timezoneOffset = (new Date()).getTimezoneOffset();
         MeadCo.log("Settings cache updated, .locale: [" + settingsCache.locale + "], .offset: " + settingsCache.timezoneOffset);
+
+        settingsCache.documentUrl = document.URL;
     }
 
     function persistData($element) {
