@@ -1,6 +1,6 @@
 /*!
  * MeadCo.ScriptX.Print (support for modern browsers and IE 11) JS client library
- * Copyright 2017 Mead & Company. All rights reserved.
+ * Copyright 2017-2018 Mead & Company. All rights reserved.
  * https://github.com/MeadCo/ScriptX.Print.Client
  *
  * Released under the MIT license
@@ -9,7 +9,10 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print', function () {
-    var version = "1.3.1.0";
+    // module version and the api we are coded for
+    var version = "1.4.8.0";
+    var apiLocation = "v1/printHtml";
+
     var printerName = "";
     var deviceSettings = {};
     var module = this;
@@ -19,6 +22,8 @@
     var server = ""; // url to the server, server is CORS restricted
     var licenseGuid = "";
     var bConnected = false;
+
+    var bDoneAuto = false;
 
     var availablePrinters = [];
 
@@ -222,9 +227,11 @@
     };
 
     function setServer(serverUrl, clientLicenseGuid) {
-        MeadCo.log("Print server requested: " + serverUrl + " with license: " + clientLicenseGuid);
-        server = serverUrl;
-        licenseGuid = clientLicenseGuid;
+        if (serverUrl.length > 0) {
+            MeadCo.log("Print server requested: " + serverUrl + " => " + MeadCo.makeApiEndPoint(serverUrl, apiLocation) + " with license: " + clientLicenseGuid);
+            server = MeadCo.makeApiEndPoint(serverUrl, apiLocation);
+            licenseGuid = clientLicenseGuid;
+        }
     }
 
     function connectToServer(serverUrl, clientLicenseGuid) {
@@ -234,9 +241,7 @@
     }
 
     function connectToServerAsync(serverUrl, clientLicenseGuid, resolve, reject) {
-        if (serverUrl.length > 0 )
-            setServer(serverUrl, clientLicenseGuid);
-
+        setServer(serverUrl, clientLicenseGuid);
         // note that this will silently fail if no advanced printing license
         getDeviceSettings({
             name: "default",
@@ -246,6 +251,50 @@
         });
     }
 
+    // testServerConnection
+    //
+    // Can we ask something and get a respponse, without using a license - checks the server is there.
+    //
+    function testServerConnection(serverUrl, resolve, reject) {
+        if (serverUrl.length > 0) {
+            // use the license API
+            var licenseApi = "v1/licensing";
+            MeadCo.log("Test server requested: " + serverUrl + " => " + MeadCo.makeApiEndPoint(serverUrl, licenseApi));
+            serverUrl = MeadCo.makeApiEndPoint(serverUrl, licenseApi);
+            if (module.jQuery) {
+                var serviceUrl = serverUrl + "/ping";
+                MeadCo.log(".ajax() get: " + serviceUrl);
+                module.jQuery.ajax(serviceUrl,
+                    {
+                        method: "GET",
+                        dataType: "json",
+                        cache: false,
+                        async: true,
+                    }).done(function (data) {
+                        resolve(data);
+                    })
+                    .fail(function (jqXhr, textStatus, errorThrown) {
+                        MeadCo.log("**warning: failure in MeadCo.ScriptX.Print.testServerConnection: [" +
+                            textStatus +
+                            "], [" +
+                            errorThrown +
+                            "], [" +
+                            jqXhr.responseText +
+                            "]");
+
+                        if (typeof jqXhr.responseText !== "undefined") {
+                            errorThrown = jqXhr.responseText;
+                        }
+
+                        if (errorThrown === "") {
+                            errorThrown = "Unknown server or network error";
+                        }
+                        if (typeof reject == "function")
+                            reject(errorThrown);
+                    });
+            }
+        }
+    }
 
     function printAtServer(requestData, responseInterface) {
 
@@ -265,8 +314,9 @@
             queueJob(fakeJob); // essentially a lock on the queue to stop it looking empty while we await the result
             module.jQuery.ajax(server + "/print",
                 {
-                    data: requestData,
+                    data: JSON.stringify(requestData),
                     dataType: "json",
+                    contentType: "application/json",
                     method: "POST",
                     headers: {
                         "Authorization": "Basic " + btoa(licenseGuid + ":")
@@ -528,9 +578,121 @@
         return {}
     }
 
+    function processAttributes() {
+        MeadCo.log("MeadCo.ScriptX.Print ... looking for auto connect: " + bDoneAuto);
+        if (this.jQuery && !bDoneAuto) {
+            // protected API
+            var printHtml = MeadCo.ScriptX.Print.HTML;
+            var printApi = MeadCo.ScriptX.Print;
+            var licenseApi = MeadCo.ScriptX.Print.Licensing;
+
+            // general connection
+            //
+            // data-meadco-server is the root url, api/v1/printhtml, api/v1/licensing will be added by the library
+            // as required.
+            //
+            // meadco-subscription present => cloud/on premise service
+            // meadco-license present => for Windows PC service
+            $("[data-meadco-subscription]").each(function () {
+                if (typeof printApi === "undefined" || typeof printHtml === "undefined") {
+                    console.error("Unable to auto-connect subscription - print or printHtml API not present");
+                } else {
+                    if (!bDoneAuto) {
+                        var $this = $(this);
+                        var data = $this.data();
+                        MeadCo.log("Auto connect susbcription to: " +
+                            data.meadcoServer + ", or " + data.meadcoPrinthtmlserver +
+                            ", with subscription: " +
+                            data.meadcoSubscription +
+                            ", sync: " +
+                            data.meadcoSyncinit);
+                        var syncInit = ("" + data.meadcoSyncinit)
+                            .toLowerCase() !==
+                            "false"; // defaults to true if not specified
+
+                        var server = data.meadcoServer;
+                        if (typeof server === "undefined") {
+                            server = data.meadcoPrinthtmlserver;
+                        }
+
+                        if (typeof server === "undefined") {
+                            console.error("No server specified");
+                        } else {
+                            // in case there will be a request for the subnscription info ..
+                            if (typeof licenseApi !== "undefined")
+                                licenseApi.connect(server, data.meadcoSubscription);
+
+                            if (!syncInit) {
+                                MeadCo.log("Async connectlite...");
+                                printApi.connectLite(server, data.meadcoSubscription);
+                            } else {
+                                console
+                                    .warn("Synchronous connection is deprecated, please use data-meadco-syncinit='false'");
+                                printHtml.connect(server, data.meadcoSubscription);
+                            }
+                            bDoneAuto = true;
+                        }
+                    }
+                }
+                return false;
+            });
+
+            $("[data-meadco-license]").each(function () {
+                if (typeof printApi === "undefined" || typeof printHtml === "undefined" || typeof licenseApi === "undefined") {
+                    console.error("Unable to auto-connect client license - print or printHtml or license API not present");
+                } else {
+                    if (!bDoneAuto) {
+                        var $this = $(this);
+                        var data = $this.data();
+                        MeadCo.log("Auto connect client license to: " +
+                            data.meadcoServer +
+                            ", with license: " +
+                            data.meadcoLicense +
+                            ", path: " +
+                            data.meadcoLicensePath +
+                            ", revision: " +
+                            data.meadcoLicenseRevision +
+                            ", sync: " +
+                            data.meadcoSyncinit);
+                        var syncInit = ("" + data.meadcoSyncinit)
+                            .toLowerCase() !==
+                            "false"; // defaults to true if not specified
+                        var server = data.meadcoServer;
+
+                        if (!syncInit) {
+                            MeadCo.log("Async connectlite...");
+                            licenseApi.connectLite(server, data.meadcoLicense,
+                                    data.meadcoLicenseRevision,
+                                    data.meadcoLicensePath);
+                            printApi.connectLite(server, data.meadcoLicense);
+                        } else {
+                            console
+                                .warn("Synchronous connection is deprecated, please use data-meadco-syncinit='false'");
+                            licenseApi.connect(server, data.meadcoLicense);
+                            if (typeof data.meadcoLicensePath !== "undefined" &&
+                                typeof data
+                                .meadcoLicenseRevision !==
+                                "undefined") { // if these are not defined then you must use meadco-secmgr.js
+                                licenseApi.apply(data.meadcoLicense,
+                                    data.meadcoLicenseRevision,
+                                    data.meadcoLicensePath);
+                            }
+                            printHtml.connect(server, data.meadcoLicense);
+                        }
+                        bDoneAuto = true;
+                    }
+                }
+                return false;
+            });
+
+        }
+    }
+
     if (!module.jQuery) {
         MeadCo.log("**** warning :: no jQuery");
     }
+
+    MeadCo.log("MeadCo.ScriptX.Print " + version + " loaded.");
 
     //////////////////////////////////////////////////
     // public API
@@ -581,17 +743,29 @@
             return getDeviceSettingsFor(sPrinterName);
         },
 
+        useAttributes: function () {
+            processAttributes();
+        },
+
         connect: function (serverUrl, licenseGuid) {
             connectToServer(serverUrl, licenseGuid);
         },
 
         connectLite: function (serverUrl, licenseGuid) {
+            // factory polyfill initialisation will result call with empty string
+            // values for both arguments via printHtml.connectAsync() as it doesnt 
+            // know the values so we assume a connectLite has already been called
+            // and dont overwrite with empty values.
             if (arguments.length === 2 && serverUrl.length > 0 && licenseGuid.length > 0)
                 setServer(serverUrl, licenseGuid);
         },
 
         connectAsync: function (serverUrl, licenseGuid, resolve, reject) {
             connectToServerAsync(serverUrl, licenseGuid, resolve, reject);
+        },
+
+        connectTestAsync: function (serverUrl, resolve, reject) {
+            testServerConnection(serverUrl, resolve, reject);
         },
 
         connectDeviceAndPrinters: function (deviceInfo, arPrinters) {

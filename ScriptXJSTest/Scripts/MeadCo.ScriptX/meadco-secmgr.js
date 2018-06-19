@@ -35,59 +35,16 @@
 })('secmgr', function () {
 
     // protected API
-    var moduleversion = "1.4.1.0";
-    var emulatedVersion = "8.0.0.2";
+    var moduleversion = "1.4.8.0";
+    var emulatedVersion = "8.1.1.0";
     var module = this;
-    var license = {};
-    var lastError = "Not loaded";
 
-    var server = "";            // url to the server
-    var licenseGuid = "";
+    // protected API
+    var printApi = MeadCo.ScriptX.Print;
+    var licenseApi = MeadCo.ScriptX.Print.Licensing;
 
     function log(str) {
         console.log("secmgr anti-polyfill :: " + str);
-    }
-
-    function setSubscriptionServer(serverUrl, clientLicenseGuid) {
-        MeadCo.log("Subscription server requested: " + serverUrl + " with license: " + clientLicenseGuid);
-        server = serverUrl;
-        licenseGuid = clientLicenseGuid;
-        license = {};
-        lastError = "Not loaded";
-    }
-
-    function getSubscriptionFromServer(resolve, reject) {
-
-        if (server.length <= 0) {
-            throw new Error("MeadCo.ScriptX.Licensing : Subscription server URL is not set or is invalid");
-        }
-
-        if (module.jQuery) {
-            MeadCo.log(".ajax() get: " + server);
-            module.jQuery.ajax(server,
-                {
-                    method: "GET",
-                    dataType: "json",
-                    jsonp: false,
-                    cache: false,
-                    async: typeof resolve === "function",
-                    headers: {
-                        "Authorization": "Basic " + btoa(licenseGuid + ":")
-                    }
-                }).done(function (data) {
-                    lastError = "";
-                    $.extend(license, data);
-                    if (typeof resolve === "function")
-                        resolve(license);
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    MeadCo.log("**warning: failure in MeadCo.ScriptX.Licensing.getSubscriptionFromServer: " + errorThrown);
-                    lastError = errorThrown;
-                    if (typeof reject == "function")
-                        reject(errorThrown);
-                });
-            return license;
-        }
     }
 
     // extend the namespace
@@ -119,16 +76,14 @@
     }
 
     log("'secmgr' loaded.");
+    if (typeof licenseApi === "undefined" || licenseApi === null) {
+        console.error("MeadCo.ScriptX.Print.Licensing not available");
+    } 
 
-    if (this.jQuery) {
-        MeadCo.log("Looking for auto connect");
-        $("[data-meadco-subscriptionserver]").each(function () {
-            var $this = $(this);
-            MeadCo.log("Auto connect to: " + $this.data("meadco-subscriptionserver") + ", with license: " + $this.data("meadco-subscription") + ", sync: " + $this.data("meadco-syncinit"));
-            var sync = ("" + $this.data("meadco-syncinit")).toLowerCase(); // defaults to true if not specified
-            setSubscriptionServer($this.data("meadco-subscriptionserver"), $this.data("meadco-subscription"));
-            return false;
-        });
+    if (typeof printApi === "undefined" || printApi===null) {
+        console.error("MeadCo.ScriptX.Print not available");
+    } else {
+        printApi.useAttributes();
     }
 
     // public API.
@@ -139,31 +94,29 @@
         },
 
         get result() {
-            return lastError === "" ? 0 : 5; // => ok or not found
+            return licenseApi.result;
         },
 
         get validLicense() {
-            return typeof license.guid !== "undefined";
+            return licenseApi.validLicense;
         },
 
         get License() {
-            var l = typeof license.guid !== "undefined" ? license : getSubscriptionFromServer();
-            return l;
+            return licenseApi.License;
         },
 
         GetLicenseAsync: function (resolve, reject) {
-            getSubscriptionFromServer(resolve, reject);
+            licenseApi.GetLicenseAsync(resolve, reject);
         },
 
-        connect: setSubscriptionServer,
-
-        // helpers for wrapper MeadCoJS
+        // helpers for wrapper MeadCoJS - we apply the license here when working
+        // with ScriptX.Services for Windows PC
         PolyfillInit: function () {
-            return true;
+            return licenseApi.PolyfillInit();
         },
 
         PolyfillInitAsync: function (resolve, reject) {
-            resolve();
+            licenseApi.PolyfillInitAsync(resolve,reject);
         }
     };
 });
@@ -178,7 +131,7 @@
     // protected API
     var module = this;
 
-    secmgr.log("secmgr.object loaded.");
+    module.secmgr.log("secmgr.object loaded.");
 
     // public API
     return this.secmgr;

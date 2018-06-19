@@ -38,10 +38,9 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.3.1.0";
+    var moduleversion = "1.4.8.0";
     var emulatedVersion = "8.0.0.0";
     var module = this;
-    var printApi = MeadCo.ScriptX.Print;
 
     function log(str) {
         console.log("factory anti-polyfill :: " + str);
@@ -141,6 +140,8 @@
     var printHtml = MeadCo.ScriptX.Print.HTML;
     var settings = printHtml.settings;
     var printApi = MeadCo.ScriptX.Print;
+    var licenseApi = MeadCo.ScriptX.Print.Licensing;
+
     var module = this;
 
     module.factory.log("factory.Printing loaded.");
@@ -208,42 +209,6 @@
                 MeadCo.log("printHtmlContent requesting print ...");
                 return sHtml.length > 0 ? printHtml.printHtml(sHtml, null, fnCallback, data) : printHtml.printFromUrl(sUrl, null, fnCallback, data);
             }, fnNotifyStarted);
-    }
-
-    if (this.jQuery) {
-        module.factory.log("Looking for auto connect");
-
-        // this will be deprecated in the next release and then bought back that data-meadco-server is the 'root' url and 
-        // the library wil add on the version and end points for the APIs it is written against...
-        $("[data-meadco-server]").each(function () {
-            console
-                .warn("Deprecated factory auto-connect. please use data-meadco-printhtmlserver / data-meadco-subscription");
-
-            var $this = $(this);
-            module.factory.log("Auto connect to: " + $this.data("meadco-server") + ", with license: " + $this.data("meadco-license") + ", sync: " + $this.data("meadco-syncinit"));
-            var sync = ("" + $this.data("meadco-syncinit")).toLowerCase(); // defaults to true if not specified
-            if (sync === "false") {
-                printApi.connectLite($this.data("meadco-server"), $this.data("meadco-license"));
-            } else {
-                console.warn("Synchronous connection is deprecated, please use data-meadco-syncinit='false'");
-                printHtml.connect($this.data("meadco-server"), $this.data("meadco-license"));
-            }
-            return false;
-        });
-
-        // explicit API connections 
-        $("[data-meadco-printhtmlserver]").each(function () {
-            var $this = $(this);
-            module.factory.log("Auto connect to: " + $this.data("meadco-printhtmlserver") + ", with subscription: " + $this.data("meadco-subscription") + ", sync: " + $this.data("meadco-syncinit"));
-            var sync = ("" + $this.data("meadco-syncinit")).toLowerCase(); // defaults to true if not specified
-            if (sync === "false") {
-                printHtml.connectLite($this.data("meadco-printhtmlserver"), $this.data("meadco-subscription"));
-            } else {
-                console.warn("Synchronous connection is deprecated, please use data-meadco-syncinit='false'");
-                printHtml.connect($this.data("meadco-printhtmlserver"), $this.data("meadco-subscription"));
-            }
-            return false;
-        });
     }
 
     if (typeof module.print === "function") {
@@ -396,6 +361,7 @@
         }
     };
 
+    printApi.useAttributes();
 
     // public API
     return {
@@ -918,7 +884,7 @@
     // protected API
     var module = this;
 
-    factory.log("factory.object loaded.");
+    module.factory.log("factory.object loaded.");
 
     // public API
     return this.factory;
@@ -933,7 +899,7 @@
     // protected API
     var module = this;
 
-    factory.log("factory.object.js loaded.");
+    module.factory.log("factory.object.js loaded.");
 
     // public API
     return {
