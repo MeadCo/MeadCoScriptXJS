@@ -11,10 +11,10 @@ As of version 1.2.0 this library facilitates being able to write the same code f
 [MeadCo's ScriptX Services](https://scriptxservices.meadroid.com) browser agnostic printing services in the cloud, on premise and on Windows PC. 
 The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo/ScriptX.Print.Client) is required for this to work.
 
-v1.5.0 Adds support for ScriptX Services on Windows PC.
+v1.5 Adds support for ScriptX Services on Windows PC.
 
 ## Current version
-1.5.0
+1.5.1
 
 ## Packages
 
@@ -78,7 +78,6 @@ We recommend (and test with) [Promise Polyfill](https://github.com/taylorhakes/p
 <script src="/scripts/jquery-3.1.1.js"></script>
 
 <script src="/scripts/MeadCo.ScriptX/core.js"></script>
-<script src="/scripts/MeadCo.ScriptX/scriptxlicense.js"></script>
 <script src="/scripts/MeadCo.ScriptX/scriptxprint.js"></script>
 <script src="/scripts/MeadCo.ScriptX/scriptxprinthtml.js"></script>
 <script src="/scripts/MeadCo.ScriptX/scriptxfactory.js" 
