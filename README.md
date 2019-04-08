@@ -14,7 +14,9 @@ The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo
 v1.5 Adds support for ScriptX Services on Windows PC.
 
 ## Current version
-1.5.1
+1.5.2
+
+Updated the dependency on scriptxprint-htm to 1.5.4 which includes support for printing PDF files.
 
 ## Packages
 
@@ -30,13 +32,7 @@ npm install meadco-scriptxjs --save
 ### CDN Use
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/meadco/MeadCoScriptXJS/src/meadco-scriptx.js"></script>
-```
-
-or 
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/meadco/MeadCoScriptXJS/src/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco/meadco-scriptxjs@1.5.2/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only

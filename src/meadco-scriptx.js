@@ -76,7 +76,7 @@
         SERVICE: 2
     }
 
-    scriptx.LibVersion = "1.5.0";
+    scriptx.LibVersion = "1.5.2";
     scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;

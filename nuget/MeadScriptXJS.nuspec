@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>MeadScriptXJS</id>
-        <version>1.5.1</version>
+        <version>1.5.2-Beta01</version>
         <title>MeadCo ScriptX JS Library</title>
         <authors>Pete Cole,MeadCo</authors>
         <owners>MeadCo</owners>
@@ -13,15 +13,16 @@
 
 The library works with both free and subscription ScriptX. Some convenience wrappers require a subscription.</description>
         <summary>A simple javascript wrapper library for use with MeadCo's ScriptX Add-on for Microsoft Internet Explorer and ScriptX Services for any browser, any device. Both free and licensed versions.</summary>
-        <releaseNotes>v1.5.1 - Support for licensing of ScriptXServices for Windows PC.</releaseNotes>
+        <releaseNotes>v1.5.2 - minified versions.</releaseNotes>
         <copyright>Copyright © 2013, 2017, Mead &amp; Co Ltd</copyright>
         <language>en-GB</language>
         <tags>MeadCo, ScriptX, Print</tags>
 		    <dependencies>
-			    <dependency id="MeadScriptXPrintHtml" version="1.4.8" />
+			    <dependency id="MeadScriptXPrintHtml" version="1.5.4" />
 		    </dependencies>            
     </metadata>
     <files>
-        <file src="..\src\meadco-scriptx.js" target="content\scripts\meadco-scriptx-1.5.1.js" />
+        <file src="..\src\meadco-scriptx.js" target="content\scripts\meadco-scriptxjs.js" />
+        <file dist="..\dist\meadco-scriptx.min.js" target="content\scripts\meadco-scriptxjs.min.js" />
     </files>
 </package>

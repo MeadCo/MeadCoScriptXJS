@@ -1,6 +1,6 @@
 {
   "name": "meadco-scriptxjs",
-  "version": "1.5.1",
+  "version": "1.5.2-Beta01",
   "description": "Wrapper library for working with MeadCo ScriptX add-on for Internet Explorer and ScriptX.Print Services",
   "main": "meadco-scriptx.js",
   "repository": {
@@ -9,15 +9,34 @@
   },
   "author": "Pete Cole <pcole@meadroid.com>",
   "license": "MIT",
-  "keywords": [ "meadco", "meadco-scriptx", "printing", "printing-html", "scriptx", "print" ],
+  "keywords": [
+    "meadco",
+    "meadco-scriptx",
+    "printing",
+    "printing-html",
+    "scriptx",
+    "print"
+  ],
   "bugs": {
     "url": "https://github.com/MeadCo/MeadCoScriptXJS/issues"
   },
   "homepage": "https://github.com/MeadCo/MeadCoScriptXJS",
   "files": [
-    "src/*.js"
+    "src/*.js",
+    "dist/*.js"
   ],
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.1",
+    "merge-stream": "^1.0.1",
+    "readable-stream": "^3.1.1"
+  },
   "dependencies": {
-    "scriptxprint-html": ">=1.4.8"
+    "scriptxprint-html": ">=1.5.4"
+  },
+  "publishConfig": {
+    "tag": "beta"
   }
 }
