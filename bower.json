@@ -24,11 +24,12 @@
   "ignore": [
     "**/.*",
     ".*",
-    "Nuget",
+    "nuget",
     "ScriptXJSTest",
     "packages",
     "*.json",
     "*.sln",
-    "*.md"
+    "*.md",
+    "*.js"
   ]
 }
