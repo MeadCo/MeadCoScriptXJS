@@ -74,7 +74,7 @@
         NONE: 0,
         ADDON: 1,
         SERVICE: 2
-    }
+    };
 
     scriptx.LibVersion = "1.5.2";
     scriptx.Connector = scriptx.Connection.NONE;
@@ -92,7 +92,7 @@
     // With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server
     //
     scriptx.Init = function () {
-        if (scriptx.Printing == null) {
+        if (scriptx.Printing === null) {
             console.log("scriptx.Init()");
             if (findFactory()) {
                 // if we are connected to the ScriptX.Print implementation
@@ -116,14 +116,14 @@
             }
         }
 
-        return scriptx.Printing != null;
-    }
+        return scriptx.Printing !== null;
+    };;
 
     scriptx.InitAsync = function () {
         var prom;
 
         console.log("scriptx.InitAsync()");
-        if (scriptx.Printing == null) {
+        if (scriptx.Printing === null) {
             console.log("unknown state ...");
             prom = new Promise(function (resolve, reject) {
                 console.log("looking for state ...");
@@ -153,7 +153,7 @@
 
         console.log("scriptx.InitAsync() returns promise");
         return prom;
-    }
+    };
 
     // InitWithVersion(strVersion)
     // Initialises the library and ensures that the installed version is at least strVersion where strVersion is a dotted version number (e.g. "7.1.2.65")
@@ -220,18 +220,18 @@
     // Preview the content of the *named* frame.
     scriptx.PreviewFrame = function (frame) {
         if (scriptx.Init())
-            scriptx.Printing.Preview(typeof (frame) == "string" ? (scriptx.IsVersion("6.5.439.30") ? frame : eval("window." + frame)) : frame);
+            scriptx.Printing.Preview(typeof (frame) === "string" ? (scriptx.IsVersion("6.5.439.30") ? frame : eval("window." + frame)) : frame);
     }
 
     // PrintFrame
     // Print the content of the *named* frame with optional prompting (no prompt in the internetzone requires a license)
     scriptx.PrintFrame = function (frame, bPrompt) {
         if (scriptx.Init())
-            return scriptx.Printing.Print(bPrompt, typeof (frame) == "string" ? (scriptx.IsVersion("6.5.439.30") ? frame : eval("window." + frame)) : frame);
+            return scriptx.Printing.Print(bPrompt, typeof (frame) === "string" ? (scriptx.IsVersion("6.5.439.30") ? frame : eval("window." + frame)) : frame);
         return false;
     }
 
-    scriptx.PrintFrame2 = function (frame,bPrompt) {
+    scriptx.PrintFrame2 = function (frame, bPrompt) {
         return new Promise(function (resolve, reject) {
             if (scriptx.Init()) {
                 if (scriptx.Connector === scriptx.Connection.SERVICE) {
@@ -240,13 +240,13 @@
                     });
 
                 } else {
-                    resolve(scriptx.PrintFrame(frame,bPrompt));
+                    resolve(scriptx.PrintFrame(frame, bPrompt));
                 }
             }
             else
                 reject();
         });
-    }
+    };
 
 
     // BackgroundPrintURL - requires license
@@ -258,30 +258,30 @@
     var jobIndex = 1;
     scriptx.BackgroundPrintURL = function (sUrl, bPrompt, fnCallback, data) {
         if (scriptx.Init()) {
-            if (typeof fnCallback == "undefined") {
+            if (typeof fnCallback === "undefined") {
                 fnCallback = progressMonitor;
             }
-            if (typeof data == "undefined") {
+            if (typeof data === "undefined") {
                 data = "Job " + jobIndex++;
             }
             return scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data);
         }
         return false;
-    }
+    };
 
     scriptx.BackgroundPrintURL2 = function (sUrl, bPrompt, fnCallback, data) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             if (scriptx.Init()) {
 
-                if (typeof fnCallback == "undefined") {
+                if (typeof fnCallback === "undefined") {
                     fnCallback = progressMonitor;
                 }
-                if (typeof data == "undefined") {
+                if (typeof data === "undefined") {
                     data = "Job " + jobIndex++;
                 }
 
                 if (scriptx.Connector === scriptx.Connection.SERVICE) {
-                    scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data, function(dlgOk) {
+                    scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data, function (dlgOk) {
                         resolve(dlgOk);
                     });
                 } else {
@@ -291,7 +291,7 @@
             else
                 reject();
         });
-    }
+    };
 
 
     // BackgroundPrintHTML - requires license
@@ -405,7 +405,9 @@
                 for (var i = 0; (name = scriptx.Printing.EnumPrinters(i)).length > 0 ; i++) {
                     plist.push(name);
                 }
-            } catch (e) { }
+            } catch (e) {
+                var x = 1;
+            }
         }
         return plist;
     }
@@ -424,24 +426,25 @@
             s = a[0] + "." + b[0] + "." + c[0] + "." + d[0];
         }
         catch (e) {
+            var x = 1;
         }
 
         return s;
-    }
+    };
 
     scriptx.ScriptXVersion = function () {
         return scriptx.GetComponentVersion("ScriptX.Factory");
-    }
+    };
 
     scriptx.SecurityManagerVersion = function () {
         return scriptx.GetComponentVersion("MeadCo.SecMgr");
-    }
+    };
 
     // IsComponentVersion
     // Returns true if the installed version of a COM component is at least the given version
     scriptx.IsComponentVersion = function (strComponentName, strVersionRequired) {
         return compareVersions(scriptx.GetComponentVersion(strComponentName), strVersionRequired);
-    }
+    };
 
     // Private implementation
 
@@ -450,7 +453,7 @@
     // hook up and instance of 'factory', either the add-on or polyfill.
     function findFactory(parameters) {
         var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
-        if (f && f.object != null) {
+        if (f && f.object !== null) {
             scriptx.Factory = f;
             scriptx.Utils = f.object;
             scriptx.Printing = f.printing;
@@ -469,7 +472,7 @@
         var b = v2.split(".");
         var i;
 
-        if (a.length != b.length)
+        if (a.length !== b.length)
             return false;
 
         for (i = 0; i < a.length; i++) {
@@ -561,16 +564,16 @@
         NONE: 0,
         ADDON: 1,
         SERVICE: 2
-    }
+    };
 
     licensing.LibVersion = "1.5.0";
     licensing.LicMgr = null;
     licensing.Connector = licensing.Connection.NONE;
 
     licensing.Init = function () {
-        if (licensing.LicMgr == null) {
+        if (licensing.LicMgr === null) {
             console.log("licensing.Init()");
-            if ( findSecMgr() ) {
+            if (findSecMgr()) {
                 // what have we connected to?
 
                 // if we are connected to the ScriptX.Print implementation
@@ -579,7 +582,7 @@
                     console.log("found secmgr services");
                     console
                         .warn("Synchronous initialisation is deprecated - please update to MeadCo.Licensing.InitAsync().");
-                    if ( !licensing.LicMgr.PolyfillInit() ) {
+                    if (!licensing.LicMgr.PolyfillInit()) {
                         console.log("**warning** polyfill failed.");
                         licensing.LicMgr = null;
                         licensing.Connector = licensing.Connection.NONE;
@@ -593,8 +596,8 @@
                 console.log("** Warning -- no secmgr **");
             }
         }
-        return licensing.LicMgr != null && typeof (licensing.LicMgr.result) != "undefined";
-    }
+        return licensing.LicMgr !== null && typeof (licensing.LicMgr.result) !== "undefined";
+    };
 
     licensing.InitAsync = function () {
         var prom;
@@ -602,7 +605,7 @@
         console.log("licensing.InitAsync()");
 
         return new Promise(function (resolve, reject) {
-            if (licensing.LicMgr == null) {
+            if (licensing.LicMgr === null) {
                 if (findSecMgr()) {
                     console.log("Look for polyfill");
                     if (typeof licensing.LicMgr.PolyfillInitAsync === "function") {
@@ -630,7 +633,7 @@
             }
         });
 
-    }
+    };
 
     // IsLicensed
     // Returns true if the document is licensed and advanced functionality will be available
@@ -643,7 +646,7 @@
 
         console.log("WARNING :: MeadCo.Licensing.Init() failed so IsLicensed will return false.");
         return false;
-    }
+    };
 
     // IsLicensedAsync
     // Returns a promise with a resolve of the loaded license detail
@@ -680,7 +683,7 @@
             var eIndex = -1;
             var msgSuffix = "";
 
-            if (licensing.LicMgr != null) {
+            if (licensing.LicMgr !== null) {
                 console.log("license result: " + this.LicMgr.result + " valid: " + this.LicMgr.validLicense);
 
                 switch (licensing.LicMgr.result) {
@@ -707,11 +710,11 @@
                         eIndex = 3;
                         break;
 
-                        // some other error, e.g. download failure - this will
-                        // have already been displayed to the user in an error box.
-                        // we could be here in the path given or not given cases if there
-                        // was an error such as reading the registry, though such errors
-                        // are unlikely.
+                    // some other error, e.g. download failure - this will
+                    // have already been displayed to the user in an error box.
+                    // we could be here in the path given or not given cases if there
+                    // was an error such as reading the registry, though such errors
+                    // are unlikely.
                     default:
                         eIndex = 4;
                         msgSuffix = "\nLicense manager reported: (" + this.LicMgr.result + ")";
@@ -728,7 +731,7 @@
         }
 
         return msg;
-    }
+    };
 
     // ReportError
     // Displays an alert box with details of any licensing error with any given message appended.
@@ -755,10 +758,10 @@
     // 
     function findSecMgr() {
         var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
-        if (l && l.object != null) {
+        if (l && l.object !== null) {
             licensing.LicMgr = l.object;
             console.log("Found a secmgr");
-            return licensing.LicMgr != null && typeof (licensing.LicMgr.result) != "undefined";
+            return licensing.LicMgr !== null && typeof (licensing.LicMgr.result) !== "undefined";
         }
         return false;
     }
