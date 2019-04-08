@@ -23,6 +23,6 @@ The library works with both free and subscription ScriptX. Some convenience wrap
     </metadata>
     <files>
         <file src="..\src\meadco-scriptx.js" target="content\scripts\meadco-scriptxjs.js" />
-        <file dist="..\dist\meadco-scriptx.min.js" target="content\scripts\meadco-scriptxjs.min.js" />
+        <file src="..\dist\meadco-scriptx.min.js" target="content\scripts\meadco-scriptxjs.min.js" />
     </files>
 </package>
