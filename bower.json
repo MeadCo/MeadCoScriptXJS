@@ -30,6 +30,6 @@
     "*.json",
     "*.sln",
     "*.md",
-    "*.js"
+    "gulpfile.js"
   ]
 }
