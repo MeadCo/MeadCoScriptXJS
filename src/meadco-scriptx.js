@@ -76,7 +76,7 @@
         SERVICE: 2
     };
 
-    scriptx.LibVersion = "1.5.4";
+    scriptx.LibVersion = "1.5.5";
     scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
@@ -672,7 +672,7 @@
 			"The license for this site not installed on this machine.",
 			"The license for this site has not been accepted by the user.",
 			"There was an error loading the license. ",
-            "Unable to connect to the ScriptX.Print subscription server"
+            "Unable to connect to ScriptX.Services license management."
 			);
 
     licensing.ErrorMessage = function () {

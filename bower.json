@@ -18,7 +18,7 @@
     "scriptx"
   ],
   "dependencies": {
-    "scriptxprint-html": "~1.5.4"
+    "scriptxprint-html": "~1.5.7"
   },
   "license": "MIT",
   "ignore": [
