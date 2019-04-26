@@ -25,7 +25,7 @@
 
     var ui = MeadCo.createNS("MeadCo.ScriptX.Print.UI");
 
-    ui.moduleversion = "1.4.8.0";
+    ui.moduleversion = "1.5.7.0";
 
     // MeadCo.ScriptX.Print.UI.AttachPrintAction(
     //  el - clickable html element
@@ -59,7 +59,9 @@
     });
 
     // MeadCo.ScriptX.Print.UI.PageSetup()
-    ui.PageSetup = function () {
+    ui.PageSetup = function (fnCallBack) {
+        var bAccepted = false;
+
         // page setup modal to attach to the page
         if (!$('#dlg-printoptions').length) {
             var dlg = '<style>' +
@@ -224,12 +226,6 @@
                     '<!-- /.modal -->';
             $('body').append(dlg);
 
-            $('#btn-saveoptions').click(function (ev) {
-                ev.preventDefault();
-                savePageSetup();
-                $('#dlg-printoptions').modal('hide');
-            });
-
             $('[name="fld-measure"]').on('change', function () {
                 switch ($(this).val()) {
                     case '2': // mm from inches
@@ -250,6 +246,24 @@
                 $('#dlg-printoptions [data-trigger="spinner"]').spinner();
             }
         }
+
+        // reattach click handler as callback function scoped variables may (probably will) have changed
+        $('#btn-saveoptions')
+            .off("click")
+            .on("click", function (ev) {
+                ev.preventDefault();
+                savePageSetup();
+                bAccepted = true;
+                $('#dlg-printoptions').modal('hide');
+            });
+
+        $("#dlg-printoptions")
+            .off('hidden.bs.modal')
+            .on('hidden.bs.modal', function () {
+                if (typeof fnCallBack === "function") {
+                    fnCallBack(bAccepted);
+                }
+            });
 
         var $dlg = $('#dlg-printoptions');
         var settings = MeadCo.ScriptX.Print.HTML.settings;
@@ -289,6 +303,7 @@
 
     // MeadCo.ScriptX.Print.UI.PrinterSettings()
     ui.PrinterSettings = function (fnCallBack) {
+        var bAccepted = false;
         // printer settings modal to attach to the page
         if (!$('#dlg-printersettings').length) {
             var dlg = '<style>' +
@@ -387,17 +402,15 @@
             .on("click", function (ev) {
                 ev.preventDefault();
                 savePrinterSettings();
+                bAccepted = true;
                 $('#dlg-printersettings').modal('hide');
-                if (typeof fnCallBack === "function") {
-                    fnCallBack(true);
-                }
             });
 
         $("#dlg-printersettings")
             .off('hidden.bs.modal')
             .on('hidden.bs.modal', function () {
                 if (typeof fnCallBack === "function") {
-                    fnCallBack(false);
+                    fnCallBack(bAccepted);
                 }
             });
 
@@ -526,7 +539,7 @@
         $el.val(((parseFloat($el.val()) * 2540) / 100).toFixed(2));
     }
 
-    // convery the current mm value in the control to inches
+    // convert the current mm value in the control to inches
     function convertAndDisplayMMtoInches($el) {
         $el.val(((parseFloat($el.val()) * 100) / 2540).toFixed(2));
     }
