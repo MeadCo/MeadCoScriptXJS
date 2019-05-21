@@ -11,10 +11,10 @@ As of version 1.2.0 this library facilitates being able to write the same code f
 [MeadCo's ScriptX Services](https://scriptxservices.meadroid.com) browser agnostic printing services in the cloud, on premise and on Windows PC. 
 The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo/ScriptX.Print.Client) is required for this to work.
 
-v1.5 Adds support for ScriptX Services on Windows PC.
+v1.5 Added support for ScriptX Services on Windows PC.
 
 ## Current version
-1.5.5
+1.6.0
 
 ## Packages
 
@@ -30,7 +30,7 @@ npm install meadco-scriptxjs --save
 ### CDN Use
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.5.5/dist/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.6.0/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only

@@ -83,7 +83,7 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.5.7.0";
+    var moduleversion = "1.5.8.0";
     var emulatedVersion = "8.2.0.0";
     var module = this;
 
@@ -870,6 +870,24 @@
             printApi.reportFeatureNotImplemented("onuserprintpreview", fn);
         },
 
+        DefaultPrinter: function () {
+            var i = 0;
+            var printerName = this.printer;
+
+            // optimise that the current printer is the default (often will be)
+            if (printerName !== "" && printApi.deviceSettingsFor(printerName).isDefault) {
+                return printerName;
+            }
+            else {
+                while ((printerName = this.EnumPrinters(i++)) !== "") {
+                    if (printApi.deviceSettingsFor(printerName).isDefault) {
+                        return printerName;
+                    }
+                }
+            }
+            return "";
+        },
+
         // duplicate to cope with COM objects were/are not case sensitive
         get CurrentPrinter() {
             return printApi.printerName;
@@ -1143,6 +1161,9 @@
 
         // helpers for wrapper MeadCoJS
         PolyfillInit: function () {
+            if (!MeadCo.ScriptX.Print.isConnected) {
+                printHtml.connect("", "");
+            }
             return MeadCo.ScriptX.Print.isConnected;
         },
 

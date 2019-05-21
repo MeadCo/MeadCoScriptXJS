@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Async Test Page :: Calling ScriptX.Print Service";
+    ViewBag.Title = "Sync Test Page :: Calling ScriptX.Print Service";
 }
 
 <div class="jumbotron">
@@ -29,11 +29,12 @@
 @section scripts
 {
     <script src="~/Scripts/MeadCo.ScriptX/meadco-core.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxlicense.js" data-meadco-subscriptionserver="https://localhost:44315/api/v1/licensing" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}">></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprintlicensing.js" data-meadco-server="https://scriptxservices.meadroid.com/" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}">></script>
     <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>  
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-printhtmlserver="https://localhost:44315/api/v1/printhtml" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
-    
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-server="https://scriptxservices.meadroid.com/" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-secmgr.js"></script>
+
     <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
 
     <script type="text/javascript">
@@ -43,44 +44,43 @@
             p.footer = "Footer&b&p of &P";
         }
 
-        function callback()
-        {
+    function callback() {
 
-        }
+    }
 
-        // do not use $(function() {}) as the license may still be loading.
-        $(window).on("load", function () {
-            console.log("starting window.onload");
-            $("#libVersion").text(MeadCo.LibVersion);
-            if ( MeadCo.ScriptX.Init() ) {
-                console.log("Init succeeded to: " + MeadCo.ScriptX.Connector);
-                $("span[data-purpose='sxversion']").each(function(index) {
-                    $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger");
-                });
-                $("span[data-purpose='libversion']").each(function(index) {
-                    $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger");
-                });
+    // do not use $(function() {}) as the license may still be loading.
+    $(window).on("load", function () {
+        console.log("starting window.onload");
+        $("#libVersion").text(MeadCo.LibVersion);
+        if (MeadCo.ScriptX.Init()) {
+            console.log("Init succeeded to: " + MeadCo.ScriptX.Connector);
+            $("span[data-purpose='sxversion']").each(function (index) {
+                $(this).text(MeadCo.ScriptX.Version()).addClass("text-success").removeClass("text-danger");
+            });
+            $("span[data-purpose='libversion']").each(function (index) {
+                $(this).text(MeadCo.ScriptX.LibVersion).addClass("text-success").removeClass("text-danger");
+            });
 
-                if (MeadCo.Licensing.IsLicensed()) {
-                    $("#licCheck").text("VALID: [" + MeadCo.Licensing.LicMgr.License.company + "]").addClass("text-success").removeClass("text-danger");
-                } else {
-                    $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
-                }
-
-                $("#btn-test1").click(function() {
-                    setSimpleFormatting();
-                    MeadCo.ScriptX.PreviewPage();
-                });
-
-                $("#btn-test2").click(function() {
-                    setSimpleFormatting();
-                    MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
-                });
+            if (MeadCo.Licensing.IsLicensed()) {
+                $("#licCheck").text("VALID: [" + MeadCo.Licensing.LicMgr.License.company + "]").addClass("text-success").removeClass("text-danger");
+            } else {
+                $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
             }
-            else {
-                console.warn("Warning :: Failed to initialise scriptx, is it installed?");
-            };
-        });
+
+            $("#btn-test1").click(function () {
+                setSimpleFormatting();
+                MeadCo.ScriptX.PreviewPage();
+            });
+
+            $("#btn-test2").click(function () {
+                setSimpleFormatting();
+                MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
+            });
+        }
+        else {
+            console.warn("Warning :: Failed to initialise scriptx, is it installed?");
+        };
+    });
     </script>
 
 }

@@ -20,7 +20,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.PDF', function () {
 
-    var moduleversion = "1.5.7.0";
+    var moduleversion = "1.5.8.0";
 
     /**
      * Enum to describe the orientation of the paper

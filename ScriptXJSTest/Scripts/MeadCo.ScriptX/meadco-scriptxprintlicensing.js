@@ -24,7 +24,7 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.Licensing', function () {
-    var moduleversion = "1.5.7.0";
+    var moduleversion = "1.5.8.0";
     var apiLocation = "v1/licensing";
 
     var server = ""; // url to the server, server is CORS restricted

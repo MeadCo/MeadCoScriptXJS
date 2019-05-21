@@ -76,7 +76,7 @@
         SERVICE: 2
     };
 
-    scriptx.LibVersion = "1.5.5";
+    scriptx.LibVersion = "1.6.0";
     scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
@@ -117,7 +117,7 @@
         }
 
         return scriptx.Printing !== null;
-    };;
+    };
 
     scriptx.InitAsync = function () {
         var prom;
@@ -166,19 +166,42 @@
                 alert("ScriptX v" + strVersion + " or later is required.\nYou are using a previous version and errors may occur.");
         }
         return bok;
-    }
+    };
 
     // IsVersion
     // Returns true if the installed version is at least strVersion where strVersion is a dotted version number (e.g. "7.1.2.65")
     scriptx.IsVersion = function (strVersion) {
         return scriptx.IsComponentVersion("ScriptX.Factory", strVersion);
-    }
+    };
 
     // Version
     // Returns the installed version number of ScriptX
     scriptx.Version = function () {
         return scriptx.GetComponentVersion("ScriptX.Factory");
-    }
+    };
+
+    // IsServices
+    // Returns true if ScriptX.Services is/will be used 
+    scriptx.IsServices = function () {
+        var connection = scriptx.Connector;
+        // If init() not yet called, try a guess. 
+        //
+        // This relies on the Add-on and the .services client scripts are all included before this script.
+        // But, we do not want to perform a full init here because connection data might not have been specified
+        if (connection === scriptx.Connection.NONE) {
+            if (findFactory()) {
+                connection = typeof scriptx.Printing.PolyfillInit === "function" ? scriptx.Connection.SERVICE : scriptx.Connection.ADDON;
+                // reset so init can complete
+                scriptx.Printing = null;
+            }
+            else {
+                // assume service will be used, for sure the Add.on isnt here
+                connection = scriptx.Connection.SERVICE;
+            }
+        }
+
+        return connection === scriptx.Connection.SERVICE;
+    };
 
     // Print Page/frame - these will work with both add-on and service
     // but return value will be wrong for service since dialogs are async
@@ -189,13 +212,13 @@
         if (scriptx.Init())
             return scriptx.Printing.Print(bPrompt);
         return false;
-    }
+    };
 
     scriptx.PrintPage2 = function (bPrompt) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             if (scriptx.Init()) {
                 if (scriptx.Connector === scriptx.Connection.SERVICE) {
-                    scriptx.Printing.Print(bPrompt,null,function (dlgOk) {
+                    scriptx.Printing.Print(bPrompt, null, function (dlgOk) {
                         resolve(dlgOk);
                     });
 
@@ -203,10 +226,10 @@
                     resolve(scriptx.Printing.Print(bPrompt));
                 }
             }
-            else 
+            else
                 reject();
         });
-    }
+    };
 
     // PreviewPage
     // Preview the current document
@@ -214,14 +237,14 @@
         if (scriptx.Init()) {
             scriptx.Printing.Preview();
         }
-    }
+    };
 
     // PreviewFrame
     // Preview the content of the *named* frame.
     scriptx.PreviewFrame = function (frame) {
         if (scriptx.Init())
             scriptx.Printing.Preview(typeof (frame) === "string" ? (scriptx.IsVersion("6.5.439.30") ? frame : eval("window." + frame)) : frame);
-    }
+    };
 
     // PrintFrame
     // Print the content of the *named* frame with optional prompting (no prompt in the internetzone requires a license)
@@ -229,7 +252,7 @@
         if (scriptx.Init())
             return scriptx.Printing.Print(bPrompt, typeof (frame) === "string" ? (scriptx.IsVersion("6.5.439.30") ? frame : eval("window." + frame)) : frame);
         return false;
-    }
+    };
 
     scriptx.PrintFrame2 = function (frame, bPrompt) {
         return new Promise(function (resolve, reject) {
@@ -299,7 +322,7 @@
     // All resource references in the HTML must be fully qualified unless a base element is included.
     scriptx.BackgroundPrintHTML = function (sHtml, fnCallback, data) {
         return scriptx.BackgroundPrintURL("html://" + sHtml, false, fnCallback, data);
-    }
+    };
 
     // Page/Print Setup - these will work with both add-on and service
     // but return value will be wrong for service since dialogs are async
@@ -308,13 +331,13 @@
         if (scriptx.Init())
             return scriptx.Printing.PageSetup();
         return false;
-    }
+    };
 
     scriptx.PrintSetup = function () {
         if (scriptx.Init())
             return scriptx.Printing.PrintSetup();
         return false;
-    }
+    };
 
     // Promise versions to work with async dialogs with service
     // These work with both add-on and service.
@@ -341,7 +364,7 @@
             else
                 reject();
         });
-    }
+    };
 
     scriptx.PrintSetup2 = function () {
         return new Promise(function (resolve, reject) {
@@ -364,7 +387,7 @@
             else
                 reject();
         });
-    }
+    };
 
 
     // WaitForSpoolingComplete 
@@ -385,14 +408,14 @@
             }, 1);
         });
 
-    }
+    };
 
     // HasOrientation
     // Returns true if the 'orientation' property is available, otherwise the 'portrait' property must be used.
     //
     scriptx.HasOrientation = function () {
         return scriptx.IsComponentVersion("ScriptX.Factory", "7.0.0.1");
-    }
+    };
 
     // GetAvailablePrinters - requires license
     // returns an array of the names of the printers on the system
@@ -402,7 +425,7 @@
         var name;
         if (scriptx.Init()) {
             try {
-                for (var i = 0; (name = scriptx.Printing.EnumPrinters(i)).length > 0 ; i++) {
+                for (var i = 0; (name = scriptx.Printing.EnumPrinters(i)).length > 0; i++) {
                     plist.push(name);
                 }
             } catch (e) {
@@ -410,7 +433,7 @@
             }
         }
         return plist;
-    }
+    };
 
     // GetComponentVersion
     // returns the version number of a COM component - compatible with v7.0 and earlier implementation. (ScriptX v7.1 has an easier to use implementation)
@@ -453,7 +476,7 @@
     // hook up and instance of 'factory', either the add-on or polyfill.
     function findFactory(parameters) {
         var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
-        if (f && f.object !== null) {
+        if (f && typeof f.object !== "undefined" && f.object !== null) {
             scriptx.Factory = f;
             scriptx.Utils = f.object;
             scriptx.Printing = f.printing;
@@ -504,7 +527,7 @@
     }
 
     // progressMonitor
-    // callback from BatchPrintPDF
+    // callback from PrintHTMLEx / BatchPrintPDFEx
     function progressMonitor(status, statusData, callbackData) {
         switch (status) {
             case 1:
@@ -566,7 +589,7 @@
         SERVICE: 2
     };
 
-    licensing.LibVersion = "1.5.0";
+    licensing.LibVersion = "1.6.0";
     licensing.LicMgr = null;
     licensing.Connector = licensing.Connection.NONE;
 
@@ -654,7 +677,7 @@
     licensing.IsLicensedAsync = function () {
         return new Promise(function (resolve, reject) {
             licensing.InitAsync()
-                .then(function() {
+                .then(function () {
                     if (typeof licensing.LicMgr.GetLicenseAsync === "function") {
                         licensing.LicMgr.GetLicenseAsync(resolve, reject);
                     } else {
@@ -668,12 +691,12 @@
     // ErrorMessage
     // returns the error message that describes why licensing failed. returns emoty string if there was no error.
     var errorLicenseMsgs = new Array("Unable to locate the MeadCo License Manager object - the component may not be installed.",
-			"The license for this site is not valid.",
-			"The license for this site not installed on this machine.",
-			"The license for this site has not been accepted by the user.",
-			"There was an error loading the license. ",
-            "Unable to connect to ScriptX.Services license management."
-			);
+        "The license for this site is not valid.",
+        "The license for this site not installed on this machine.",
+        "The license for this site has not been accepted by the user.",
+        "There was an error loading the license. ",
+        "Unable to connect to ScriptX.Services license management."
+    );
 
     licensing.ErrorMessage = function () {
         var msg = "";
@@ -758,10 +781,10 @@
     // 
     function findSecMgr() {
         var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
-        if (l && l.object !== null) {
+        if (l && l.object !== null && typeof l.object !== "undefined") {
             licensing.LicMgr = l.object;
-            console.log("Found a secmgr");
-            return licensing.LicMgr !== null && typeof (licensing.LicMgr.result) !== "undefined";
+            console.log("Found a secmgr: " + (typeof licensing.LicMgr.result !== "undefined"));
+            return typeof (licensing.LicMgr.result) !== "undefined";
         }
         return false;
     }

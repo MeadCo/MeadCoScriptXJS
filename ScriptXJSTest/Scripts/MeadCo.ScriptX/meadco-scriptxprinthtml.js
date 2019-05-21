@@ -19,7 +19,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "1.5.7.0";
+    var moduleversion = "1.5.8.0";
 
     /**
      * Enum to describe the units used on measurements - please use MeadCo.ScriptX.Print.MeasurementUnits instead
