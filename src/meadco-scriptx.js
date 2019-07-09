@@ -595,7 +595,7 @@
         SERVICE: 2
     };
 
-    licensing.LibVersion = "1.6.0";
+    licensing.LibVersion = "1.7.0";
     licensing.LicMgr = null;
     licensing.Connector = licensing.Connection.NONE;
 

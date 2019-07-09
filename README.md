@@ -14,7 +14,7 @@ The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo
 v1.5 Added support for ScriptX Services on Windows PC.
 
 ## Current version
-1.6.0
+1.7.0
 
 ## Packages
 
@@ -30,7 +30,7 @@ npm install meadco-scriptxjs --save
 ### CDN Use
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.6.0/dist/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.7.0/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only
