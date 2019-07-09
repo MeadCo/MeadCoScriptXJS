@@ -19,7 +19,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print', function () {
     // module version and the api we are coded for
-    var version = "1.5.8.0";
+    var version = "1.5.9.0";
     var htmlApiLocation = "v1/printHtml";
     var pdfApiLocation = "v1/printPdf";
 
@@ -27,15 +27,16 @@
     var printerName = "";
 
     /**
-     * Enum to describe the units used on measurements 
+     * Enum to describe the units used on measurements. Please be aware that (sadly) these enum values do *not* match  
+     * the values by the MeadCo ScriptX COM Servers. Please use MeadCo.ScriptX.MeasurementUnits (declared in MeadCoScriptJS) form compatibility
      *
      * @memberof MeadCoScriptXPrint
      * @typedef {number} MeasurementUnits
      * @enum {MeasurementUnits}
      * @readonly
      * @property {number} DEFAULT 0 use the default at the print server
-     * @property {number} MM 1 millimeters
-     * @property {number} INCHES 2 
+     * @property {number} INCHES 1 
+     * @property {number} MM 2 millimeters
      */
     var enumMeasurementUnits = {
         DEFAULT: 0,
@@ -295,7 +296,7 @@
         var devInfo;
 
         if (content === null || typeof content === "undefined" || (typeof content === "string" && content.length === 0)) {
-            MeadCo.ScriptX.Print.reportError("Request to print no content - access denied?");          
+            MeadCo.ScriptX.Print.reportError("Request to print no content - access denied?");
             if (typeof fnDone === "function") {
                 fnDone("Request to print no content");
             }
@@ -318,70 +319,70 @@
         };
 
         var serverApi = MeadCo.makeApiEndPoint(server, htmlApiLocation);
-        return printAtServer(serverApi,requestData,
-        {
-            fail: function (jqXhr, textStatus, errorThrown) {
-                var err = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.printHtmlAtServer", jqXhr, textStatus, errorThrown);
-                progress(requestData, enumPrintStatus.ERROR, err);
-                MeadCo.ScriptX.Print.reportError(err);
-                if (typeof fnDone === "function") {
-                    fnDone("Server error");
+        return printAtServer(serverApi, requestData,
+            {
+                fail: function (jqXhr, textStatus, errorThrown) {
+                    var err = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.printHtmlAtServer", jqXhr, textStatus, errorThrown);
+                    progress(requestData, enumPrintStatus.ERROR, err);
+                    MeadCo.ScriptX.Print.reportError(err);
+                    if (typeof fnDone === "function") {
+                        fnDone("Server error");
+                    }
+                },
+
+                queuedToFile: function (data) {
+                    MeadCo.log("default handler on queued to file response");
+                    progress(requestData, enumPrintStatus.QUEUED);
+                    monitorJob(serverApi, requestData, data.jobIdentifier,
+                        -1,
+                        function (data) {
+                            if (data !== null) {
+                                MeadCo.log("Will download printed file");
+                                progress(requestData, enumPrintStatus.COMPLETED);
+                                window.open(server + "/download/" + data.jobIdentifier, "_self");
+                            }
+
+                            if (typeof fnDone === "function") {
+                                fnDone(data === null ? "Server error" : null);
+                            }
+                        });
+                },
+
+                queuedToDevice: function (data) {
+                    MeadCo.log("print was queued to device");
+                    progress(requestData, enumPrintStatus.QUEUED);
+                    monitorJob(serverApi, requestData, data.jobIdentifier,
+                        -1,
+                        function (data) {
+                            if (data !== null) {
+                                progress(requestData, enumPrintStatus.COMPLETED);
+                            }
+
+                            if (typeof fnDone === "function") {
+                                fnDone(data === null ? "Server error" : null);
+                            }
+                        });
+                },
+
+                softError: function (data) {
+                    progress(requestData, enumPrintStatus.ERROR, data.message);
+                    MeadCo.ScriptX.Print.reportError(data.message);
+                    MeadCo.log("print has soft error");
+                    removeJob(data.jobIdentifier);
+                    if (typeof fnDone === "function") {
+                        MeadCo.log("Call fnDone");
+                        fnDone("Server error");
+                    }
+                },
+
+                ok: function (data) {
+                    progress(requestData, enumPrintStatus.COMPLETED);
+                    MeadCo.log("printed ok, no further information");
+                    if (typeof fnDone === "function") {
+                        fnDone(null);
+                    }
                 }
-            },
-
-            queuedToFile: function (data) {
-                MeadCo.log("default handler on queued to file response");
-                progress(requestData, enumPrintStatus.QUEUED);
-                monitorJob(serverApi,requestData, data.jobIdentifier,
-                    -1,
-                    function (data) {
-                        if (data !== null) {
-                            MeadCo.log("Will download printed file");
-                            progress(requestData, enumPrintStatus.COMPLETED);
-                            window.open(server + "/download/" + data.jobIdentifier, "_self");
-                        }
-
-                        if (typeof fnDone === "function") {
-                            fnDone(data === null ? "Server error" : null);
-                        }
-                    });
-            },
-
-            queuedToDevice: function (data) {
-                MeadCo.log("print was queued to device");
-                progress(requestData, enumPrintStatus.QUEUED);
-                monitorJob(serverApi,requestData, data.jobIdentifier,
-                    -1,
-                    function (data) {
-                        if (data !== null) {
-                            progress(requestData, enumPrintStatus.COMPLETED);
-                        }
-
-                        if (typeof fnDone === "function") {
-                            fnDone(data === null ? "Server error" : null);
-                        }
-                    });
-            },
-
-            softError: function (data) {
-                progress(requestData, enumPrintStatus.ERROR, data.message);
-                MeadCo.ScriptX.Print.reportError(data.message);
-                MeadCo.log("print has soft error");
-                removeJob(data.jobIdentifier);
-                if (typeof fnDone === "function") {
-                    MeadCo.log("Call fnDone");
-                    fnDone("Server error");
-                }
-            },
-
-            ok: function (data) {
-                progress(requestData, enumPrintStatus.COMPLETED);
-                MeadCo.log("printed ok, no further information");
-                if (typeof fnDone === "function") {
-                    fnDone(null);
-                }
-            }
-        });
+            });
     }
 
     /**
@@ -428,7 +429,7 @@
 
         var serverApi = MeadCo.makeApiEndPoint(server, pdfApiLocation);
 
-        return printAtServer(serverApi,requestData,
+        return printAtServer(serverApi, requestData,
             {
                 fail: function (jqXhr, textStatus, errorThrown) {
                     var err = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.printPdfAtServer", jqXhr, textStatus, errorThrown);
@@ -442,7 +443,7 @@
                 queuedToFile: function (data) {
                     MeadCo.log("default handler on queued to file response");
                     progress(requestData, enumPrintStatus.QUEUED);
-                    monitorJob(serverApi,requestData, data.jobIdentifier,
+                    monitorJob(serverApi, requestData, data.jobIdentifier,
                         -1,
                         function (data) {
                             if (data !== null) {
@@ -460,7 +461,7 @@
                 queuedToDevice: function (data) {
                     MeadCo.log("print was queued to device");
                     progress(requestData, enumPrintStatus.QUEUED);
-                    monitorJob(serverApi,requestData, data.jobIdentifier,
+                    monitorJob(serverApi, requestData, data.jobIdentifier,
                         -1,
                         function (data) {
                             if (data !== null) {
@@ -547,7 +548,7 @@
                         resolve(data);
                     })
                     .fail(function (jqXhr, textStatus, errorThrown) {
-                        errorThrown = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.testServerConnection:",jqXhr, textStatus, errorThrown);
+                        errorThrown = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.testServerConnection:", jqXhr, textStatus, errorThrown);
                         if (typeof reject === "function")
                             reject(errorThrown);
                     });
@@ -692,7 +693,7 @@
      * @param {function({object})} functionComplete function to call when job is complete. Argument is null on error, the data returned from the status call on success,.
      * @private
      */
-    function monitorJob(serverAndApi,requestData, jobId, timeOut, functionComplete) {
+    function monitorJob(serverAndApi, requestData, jobId, timeOut, functionComplete) {
         MeadCo.log("monitorJob: " + jobId);
         var counter = 0;
         var interval = 1000;
@@ -932,8 +933,8 @@
                         if (!syncInit) {
                             MeadCo.log("Async connectlite...");
                             licenseApi.connectLite(server, data.meadcoLicense,
-                                    data.meadcoLicenseRevision,
-                                    data.meadcoLicensePath);
+                                data.meadcoLicenseRevision,
+                                data.meadcoLicensePath);
                             printApi.connectLite(server, data.meadcoLicense);
                         } else {
                             console
@@ -941,7 +942,7 @@
                             licenseApi.connect(server, data.meadcoLicense);
                             if (typeof data.meadcoLicensePath !== "undefined" &&
                                 typeof data
-                                .meadcoLicenseRevision !==
+                                    .meadcoLicenseRevision !==
                                 "undefined") { // if these are not defined then you must use meadco-secmgr.js
                                 licenseApi.apply(data.meadcoLicense,
                                     data.meadcoLicenseRevision,
@@ -990,7 +991,7 @@
         ErrorAction: enumErrorAction,
 
         CollateOptions: enumCollateOptions,
-        DuplexOptions: enumDuplexOptions,   
+        DuplexOptions: enumDuplexOptions,
         MeasurementUnits: enumMeasurementUnits,
 
         /**

@@ -19,10 +19,10 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "1.5.8.0";
+    var moduleversion = "1.5.9.0";
 
     /**
-     * Enum to describe the units used on measurements - please use MeadCo.ScriptX.Print.MeasurementUnits instead
+     * Enum to describe the units used on measurements - **NOTE** please use MeadCo.ScriptX.Print.MeasurementUnits instead
      *
      * @memberof MeadCoScriptXPrintHTML
      * @typedef {number} PageMarginUnits
@@ -30,8 +30,8 @@
      * @enum {PageMarginUnits}
      * @readonly
      * @property {number} DEFAULT 0 use the default at the print server
-     * @property {number} MM 1 millimeters
-     * @property {number} INCHES 2 
+     * @property {number} INCHES 1 
+     * @property {number} MM 2 millimeters
      */
     var mPageMarginUnits = {
         DEFAULT: 0,
@@ -132,8 +132,8 @@
         headerFooterFont: null,
         viewScale: 0,
         locale: (navigator.languages && navigator.languages.length)
-        ? navigator.languages[0]
-        : navigator.language,
+            ? navigator.languages[0]
+            : navigator.language,
         timezoneOffset: 0,
         shortDateFormat: "",
         longDateFormat: "",
@@ -155,7 +155,7 @@
         jobTitle: "",
         documentUrl: document.URL
     };
-    
+
     var iSettings =
     {
         set header(str) {
@@ -378,7 +378,7 @@
     };
 
     function updateSettingsWithServerDefaults(sDefaults) {
-        if ( sDefaults !== null ) {
+        if (sDefaults !== null) {
             settingsCache = sDefaults;
             settingsCache.locale = (navigator.languages && navigator.languages.length)
                 ? navigator.languages[0]
@@ -441,9 +441,9 @@
         if (!$("head>base", $html).length) {
             MeadCo.log("No base element, fabricating one to: " + getBaseHref());
             var base = $("<base>",
-            {
-                href: getBaseHref()
-            });
+                {
+                    href: getBaseHref()
+                });
             $("head", $html).prepend(base);
         }
 
@@ -495,7 +495,7 @@
     // public API
     return {
         PageMarginUnits: mPageMarginUnits,
-        PageOrientation: mPageOrientation, 
+        PageOrientation: mPageOrientation,
         PrintingPasses: mPrintingPass,
 
         /**
@@ -552,65 +552,65 @@
          * @param {string} sFrame the name of the frame
          * @returns {string} the current content in the frame window document as html
          * */
-        frameContentToPrint : function(sFrame) {
+        frameContentToPrint: function (sFrame) {
             return frameContent(sFrame);
         },
 
-       /**
-        * Print the complete current document in the window using the settings made by property updates before this function is called.
-        *
-        * @memberof MeadCoScriptXPrintHTML    
-        * @function printDocument
-        * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
-        * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
-        * @param {any} data object to give pass to fnCallback
-        * @returns {boolean} - true if a print was started (otherwise an error will be thrown)
-        */
+        /**
+         * Print the complete current document in the window using the settings made by property updates before this function is called.
+         *
+         * @memberof MeadCoScriptXPrintHTML    
+         * @function printDocument
+         * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
+         * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
+         * @param {any} data object to give pass to fnCallback
+         * @returns {boolean} - true if a print was started (otherwise an error will be thrown)
+         */
         printDocument: function (fnCallOnDone, fnCallback, data) {
             return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERHTML, documentContent(), document.title, fnCallOnDone, fnCallback, data);
         },
 
-       /**
-        * Print the complete current document in the named iframe using the settings made by property updates before this function is called.
-        *
-        * @memberof MeadCoScriptXPrintHTML    
-        * @function printFrame
-        * @param {string} sFrame the name of the iframe whose content is to be printed.
-        * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
-        * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
-        * @param {any} data object to give pass to fnCallback
-        * @return {boolean} - true if a print was started (otherwise an error will be thrown)
-        */
+        /**
+         * Print the complete current document in the named iframe using the settings made by property updates before this function is called.
+         *
+         * @memberof MeadCoScriptXPrintHTML    
+         * @function printFrame
+         * @param {string} sFrame the name of the iframe whose content is to be printed.
+         * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
+         * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
+         * @param {any} data object to give pass to fnCallback
+         * @return {boolean} - true if a print was started (otherwise an error will be thrown)
+         */
         printFrame: function (sFrame, fnCallOnDone, fnCallback, data) {
             return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.INNERHTML, frameContent(sFrame), document.title, fnCallOnDone, fnCallback, data);
         },
 
-       /**
-        * Print the document obtained by downloading the given url using the settings made by property updates before this function is called.
-        *
-        * @memberof MeadCoScriptXPrintHTML    
-        * @function printFromUrl
-        * @param {string} sUrl the fully qualified url to the document to be printed.
-        * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
-        * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
-        * @param {any} data object to give pass to fnCallback
-        * @return {boolean} - true if a print was started (otherwise an error will be thrown)
-        */
+        /**
+         * Print the document obtained by downloading the given url using the settings made by property updates before this function is called.
+         *
+         * @memberof MeadCoScriptXPrintHTML    
+         * @function printFromUrl
+         * @param {string} sUrl the fully qualified url to the document to be printed.
+         * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
+         * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
+         * @param {any} data object to give pass to fnCallback
+         * @return {boolean} - true if a print was started (otherwise an error will be thrown)
+         */
         printFromUrl: function (sUrl, fnCallOnDone, fnCallback, data) {
             return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.URL, sUrl, sUrl, fnCallOnDone, fnCallback, data);
         },
 
-       /**
-        * Print the fragment of html using the settings made by property updates before this function is called.
-        *
-        * @memberof MeadCoScriptXPrintHTML    
-        * @function printHtml
-        * @param {string} sHtml fragment/snippet of html to print, must be complete HTML document.
-        * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
-        * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
-        * @param {any} data object to give pass to fnCallback
-        * @return {boolean} - true if a print was started (otherwise an error will be thrown)
-        */
+        /**
+         * Print the fragment of html using the settings made by property updates before this function is called.
+         *
+         * @memberof MeadCoScriptXPrintHTML    
+         * @function printHtml
+         * @param {string} sHtml fragment/snippet of html to print, must be complete HTML document.
+         * @param {function({string})} fnCallOnDone function to call when printing complete (and output returned), arg is null on no error, else error message.
+         * @param {function(status,sInformation,data)} fnCallback function to call when job status is updated
+         * @param {any} data object to give pass to fnCallback
+         * @return {boolean} - true if a print was started (otherwise an error will be thrown)
+         */
         printHtml: function (sHtml, fnCallOnDone, fnCallback, data) {
             return printHtmlAtServer(MeadCo.ScriptX.Print.ContentType.HTML, sHtml, "HTML snippet", fnCallOnDone, fnCallback, data);
         },
@@ -680,14 +680,13 @@
             MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=" + settingsCache.page.units, true,
                 function (data) {
                     MeadCo.log("got default html settings");
-                    if ( updateSettingsWithServerDefaults(data.settings) ) {
+                    if (updateSettingsWithServerDefaults(data.settings)) {
                         if (data.device !== null) {
                             MeadCo.ScriptX.Print.connectDeviceAndPrinters(data.device, data.availablePrinters);
                         }
-                        resolve();
+                        resolve(2);
                     }
-                    else 
-                    {
+                    else {
                         reject("Server did not respond with valid settings");
                     }
                 }, reject);

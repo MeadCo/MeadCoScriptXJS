@@ -83,7 +83,7 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.5.8.0";
+    var moduleversion = "1.5.9.0";
     var emulatedVersion = "8.2.0.0";
     var module = this;
 
@@ -1169,7 +1169,7 @@
 
         PolyfillInitAsync: function (resolve, reject) {
             if (MeadCo.ScriptX.Print.isConnected) {
-                resolve();
+                resolve(2);
             } else {
                 printHtml.connectAsync("", "", resolve, reject);
             }

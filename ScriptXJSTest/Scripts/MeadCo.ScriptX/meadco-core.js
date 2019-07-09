@@ -54,7 +54,7 @@
 
     // protected API
     var module = this;
-    var version = "1.5.8.0";
+    var version = "1.5.9.0";
     var bLog = false;
 
     var log = function (str) {

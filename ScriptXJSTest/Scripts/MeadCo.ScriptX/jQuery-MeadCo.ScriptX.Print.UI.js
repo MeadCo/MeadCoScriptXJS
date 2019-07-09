@@ -25,7 +25,7 @@
 
     var ui = MeadCo.createNS("MeadCo.ScriptX.Print.UI");
 
-    ui.moduleversion = "1.5.8.0";
+    ui.moduleversion = "1.5.9.0";
 
     // MeadCo.ScriptX.Print.UI.AttachPrintAction(
     //  el - clickable html element
@@ -65,165 +65,165 @@
         // page setup modal to attach to the page
         if (!$('#dlg-printoptions').length) {
             var dlg = '<style>' +
-                        '.modal-dialog legend { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; } ' +
-                        '.modal-dialog fieldset { padding-bottom: 0px; } ' +
-                        '.modal-dialog .options-modal-body { padding-bottom: 0px !important; } ' +
-                        '.modal-dialog .checkbox2 {  padding-top: 0px !important; min-height: 0px !important; } ' +
-                        '.modal-dialog .radio2 { padding-top: 0px !important; min-height: 0px !important; } ' +
-                    '</style>' +
-                    '<div class="modal fade" id="dlg-printoptions">' +
-                        '<div class="modal-dialog">' +
-                            '<div class="modal-content">' +
-                                '<div class="modal-header">' +
-                                    '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                                    '<h4 class="modal-title">Page setup</h4>' +
-                                '</div>' +
-                                '<div class="modal-body form-horizontal options-modal-body">' +
-                                    '<fieldset>' +
-                                        '<legend>Paper</legend>' +
-                                        '<div class="form-group">' +
-                                            '<label class="col-md-4 control-label" for="fld-papersize">Size</label>' +
-                                            '<select class="' + sClass + ' col-md-8 show-tick show-menu-arrow" id="fld-papersize">' +
-                                            '</select>' +
-                                        '</div>' +
-                                        '<div class="form-group">' +
-                                            '<div class="col-md-offset-4 col-md-8">' +
-                                                '<div class="radio2">' +
-                                                    '<label class="radio-inline">' +
-                                                        '<input type="radio" value="2" id="fld-portrait" name="fld-orientation">' +
-                                                        ' Portrait' +
-                                                    '</label>' +
-                                                    '<label class="radio-inline">' +
-                                                        '<input type="radio" value="1" id="fld-landscape" name="fld-orientation">' +
-                                                        ' Landscape' +
-                                                    '</label>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="form-group">' +
-                                            '<div class="col-md-offset-4 col-md-8">' +
-                                                '<div class="checkbox2">' +
-                                                    '<label class="checkbox-inline">' +
-                                                        '<input type="checkbox" name="fld-shrinktofit" id="fld-shrinktofit">' +
-                                                        ' Shrink to fit' +
-                                                    '</label>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="form-group">' +
-                                            '<div class="col-md-offset-4 col-md-8">' +
-                                                '<div class="checkbox2">' +
-                                                    '<label class="checkbox-inline">' +
-                                                        '<input type="checkbox" name="fld-printbackground" id="fld-printbackground">' +
-                                                        ' Print background colour and images' +
-                                                    '</label>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</fieldset>' +
-                                    '<fieldset>' +
-                                        '<legend>Margins</legend>' +
-                                        '<div class="form-group">' +
-                                            '<div class="col-md-offset-4 col-md-8">' +
-                                                '<div class="radio2">' +
-                                                    '<label class="radio-inline">' +
-                                                        '<input type="radio" value="2" id="fld-millimetres" name="fld-measure">' +
-                                                        ' Millimetres' +
-                                                    '</label>' +
-                                                    '<label class="radio-inline">' +
-                                                        '<input type="radio" value="1" id="fld-inches" name="fld-measure">' +
-                                                        ' Inches' +
-                                                    '</label>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="form-group">' +
-                                            '<label class="control-label col-md-4">Left</label>' +
-                                            '<div class="col-md-3">' +
-                                                '<div class="input-group spinner" data-trigger="spinner">' +
-                                                    '<input name="fld-marginL" id="fld-marginL" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
-                                                    '<span class="input-group-addon">' +
-                                                        '<a class="spin-up" href="javascript:;" data-spin="up">' +
-                                                            '<i class="fa fa-caret-up"></i>' +
-                                                        '</a>' +
-                                                        '<a class="spin-down" href="javascript:;" data-spin="down">' +
-                                                            '<i class="fa fa-caret-down"></i>' +
-                                                        '</a>' +
-                                                    '</span>' +
-                                                '</div>' +
-                                            '</div>' +
-                                            '<label class="control-label col-md-2">Top</label>' +
-                                            '<div class="col-md-3">' +
-                                                '<div class="input-group spinner" data-trigger="spinner">' +
-                                                    '<input name="fld-marginT" id="fld-marginT" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
-                                                    '<span class="input-group-addon">' +
-                                                        '<a class="spin-up" href="javascript:;" data-spin="up">' +
-                                                            '<i class="fa fa-caret-up"></i>' +
-                                                        '</a>' +
-                                                        '<a class="spin-down" href="javascript:;" data-spin="down">' +
-                                                            '<i class="fa fa-caret-down"></i>' +
-                                                        '</a>' +
-                                                    '</span>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="form-group">' +
-                                            '<label class="control-label col-md-4">Right</label>' +
-                                            '<div class="col-md-3">' +
-                                                '<div class="input-group spinner" data-trigger="spinner">' +
-                                                    '<input name="fld-marginR" id="fld-marginR" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
-                                                    '<span class="input-group-addon">' +
-                                                        '<a class="spin-up" href="javascript:;" data-spin="up">' +
-                                                            '<i class="fa fa-caret-up"></i>' +
-                                                        '</a>' +
-                                                        '<a class="spin-down" href="javascript:;" data-spin="down">' +
-                                                            '<i class="fa fa-caret-down"></i>' +
-                                                        '</a>' +
-                                                    '</span>' +
-                                                '</div>' +
-                                            '</div>' +
-                                            '<label class="control-label col-md-2">Bottom</label>' +
-                                            '<div class="col-md-3">' +
-                                                '<div class="input-group spinner" data-trigger="spinner">' +
-                                                    '<input name="fld-marginB" id="fld-marginB" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
-                                                    '<span class="input-group-addon">' +
-                                                        '<a class="spin-up" href="javascript:;" data-spin="up">' +
-                                                            '<i class="fa fa-caret-up"></i>' +
-                                                        '</a>' +
-                                                        '<a class="spin-down" href="javascript:;" data-spin="down">' +
-                                                            '<i class="fa fa-caret-down"></i>' +
-                                                        '</a>' +
-                                                    '</span>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</fieldset>' +
-                                    '<fieldset>' +
-                                        '<legend>Headers and footers</legend>' +
-                                        '<div class="form-group">' +
-                                            '<label class="control-label col-md-4">Header</label>' +
-                                            '<div class="col-md-8">' +
-                                                '<input type="text" name="fld-header" id="fld-header" class="form-control" style="max-width: none !important;" />' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="form-group">' +
-                                            '<label class="control-label col-md-4">Footer</label>' +
-                                            '<div class="col-md-8">' +
-                                                '<input type="text" name="fld-footer" id="fld-footer" class="form-control" style="max-width: none !important;" />' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</fieldset>' +
-                                '</div>' +
-                                '<div class="modal-footer">' +
-                                    '<button type="button" class="btn btn-primary" id="btn-saveoptions">OK</button>' +
-                                    '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
-                                '</div>' +
-                            '</div>' +
-                            '<!-- /.modal-content -->' +
-                        '</div>' +
-                        '<!-- /.modal-dialog -->' +
-                    '</div>' +
-                    '<!-- /.modal -->';
+                '.modal-dialog legend { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; } ' +
+                '.modal-dialog fieldset { padding-bottom: 0px; } ' +
+                '.modal-dialog .options-modal-body { padding-bottom: 0px !important; } ' +
+                '.modal-dialog .checkbox2 {  padding-top: 0px !important; min-height: 0px !important; } ' +
+                '.modal-dialog .radio2 { padding-top: 0px !important; min-height: 0px !important; } ' +
+                '</style>' +
+                '<div class="modal fade" id="dlg-printoptions">' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                '<h4 class="modal-title">Page setup</h4>' +
+                '</div>' +
+                '<div class="modal-body form-horizontal options-modal-body">' +
+                '<fieldset>' +
+                '<legend>Paper</legend>' +
+                '<div class="form-group">' +
+                '<label class="col-md-4 control-label" for="fld-papersize">Size</label>' +
+                '<select class="' + sClass + ' col-md-8 show-tick show-menu-arrow" id="fld-papersize">' +
+                '</select>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<div class="col-md-offset-4 col-md-8">' +
+                '<div class="radio2">' +
+                '<label class="radio-inline">' +
+                '<input type="radio" value="2" id="fld-portrait" name="fld-orientation">' +
+                ' Portrait' +
+                '</label>' +
+                '<label class="radio-inline">' +
+                '<input type="radio" value="1" id="fld-landscape" name="fld-orientation">' +
+                ' Landscape' +
+                '</label>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<div class="col-md-offset-4 col-md-8">' +
+                '<div class="checkbox2">' +
+                '<label class="checkbox-inline">' +
+                '<input type="checkbox" name="fld-shrinktofit" id="fld-shrinktofit">' +
+                ' Shrink to fit' +
+                '</label>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<div class="col-md-offset-4 col-md-8">' +
+                '<div class="checkbox2">' +
+                '<label class="checkbox-inline">' +
+                '<input type="checkbox" name="fld-printbackground" id="fld-printbackground">' +
+                ' Print background colour and images' +
+                '</label>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</fieldset>' +
+                '<fieldset>' +
+                '<legend>Margins</legend>' +
+                '<div class="form-group">' +
+                '<div class="col-md-offset-4 col-md-8">' +
+                '<div class="radio2">' +
+                '<label class="radio-inline">' +
+                '<input type="radio" value="2" id="fld-millimetres" name="fld-measure">' +
+                ' Millimetres' +
+                '</label>' +
+                '<label class="radio-inline">' +
+                '<input type="radio" value="1" id="fld-inches" name="fld-measure">' +
+                ' Inches' +
+                '</label>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-md-4">Left</label>' +
+                '<div class="col-md-3">' +
+                '<div class="input-group spinner" data-trigger="spinner">' +
+                '<input name="fld-marginL" id="fld-marginL" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
+                '<span class="input-group-addon">' +
+                '<a class="spin-up" href="javascript:;" data-spin="up">' +
+                '<i class="fa fa-caret-up"></i>' +
+                '</a>' +
+                '<a class="spin-down" href="javascript:;" data-spin="down">' +
+                '<i class="fa fa-caret-down"></i>' +
+                '</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '<label class="control-label col-md-2">Top</label>' +
+                '<div class="col-md-3">' +
+                '<div class="input-group spinner" data-trigger="spinner">' +
+                '<input name="fld-marginT" id="fld-marginT" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
+                '<span class="input-group-addon">' +
+                '<a class="spin-up" href="javascript:;" data-spin="up">' +
+                '<i class="fa fa-caret-up"></i>' +
+                '</a>' +
+                '<a class="spin-down" href="javascript:;" data-spin="down">' +
+                '<i class="fa fa-caret-down"></i>' +
+                '</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-md-4">Right</label>' +
+                '<div class="col-md-3">' +
+                '<div class="input-group spinner" data-trigger="spinner">' +
+                '<input name="fld-marginR" id="fld-marginR" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
+                '<span class="input-group-addon">' +
+                '<a class="spin-up" href="javascript:;" data-spin="up">' +
+                '<i class="fa fa-caret-up"></i>' +
+                '</a>' +
+                '<a class="spin-down" href="javascript:;" data-spin="down">' +
+                '<i class="fa fa-caret-down"></i>' +
+                '</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '<label class="control-label col-md-2">Bottom</label>' +
+                '<div class="col-md-3">' +
+                '<div class="input-group spinner" data-trigger="spinner">' +
+                '<input name="fld-marginB" id="fld-marginB" type="text" class="form-control text-right" data-rule="currency" value="1" />' +
+                '<span class="input-group-addon">' +
+                '<a class="spin-up" href="javascript:;" data-spin="up">' +
+                '<i class="fa fa-caret-up"></i>' +
+                '</a>' +
+                '<a class="spin-down" href="javascript:;" data-spin="down">' +
+                '<i class="fa fa-caret-down"></i>' +
+                '</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</fieldset>' +
+                '<fieldset>' +
+                '<legend>Headers and footers</legend>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-md-4">Header</label>' +
+                '<div class="col-md-8">' +
+                '<input type="text" name="fld-header" id="fld-header" class="form-control" style="max-width: none !important;" />' +
+                '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-md-4">Footer</label>' +
+                '<div class="col-md-8">' +
+                '<input type="text" name="fld-footer" id="fld-footer" class="form-control" style="max-width: none !important;" />' +
+                '</div>' +
+                '</div>' +
+                '</fieldset>' +
+                '</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-primary" id="btn-saveoptions">OK</button>' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
+                '</div>' +
+                '</div>' +
+                '<!-- /.modal-content -->' +
+                '</div>' +
+                '<!-- /.modal-dialog -->' +
+                '</div>' +
+                '<!-- /.modal -->';
             $('body').append(dlg);
 
             $('[name="fld-measure"]').on('change', function () {
@@ -307,66 +307,66 @@
         // printer settings modal to attach to the page
         if (!$('#dlg-printersettings').length) {
             var dlg = '<style>' +
-                    '.modal-dialog legend { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; } ' +
-                    '.modal-dialog fieldset { padding-bottom: 0px; } ' +
-                    '.modal-dialog .options-modal-body { padding-bottom: 0px !important; } ' +
-                    '.modal-dialog .checkbox2 {  padding-top: 0px !important; min-height: 0px !important; } ' +
-                    '.modal-dialog .radio2 { padding-top: 0px !important; min-height: 0px !important; } ' +
+                '.modal-dialog legend { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; } ' +
+                '.modal-dialog fieldset { padding-bottom: 0px; } ' +
+                '.modal-dialog .options-modal-body { padding-bottom: 0px !important; } ' +
+                '.modal-dialog .checkbox2 {  padding-top: 0px !important; min-height: 0px !important; } ' +
+                '.modal-dialog .radio2 { padding-top: 0px !important; min-height: 0px !important; } ' +
                 '</style>' +
                 '<div class="modal fade" id="dlg-printersettings">' +
-                    '<div class="modal-dialog">' +
-                        '<div class="modal-content">' +
-                            '<div class="modal-header">' +
-                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                                '<h4 class="modal-title">Print</h4>' +
-                            '</div>' +
-                            '<div class="modal-body form-horizontal options-modal-body">' +
-                                //'<fieldset>' +
-                                //    '<legend>Printer</legend>' +
-                                    '<div class="form-group">' +
-                                        '<label class="col-md-4 control-label" for="fld-printerselect">Printer</label>' +
-                                        '<select class="' + sClass + ' col-md-8 show-tick show-menu-arrow" id="fld-printerselect">' +
-                                        '</select>' +
-                                    '</div>' +
-                                    '<div class="form-group">' +
-                                        '<label class="col-md-4 control-label" for="fld-papersource">Paper source</label>' +
-                                        '<select class="' + sClass + ' col-md-8 show-tick show-menu-arrow" id="fld-papersource">' +
-                                        '</select>' +
-                                    '</div>' +
-                                    '<div class="form-group">' +
-                                        '<label class="control-label col-md-4">Copies</label>' +
-                                        '<div class="col-md-3">' +
-                                            '<div class="input-group spinner" data-trigger="spinner">' +
-                                                '<input name="fld-copies" id="fld-copies" type="text" class="form-control text-right" data-rule="quantity" value="1" />' +
-                                                '<span class="input-group-addon">' +
-                                                    '<a class="spin-up" href="javascript:;" data-spin="up">' +
-                                                        '<i class="fa fa-caret-up"></i>' +
-                                                    '</a>' +
-                                                    '<a class="spin-down" href="javascript:;" data-spin="down">' +
-                                                        '<i class="fa fa-caret-down"></i>' +
-                                                    '</a>' +
-                                                '</span>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div class="col-md-5">' +
-                                            '<div class="checkbox2">' +
-                                                '<label class="checkbox-inline">' +
-                                                    '<input type="checkbox" name="fld-collate" id="fld-collate">' +
-                                                    ' Collate' +
-                                                '</label>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                //'</fieldset>' +
-                            '</div>' +
-                            '<div class="modal-footer">' +
-                                '<button type="button" class="btn btn-primary" id="btn-savesettings">Print</button>' +
-                                '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
-                            '</div>' +
-                        '</div>' +
-                        '<!-- /.modal-content -->' +
-                    '</div>' +
-                    '<!-- /.modal-dialog -->' +
+                '<div class="modal-dialog">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                '<h4 class="modal-title">Print</h4>' +
+                '</div>' +
+                '<div class="modal-body form-horizontal options-modal-body">' +
+                //'<fieldset>' +
+                //    '<legend>Printer</legend>' +
+                '<div class="form-group">' +
+                '<label class="col-md-4 control-label" for="fld-printerselect">Printer</label>' +
+                '<select class="' + sClass + ' col-md-8 show-tick show-menu-arrow" id="fld-printerselect">' +
+                '</select>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="col-md-4 control-label" for="fld-papersource">Paper source</label>' +
+                '<select class="' + sClass + ' col-md-8 show-tick show-menu-arrow" id="fld-papersource">' +
+                '</select>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-md-4">Copies</label>' +
+                '<div class="col-md-3">' +
+                '<div class="input-group spinner" data-trigger="spinner">' +
+                '<input name="fld-copies" id="fld-copies" type="text" class="form-control text-right" data-rule="quantity" value="1" />' +
+                '<span class="input-group-addon">' +
+                '<a class="spin-up" href="javascript:;" data-spin="up">' +
+                '<i class="fa fa-caret-up"></i>' +
+                '</a>' +
+                '<a class="spin-down" href="javascript:;" data-spin="down">' +
+                '<i class="fa fa-caret-down"></i>' +
+                '</a>' +
+                '</span>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-5">' +
+                '<div class="checkbox2">' +
+                '<label class="checkbox-inline">' +
+                '<input type="checkbox" name="fld-collate" id="fld-collate">' +
+                ' Collate' +
+                '</label>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                //'</fieldset>' +
+                '</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-primary" id="btn-savesettings">Print</button>' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>' +
+                '</div>' +
+                '</div>' +
+                '<!-- /.modal-content -->' +
+                '</div>' +
+                '<!-- /.modal-dialog -->' +
                 '</div>' +
                 '<!-- /.modal -->';
             $('body').append(dlg);
@@ -484,7 +484,7 @@
         $('#fld-printerselect > option').remove();
 
         var name;
-        for (var i = 0; (name = printer.EnumPrinters(i)).length > 0 ; i++) {
+        for (var i = 0; (name = printer.EnumPrinters(i)).length > 0; i++) {
             $printers.append("<option>" + name);
         }
 
@@ -504,7 +504,7 @@
             printer.currentPrinter = printerName;
             fillAndSetBinsList();
         } catch (e) {
-            alert("Sorry, an error has occurred:\n\n" + e.description);
+            alert("Sorry, an error has occurred:\n\n" + e.message);
         }
 
         // revert the current printer in ScriptX
@@ -512,7 +512,7 @@
             printer.currentPrinter = currentPrinterName;
             printer.paperSource = currentSource;
         } catch (e) {
-            alert("Sorry, an error has occurred restoring current printer settings:\n\n" + e.description);
+            alert("Sorry, an error has occurred restoring current printer settings:\n\n" + e.message);
         }
 
     }

@@ -24,7 +24,7 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.Licensing', function () {
-    var moduleversion = "1.5.8.0";
+    var moduleversion = "1.5.9.0";
     var apiLocation = "v1/licensing";
 
     var server = ""; // url to the server, server is CORS restricted
@@ -78,7 +78,7 @@
     function connectToServer(serverUrl, slicenseGuid) {
         // a licensing call may be made first, if the print module is available, inform it.
         var p = MeadCo.ScriptX.Print;
-        if (typeof p !== "undefined" && typeof p.connectLite === "function" ) {
+        if (typeof p !== "undefined" && typeof p.connectLite === "function") {
             p.connectLite(serverUrl, slicenseGuid);
         }
 
@@ -88,12 +88,17 @@
         bConnected = false;
         lastError = "";
         licenseRevision = 0;
-        licensePath = ""; 
+        licensePath = "";
     }
 
     function getSubscriptionFromServer(resolve, reject) {
         if (server.length <= 0) {
-            throw new Error("MeadCo.ScriptX.Licensing : License server API URL is not set or is invalid");
+            var msg = "MeadCo.ScriptX.Licensing : License server API URL is not set or is invalid"
+            if (typeof reject === "function") {
+                reject(msg);
+                return;
+            }
+            throw new Error(msg);
         }
 
         if (license.length > 0) {
@@ -217,7 +222,7 @@
          * @param {string} slicenseGuid the license GUID as provided by MeadCo. Optional unless will call GetLicenseAsync() without calling apply
          */
         connect: function (serverUrl, slicenseGuid) {
-            connectToServer(serverUrl,slicenseGuid);
+            connectToServer(serverUrl, slicenseGuid);
         },
 
         /**
@@ -234,8 +239,7 @@
          *
          */
         connectLite: function (serverUrl, slicenseGuid, revision, path) {
-            MeadCo.warn("MeadCo.ScriptX.Print.Licensing.connectLite is deprecated, please use connect/apply")
-            connectToServer(serverUrl,slicenseGuid);
+            connectToServer(serverUrl, slicenseGuid);
             licenseRevision = revision;
             licensePath = path;
         },
@@ -255,7 +259,7 @@
          * @param {string} path fully qualified path to the license file (.mlf file). Use the value 'warehouse' to download from the public MeadCo License warehouse
          * @returns {license} details the license that was sucessfully applied, null if none available
          */
-        apply: function(licenseGuid, revision, path) {
+        apply: function (licenseGuid, revision, path) {
             return applyLicense(licenseGuid, revision, path);
         },
 
@@ -274,7 +278,7 @@
          * @param {function({license})} resolve function to call on success
          * @param {function({string})} reject function to call on failure with reason for failure
          */
-        applyAsync: function(licenseGuid, revision, path, resolve, reject) {
+        applyAsync: function (licenseGuid, revision, path, resolve, reject) {
             applyLicense(licenseGuid, revision, path, resolve, reject);
         },
 
