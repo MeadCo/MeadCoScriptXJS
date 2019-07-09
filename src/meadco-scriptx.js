@@ -76,7 +76,12 @@
         SERVICE: 2
     };
 
-    scriptx.LibVersion = "1.6.0";
+    scriptx.MeasurementUnits = {
+        MM: 1,
+        INCHES: 2
+    };
+
+    scriptx.LibVersion = "1.7.0";
     scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
@@ -133,21 +138,21 @@
                         console.log("found async ScriptX.Print Services");
                         scriptx.Printing.PolyfillInitAsync(function () {
                             scriptx.Connector = scriptx.Connection.SERVICE;
-                            resolve();
+                            resolve(scriptx.Connector);
                         }, reject);
                     } else {
                         scriptx.Connector = scriptx.Connection.ADDON;
                         console.log("no polyfill, using add-on");
-                        resolve();
+                        resolve(scriptx.Connector);
                     }
                 } else {
                     console.log("** Warning -- no factory **");
-                    reject();
+                    reject("Unable to find a ScriptX 'factory' object.");
                 }
             });
         } else {
             prom = new Promise(function (resolve, reject) {
-                resolve();
+                resolve(scriptx.Connector);
             });
         }
 
@@ -531,7 +536,8 @@
     function progressMonitor(status, statusData, callbackData) {
         switch (status) {
             case 1:
-                statusUpdate(status, "Request to print has been queued for: " + callbackData);
+                // v8.2 / 10.2 will passback the queue mode 
+                statusUpdate(status, "Request to print has been queued for: " + callbackData + (typeof statusData === "undefined" ? "" : ", " + statusData));
                 break;
 
             case 2:
@@ -684,76 +690,14 @@
                         resolve(licensing.LicMgr.License);
                     }
                 })
-                .catch(function () { reject(); });
+                .catch(function () { reject(lookupError()); });
         });
-    }
+    };
 
-    // ErrorMessage
-    // returns the error message that describes why licensing failed. returns emoty string if there was no error.
-    var errorLicenseMsgs = new Array("Unable to locate the MeadCo License Manager object - the component may not be installed.",
-        "The license for this site is not valid.",
-        "The license for this site not installed on this machine.",
-        "The license for this site has not been accepted by the user.",
-        "There was an error loading the license. ",
-        "Unable to connect to ScriptX.Services license management."
-    );
 
     licensing.ErrorMessage = function () {
-        var msg = "";
-
-        console.log("MeadCo Security Manager reports licensed: " + this.IsLicensed());
-        if (!licensing.IsLicensed()) {
-            var eIndex = -1;
-            var msgSuffix = "";
-
-            if (licensing.LicMgr !== null) {
-                console.log("license result: " + this.LicMgr.result + " valid: " + this.LicMgr.validLicense);
-
-                switch (licensing.LicMgr.result) {
-                    case 0:
-                        if (!licensing.LicMgr.validLicense)
-                            eIndex = 1;
-                        break;
-
-                    case 5: // scriptx.print service error
-                        eIndex = 5;
-                        break;
-
-                    case 1:
-                        // magic value: this only applies if path param not
-                        // not given - .result==1 => license not installed
-                        eIndex = 2;
-                        break;
-
-                    case -2147220500:
-                        // magic value: this only applies if a path
-                        // was given and the license is valid and was
-                        // displayed to the user for acceptance - 
-                        // .result == -2147220500 => the user clicked cancel on the dialog
-                        eIndex = 3;
-                        break;
-
-                    // some other error, e.g. download failure - this will
-                    // have already been displayed to the user in an error box.
-                    // we could be here in the path given or not given cases if there
-                    // was an error such as reading the registry, though such errors
-                    // are unlikely.
-                    default:
-                        eIndex = 4;
-                        msgSuffix = "\nLicense manager reported: (" + this.LicMgr.result + ")";
-                        break;
-                }
-
-            } else {
-                eIndex = 0;
-            }
-
-            if (eIndex >= 0) {
-                msg = errorLicenseMsgs[eIndex] + msgSuffix;
-            }
-        }
-
-        return msg;
+        console.log("licensing.ErrorMessage - MeadCo Security Manager reports licensed: " + this.IsLicensed());
+        return !licensing.IsLicensed() ? lookupError() : "";
     };
 
     // ReportError
@@ -764,10 +708,69 @@
         if (errMsg !== "") {
             reportError(errMsg, msg);
         }
+    };
+
+    // private implementation
+    // ErrorMessage
+    // returns the error message that describes why licensing failed. returns emoty string if there was no error.
+    var errorLicenseMsgs = new Array("Unable to locate the MeadCo License Manager object - the component may not be installed.",
+        "The license for this site is not valid.",
+        "The license for this site not installed on this machine.",
+        "The license for this site has not been accepted by the user.",
+        "There was an error loading the license. ",
+        "Unable to connect to ScriptX.Services license management."
+    );
+
+    function lookupError() {
+        var eIndex = -1;
+        var msgSuffix = "";
+
+        if (licensing.LicMgr !== null) {
+            console.log("license result: " + licensing.LicMgr.result + " valid: " + licensing.LicMgr.validLicense);
+
+            switch (licensing.LicMgr.result) {
+                case 0:
+                    if (!licensing.LicMgr.validLicense)
+                        eIndex = 1;
+                    break;
+
+                case 5: // scriptx.print service error
+                    eIndex = 5;
+                    break;
+
+                case 1:
+                    // magic value: this only applies if path param not
+                    // not given - .result==1 => license not installed
+                    eIndex = 2;
+                    break;
+
+                case -2147220500:
+                    // magic value: this only applies if a path
+                    // was given and the license is valid and was
+                    // displayed to the user for acceptance - 
+                    // .result == -2147220500 => the user clicked cancel on the dialog
+                    eIndex = 3;
+                    break;
+
+                // some other error, e.g. download failure - this will
+                // have already been displayed to the user in an error box.
+                // we could be here in the path given or not given cases if there
+                // was an error such as reading the registry, though such errors
+                // are unlikely.
+                default:
+                    eIndex = 4;
+                    msgSuffix = "\nLicense manager reported: (" + licensing.LicMgr.result + ")";
+                    break;
+            }
+
+        } else {
+            eIndex = 0;
+        }
+
+        return (eIndex >= 0) ? errorLicenseMsgs[eIndex] + msgSuffix : "";
 
     }
 
-    // private implementation
     function reportError(eMsg) {
         var msg = eMsg;
         for (var i = 1; i < arguments.length; i++) {
