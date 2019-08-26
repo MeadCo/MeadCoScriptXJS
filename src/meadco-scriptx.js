@@ -81,7 +81,7 @@
         INCHES: 2
     };
 
-    scriptx.LibVersion = "1.7.0";
+    scriptx.LibVersion = "1.8.0";
     scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
@@ -175,12 +175,14 @@
 
     // IsVersion
     // Returns true if the installed version is at least strVersion where strVersion is a dotted version number (e.g. "7.1.2.65")
+    // If services is in use then returns true if the version of ScriptX.Addon being emulated is at least strVersion
     scriptx.IsVersion = function (strVersion) {
         return scriptx.IsComponentVersion("ScriptX.Factory", strVersion);
     };
 
     // Version
-    // Returns the installed version number of ScriptX
+    // Returns the installed version number of ScriptX (if services is in use then returns the version of ScriptX.Addon being emulated).
+    // The returned value is a dotted version number (e.g. "7.1.2.65")
     scriptx.Version = function () {
         return scriptx.GetComponentVersion("ScriptX.Factory");
     };
@@ -207,6 +209,30 @@
 
         return connection === scriptx.Connection.SERVICE;
     };
+
+    // ServicesVersion
+    // If services is in use, returns the version of the services server. 
+    // If addon is in use returns ""
+    //
+    // Requires services 2.9 or later, earlier versions will return the client library version (1.x)
+    scriptx.ServicesVersion = function () {
+        if (scriptx.IsServices()) {
+            return scriptx.GetComponentVersion("scriptx.services");
+        }
+
+        return "";
+    };
+
+    // IsServicesVersion
+    // Returns true if services server in use is at least strVersion where strVersion is a dotted version number (e.g. "7.1.2.65")
+    scriptx.IsServicesVersion = function (strVersion) {
+        if (scriptx.IsServices()) {
+            return scriptx.IsComponentVersion("scriptx.services", strVersion);
+        }
+
+        return false;
+    };
+
 
     // Print Page/frame - these will work with both add-on and service
     // but return value will be wrong for service since dialogs are async
@@ -327,6 +353,30 @@
     // All resource references in the HTML must be fully qualified unless a base element is included.
     scriptx.BackgroundPrintHTML = function (sHtml, fnCallback, data) {
         return scriptx.BackgroundPrintURL("html://" + sHtml, false, fnCallback, data);
+    };
+
+    // Direct/RAW printing - requires a license 
+
+    // Send the given string (e.g. ZPL) directly to the printer as a byte stream 
+    scriptx.DirectPrintString = function (sPrinterName, sData) {
+
+        if (scriptx.Init()) {
+            var rawPrinter = scriptx.Factory.rawPrinting;
+
+            rawPrinter.printer = sPrinterName;
+            rawPrinter.printString(sData);
+        }
+    };
+
+    // Download content from the url and send its contents (e.g. ZPL) directly to the printer as a byte stream 
+    scriptx.DirectPrintDocument = function (sPrinterName, sUrl) {
+
+        if (scriptx.Init()) {
+            var rawPrinter = scriptx.Factory.rawPrinting;
+
+            rawPrinter.printer = sPrinterName;
+            rawPrinter.printDocument(scriptx.Factory.baseURL(sUrl));
+        }
     };
 
     // Page/Print Setup - these will work with both add-on and service
@@ -595,7 +645,7 @@
         SERVICE: 2
     };
 
-    licensing.LibVersion = "1.7.0";
+    licensing.LibVersion = "1.8.0";
     licensing.LicMgr = null;
     licensing.Connector = licensing.Connection.NONE;
 

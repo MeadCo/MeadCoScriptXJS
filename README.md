@@ -14,7 +14,7 @@ The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo
 v1.5 Added support for ScriptX Services on Windows PC.
 
 ## Current version
-1.7.0
+1.8.0 - Beta 1
 
 ## Packages
 
@@ -30,7 +30,7 @@ npm install meadco-scriptxjs --save
 ### CDN Use
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.7.0/dist/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@beta/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only
@@ -95,7 +95,7 @@ We recommend (and test with) [Promise Polyfill](https://github.com/taylorhakes/p
 </script>
 ```
 ## Copyright
-Copyright © 2013-2018 [Mead & Co Ltd](http://www.meadroid.com).
+Copyright © 2013-2019 [Mead & Co Ltd](http://www.meadroid.com).
 
 ## License 
 **MeadCoScriptXJS** is under MIT license - http://www.opensource.org/licenses/mit-license.php
