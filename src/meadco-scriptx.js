@@ -99,7 +99,7 @@
     scriptx.Init = function () {
         if (scriptx.Printing === null) {
             console.log("scriptx.Init()");
-            if (findFactory()) {
+            if (findFactory(true) !== null) {
                 // if we are connected to the ScriptX.Print implementation
                 // then check it has connected.
                 if (typeof scriptx.Printing.PolyfillInit === "function") {
@@ -132,12 +132,13 @@
             console.log("unknown state ...");
             prom = new Promise(function (resolve, reject) {
                 console.log("looking for state ...");
-                if (findFactory()) {
+                if (findFactory(true) !== null) {
                     console.log("look for Polyfill ..");
                     if (typeof scriptx.Printing.PolyfillInitAsync === "function") {
                         console.log("found async ScriptX.Print Services");
                         scriptx.Printing.PolyfillInitAsync(function () {
                             scriptx.Connector = scriptx.Connection.SERVICE;
+                            console.log("scriptx.InitAsync() calling resolve ...");
                             resolve(scriptx.Connector);
                         }, reject);
                     } else {
@@ -195,11 +196,11 @@
         //
         // This relies on the Add-on and the .services client scripts are all included before this script.
         // But, we do not want to perform a full init here because connection data might not have been specified
+        console.log("IsServices() on connector: " + connection);
         if (connection === scriptx.Connection.NONE) {
-            if (findFactory()) {
-                connection = typeof scriptx.Printing.PolyfillInit === "function" ? scriptx.Connection.SERVICE : scriptx.Connection.ADDON;
-                // reset so init can complete
-                scriptx.Printing = null;
+            var p = findFactory(false);
+            if (p !== null) {
+                connection = typeof p.PolyfillInit === "function" ? scriptx.Connection.SERVICE : scriptx.Connection.ADDON;
             }
             else {
                 // assume service will be used, for sure the Add.on isnt here
@@ -528,17 +529,20 @@
 
     // findFactory
     //
-    // hook up and instance of 'factory', either the add-on or polyfill.
-    function findFactory(parameters) {
+    // find an instance of 'factory', either the add-on or polyfill, optionally hook up to
+    // the module and return the instance of the printing object (in Add-on this creates the object)
+    function findFactory(bRecord) {
         var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
         if (f && typeof f.object !== "undefined" && f.object !== null) {
-            scriptx.Factory = f;
-            scriptx.Utils = f.object;
-            scriptx.Printing = f.printing;
+            if (bRecord) {
+                scriptx.Factory = f;
+                scriptx.Utils = f.object;
+                scriptx.Printing = f.printing;
+            }
             console.log("found a scriptx factory");
-            return true;
+            return f.printing;
         }
-        return false;
+        return null;
     }
 
     // compareVersions
