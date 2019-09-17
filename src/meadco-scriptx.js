@@ -81,7 +81,7 @@
         INCHES: 2
     };
 
-    scriptx.LibVersion = "1.8.0";
+    scriptx.LibVersion = "1.8.1";
     scriptx.Connector = scriptx.Connection.NONE;
 
     scriptx.Factory = null;
@@ -649,7 +649,7 @@
         SERVICE: 2
     };
 
-    licensing.LibVersion = "1.8.0";
+    licensing.LibVersion = "1.8.1";
     licensing.LicMgr = null;
     licensing.Connector = licensing.Connection.NONE;
 
@@ -813,7 +813,7 @@
                 // are unlikely.
                 default:
                     eIndex = 4;
-                    msgSuffix = "\nLicense manager reported: (" + licensing.LicMgr.result + ")";
+                    msgSuffix = "\nLicense manager reported error code: 0x" + (0x100000000 + licensing.LicMgr.result).toString(16).toUpperCase();
                     break;
             }
 

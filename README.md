@@ -30,7 +30,7 @@ npm install meadco-scriptxjs --save
 ### CDN Use
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.8.0/dist/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.8.1/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only
