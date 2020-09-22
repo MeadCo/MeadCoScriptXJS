@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeadCo.ScriptXJS Library Home</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="style.css">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">MeadCo.ScriptXJS</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/MeadCo/MeadCo.ScriptXJS"
+                        >
+                            Github
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow"
+                        >
+                            Then to now walk through
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://scriptxprintsamples.meadroid.com"
+                        >
+                            Samples
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Namespaces</h3><ul><li><a href="MeadCoScriptX.html">MeadCo.ScriptX</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p></p>
+                    <h1>Home</h1>
+                </header>
+                
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h3>Current version 1.8.2-beta01</h3>
+<h2>Background</h2>
+<p>Back in 2013 the MeadCo.ScriptXJS library originated as a project to provide a wrapper layer between client javascript and a prototype browser plug-in
+for Firefox - before binary plug-ins were finally consigned to the dust-bin. Starting in 2013, this library took the approach
+of &quot;namespaces&quot; / static classes, which were popular(-ish) then as a means of ensuring no clashes of names etc.</p>
+<p>The library found use as a general and convenient wrapper of commonly used functions in ScriptX.Addon and so a significant amount of customer code has been written that relies upon this library.
+By definition there is only ever one instance of ScriptX.Addon on a page and therefore a static singleton javascript 'class' instance is perfectly adequate.</p>
+<p>It is also known and acknowleged that much code utilising ScriptX.Addon predates React, Angular, Vue etc. etc. and exists in a world of
+relatively un-complex page operations; a &quot;print button&quot; and some code to set print parameters
+and then print (though the back-end code generating HTML to be printed was likely complex and comprehensive).</p>
+<p>This library implements the following static objects/classes:</p>
+<ul>
+<li>MeadCo</li>
+<li>MeadCo.ScriptX</li>
+<li>MeadCo.ScriptX.Utils</li>
+<li>MeadCo.ScriptX.Printing</li>
+<li>MeadCo.Licensing</li>
+<li>MeadCo.Licensing.LicMgr</li>
+</ul>
+<p>The &quot;trick&quot; here was that MeadCo.ScriptX.Utils was pointed to &quot;factory&quot;, MeadCo.ScriptX.Printing was pointed to &quot;factory.printing&quot; and MeadCo.Licensing.LicMgr pointed to &quot;secmgr&quot;.</p>
+<p>MeadCo.ScriptX.Printing therefore exposed the entire <a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing">ScriptX printing API</a>,
+MeadCo.ScriptX.Utils exposed the <a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory">ScriptX 'factory' API</a> and
+MeadCo.ScriptX.Licensing.LicMgr exposed the <a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/SecurityManager/api">ScriptX licensing API</a>.</p>
+<p>MeadCo.ScriptX is an object providing for verified initialisation and a number of functions that wrapped common operations into a simpler API. So, for example:</p>
+<pre class="prettyprint source lang-javascript"><code>&lt;script type=&quot;text/javascript&quot;>
+   $(window).on('load', function () {
+     if ( MeadCo.ScriptX.Init() (
+     {
+        $(&quot;#info&quot;).text(&quot;ScriptX version: &quot; + MeadCo.ScriptX.GetComponentVersion(&quot;scriptx.factory&quot;));
+        MeadCo.ScriptX.Printing.header = 
+          &quot;MeadCo's ScriptX&b:&p of &P:&bBasic Printing Sample&quot;;
+        MeadCo.ScriptX.Printing.footer = 
+          &quot;The de facto standard for advanced web-based printing&quot;;
+        MeadCo.ScriptX.Printing.orientation = &quot;landscape&quot;;
+        $(&quot;#btnprint&quot;).click(function() { 
+            MeadCo.ScriptX.PrintPage(false);
+     }      
+   });
+&lt;/script>
+</code></pre>
+<p>MeadCo.Licensing is an object providing for checking that a license is ready and available on the page with error messages available to describe failures.</p>
+<h2>Supporting ScriptX.Services</h2>
+<p>The final &quot;trick&quot; is that if MeadCo.ScriptX.Printing is pointed to an implementation of the .Addon API in javascript and that
+implementation uses the ScriptX.Services API to perform printing then code using the MeadCo.ScriptXJS library will work with .Addon and .Services with no changes
+in simple cases and few changes in more complex cases.</p></article>
+    </section>
+
+
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

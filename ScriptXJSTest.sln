@@ -11,12 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{B96BAD4D-D2BC-4C44-8C69-94424E0BFB87}"
-	ProjectSection(SolutionItems) = preProject
-		nuget\MeadScriptXJS.nuspec = nuget\MeadScriptXJS.nuspec
-		package.json = package.json
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{808509DA-3D69-472E-8EEA-770605729882}"
 	ProjectSection(SolutionItems) = preProject
 		src\meadco-scriptx.js = src\meadco-scriptx.js
@@ -24,8 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{808509DA-3D6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CF90F4C4-EDCC-4BED-9941-363A1A428348}"
 	ProjectSection(SolutionItems) = preProject
-		distbundlesconfig.json = distbundlesconfig.json
+		build\distbundlesconfig.json = build\distbundlesconfig.json
 		gulpfile.js = gulpfile.js
+		build\jsdoc.json = build\jsdoc.json
+		build\MeadScriptXJS.nuspec = build\MeadScriptXJS.nuspec
+		package.json = package.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{D59EEC98-6719-494F-928E-EDEB96ECF4DE}"
@@ -34,10 +31,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{D59EEC98-6
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs-src", "docs-src", "{3508093D-5FD0-475F-BA57-EDEBC51D566C}"
+	ProjectSection(SolutionItems) = preProject
+		docs-src\readme.md = docs-src\readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tutorials", "tutorials", "{AC96F31A-E34D-4556-8DFB-9438D68AFC30}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tooling", "tooling", "{1B2F1248-CA42-4CA8-9334-6DBA9F237EA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B20EEC00-1C08-4BCC-A5A3-194EF9B499A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,7 @@ Global
 		{3508093D-5FD0-475F-BA57-EDEBC51D566C} = {A0446394-5620-4E6A-BE83-051BCDAAB03A}
 		{AC96F31A-E34D-4556-8DFB-9438D68AFC30} = {3508093D-5FD0-475F-BA57-EDEBC51D566C}
 		{1B2F1248-CA42-4CA8-9334-6DBA9F237EA6} = {A0446394-5620-4E6A-BE83-051BCDAAB03A}
+		{B20EEC00-1C08-4BCC-A5A3-194EF9B499A6} = {1B2F1248-CA42-4CA8-9334-6DBA9F237EA6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {521C7E23-A640-47B7-81A6-CA6FEA69B042}
