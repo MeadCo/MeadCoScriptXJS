@@ -152,9 +152,11 @@
 
     /**
     * Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
-    * ScriptX.Services.
-    *
+    * the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.
+    * 
     * With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server
+    * 
+    * @see {@link https://meadco.github.io/ScriptX.Print.Client/ | MeadCo ScriptX.Services Client Library}
     * 
     * @function Init
     * @memberof MeadCoScriptX
@@ -702,9 +704,11 @@
 
     };
 
-    // HasOrientation
-    // Returns true if the 'orientation' property is available, otherwise the 'portrait' property must be used.
-    //
+    /**
+     * @function HasOrientation
+     * @memberof MeadCoScriptX
+     * @returns {boolean} true if the 'orientation' property is available, otherwise the 'portrait' property must be used.
+     * */
     scriptx.HasOrientation = function () {
         return scriptx.IsComponentVersion("ScriptX.Factory", "7.0.0.1");
     };
@@ -712,6 +716,14 @@
     // GetAvailablePrinters - requires license
     // returns an array of the names of the printers on the system
     //
+
+    /** 
+     * Determnines the names of the printers available pon the device. This function wraps the EnumPrinters API in a more convenient form.
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/EnumPrinters | EnumPrinters API}
+     * @function GetAvailablePrinters
+     * @memberof MeadCoScriptX
+     * @returns {string[]} array of the names of the available printers available.
+     * */
     scriptx.GetAvailablePrinters = function () {
         var plist = new Array();
         var name;
@@ -729,6 +741,21 @@
 
     // GetComponentVersion
     // returns the version number of a COM component - compatible with v7.0 and earlier implementation. (ScriptX v7.1 has an easier to use implementation)
+
+
+    /**
+     * Returns the version of an installed component as a dotted version string. This wraps the deprecated API GetComponentVersion which is available
+     * with all versions of ScriptX. Use the recommended alternatives.
+     * 
+     * @function GetComponentVersion
+     * @memberof MeadCoScriptX
+     * @param {string} sComponent The component name, e.g. "ScriptX.Factory"
+     * @returns {string} Installed version of the component or "Not installed"
+     * @deprecated since v7 of ScriptX.Addon. Use ScriptX.Utils.ComponentVersionString or ScriptX.Utils.ScriptXVersion or ScriptX.Utils.SecurityManagerVersion
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/ComponentVersionString | ComponentVersionString API}
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/ScriptXVersion | ScriptXVersion API}
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/SecurityManagerVersion | SecurityManagerVersion API}
+     */
     scriptx.GetComponentVersion = function (sComponent) {
         var a = new Object();
         var b = new Object();
@@ -747,16 +774,35 @@
         return s;
     };
 
+    /**
+     * Get the installed version of ScriptX
+     * @function ScriptXVersion
+     * @memberof MeadCoScriptX
+     * @returns {string} Installed version or "Not installed"
+     */
     scriptx.ScriptXVersion = function () {
         return scriptx.GetComponentVersion("ScriptX.Factory");
     };
 
+    /**
+     * Get the installed version of MeadCo Security Manager
+     * @function SecurityManagerVersion
+     * @memberof MeadCoScriptX
+     * @returns {string} Installed version or "Not installed"
+     */
     scriptx.SecurityManagerVersion = function () {
         return scriptx.GetComponentVersion("MeadCo.SecMgr");
     };
 
-    // IsComponentVersion
-    // Returns true if the installed version of a COM component is at least the given version
+    /**
+     * Determine if the installed version of a COM component is at least the given version
+     * 
+     * @function IsComponentVersion
+     * @memberof MeadCoScriptX
+     * @param {string} strComponentName The name of the COM Component 
+     * @param {string} strVersionRequired minimum version in dotted form
+     * @returns {boolean} true is the component is installed and at least the version required.
+     */
     scriptx.IsComponentVersion = function (strComponentName, strVersionRequired) {
         return compareVersions(scriptx.GetComponentVersion(strComponentName), strVersionRequired);
     };
@@ -872,6 +918,11 @@
 
 // MeadCo.Licensing - singleton
 //
+
+/**
+ * @namespace MeadCoLicensing
+ */
+
 (function (topLeveNs) {
     "use strict";
 
@@ -889,6 +940,19 @@
     licensing.LicMgr = null;
     licensing.Connector = licensing.Connection.NONE;
 
+    /**
+    * Performs synchronous initialisation by discovering and connecting to either COM MeadCo Security Manager or
+    * the MeadCo ScriptX.Services Client Library emulation of the 'secmgr' object.
+    *
+    * With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server
+    *
+    * @see {@link https://meadco.github.io/ScriptX.Print.Client/ | MeadCo ScriptX.Services Client Library}
+    *
+    * @function Init
+    * @memberof MeadCoLicensing
+    * @returns {boolean} true if initialisation succeeded and implementations of the MeadCo Security Manager object is available, false if failed
+    * @deprecated due to the synchronous ajax calls, use InitAsync
+    */
     licensing.Init = function () {
         if (licensing.LicMgr === null) {
             console.log("licensing.Init()");
@@ -918,6 +982,14 @@
         return licensing.LicMgr !== null && typeof (licensing.LicMgr.result) !== "undefined";
     };
 
+    /**
+    * Performs asynchronous initialisation by discovering and connecting to either ScriptX.Addon or
+    * the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.
+    *
+    * @function InitAsync
+    * @memberof MeadCoLicensing
+    * @returns {Promise} 
+    */
     licensing.InitAsync = function () {
         var prom;
 
@@ -954,8 +1026,14 @@
 
     };
 
-    // IsLicensed
-    // Returns true if the document is licensed and advanced functionality will be available
+    /**
+     * Performs synchronous initialisation 
+     *
+     * @function IsLicensed
+     * @memberof MeadCoLicensing
+     * @returns {boolean} true if a valid license is available
+     *
+     */
     licensing.IsLicensed = function () {
 
         if (licensing.Init()) {
@@ -967,9 +1045,14 @@
         return false;
     };
 
-    // IsLicensedAsync
-    // Returns a promise with a resolve of the loaded license detail
-    //
+    /**
+     * Performs asynchronous initialisation 
+     *
+     * @function IsLicensedAsync
+     * @memberof MeadCoLicensing
+     * @returns {Promise} Promise object with a resolve of the loaded license detail
+     *
+     */
     licensing.IsLicensedAsync = function () {
         return new Promise(function (resolve, reject) {
             licensing.InitAsync()
@@ -985,6 +1068,13 @@
     };
 
 
+    /**
+     * Obtain the description of the last error that occurred. 
+     * 
+     * @function ErrorMessage
+     * @memberof MeadCoLicensing
+     * @returns {string} Text description of the last error or if no error has occurred, an empty string
+     */
     licensing.ErrorMessage = function () {
         console.log("licensing.ErrorMessage - MeadCo Security Manager reports licensed: " + this.IsLicensed());
         return !licensing.IsLicensed() ? lookupError() : "";
@@ -992,6 +1082,14 @@
 
     // ReportError
     // Displays an alert box with details of any licensing error with any given message appended.
+
+    /**
+     * If an error has occurred, displays an alert box with details of the licensing error with any given message appended.
+     * 
+     * @function ReportError
+     * @memberof MeadCoLicensing
+     * @param {string} msg Text to append to the error message.
+     */
     licensing.ReportError = function (msg) {
 
         var errMsg = licensing.ErrorMessage();

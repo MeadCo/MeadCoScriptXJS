@@ -68,15 +68,18 @@ function compileDocs(cbDone) {
 
 // post processing to put dot delimeters back into names
 //
-function processName(nsname) {
-    var badName = nsname.replace(/\./g, "");
-    var regx = new RegExp(badName + "(?![a-zA-Z]*\.html)", "gi");
-    return gulp.src("./docs/*.html").pipe(replace(regx, nsname)).pipe(replace(/{@packageversion}/g, packagedef.version)).pipe(gulp.dest("./docs"));
+function processName(nsname1,nsname2) {
+    var badName1 = nsname1.replace(/\./g, "");
+    var regx1 = new RegExp(badName1 + "(?![a-zA-Z]*\.html)", "gi");
+    var badName2 = nsname2.replace(/\./g, "");
+    var regx2 = new RegExp(badName2 + "(?![a-zA-Z]*\.html)", "gi");
+
+    return gulp.src("./docs/*.html").pipe(replace(regx1, nsname1)).pipe(replace(regx2, nsname2)).pipe(replace(/{@packageversion}/g, packagedef.version)).pipe(gulp.dest("./docs"));
 }
 
 // call dot processing for each update required so can chain one after the other .. crude but works
 function processDocs1() {
-    return processName("MeadCo.ScriptX");
+    return processName("MeadCo.ScriptX","MeadCo.Licensing");
 }
 
 // static docs files that jsdocs won't put where we want
