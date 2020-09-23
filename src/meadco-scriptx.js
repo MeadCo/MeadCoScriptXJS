@@ -29,9 +29,12 @@
  * 
  * ## Use with ScriptX.Services
  * 
- * v1.2 and later support working with ScriptX.Services or ScriptX.Add-on and so this librray provides an abstraction and helper functions for working seamlessly with either ScriptX.Addon or ScriptX.Services. This works by
+ * MeadCoScriptXJS supports working with ScriptX.Services or ScriptX.Add-on and so this librray provides an abstraction and helper functions for working seamlessly with either ScriptX.Addon or ScriptX.Services. This works by
  * utilising the [MeadCo ScriptX.Services Client Library]{@link https://meadco.github.io/ScriptX.Print.Client/} emulation of 'factory' and 'secmgr'. When both libraries are present, on IE 11 with ScriptX.Addon available it will 
  * take priority. On any other browser ScriptX.Services will be used.
+ * 
+ * Async scenarios with ScriptX.Print Services are supported by providing async wrappers on ScriptX.Addon functions with promises. A promise polyfill is required if promise is
+ * not implemented in the browser we recommend (and test with) https://github.com/taylorhakes/promise-polyfill.
  * 
  * @example <caption>Example of initialisation and use of wrappers</caption>
  *  $(window).on('load', function () {
@@ -306,7 +309,6 @@
      * @memberof MeadCoScriptX
      * @returns {string}
      * */
-
     scriptx.ServicesVersion = function () {
         if (scriptx.IsServices()) {
             return scriptx.GetComponentVersion("scriptx.services");
@@ -330,7 +332,8 @@
     };
 
     /**
-    * Print the current document, with optional prompting (no prompt in the internetzone requires a license)
+    * Print the current document, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
+    * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintPage
     * @memberof MeadCoScriptX
     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
@@ -344,7 +347,8 @@
     };
 
     /**
-    * Print the current document, with optional prompting (no prompt in the internetzone requires a license)
+    * Print the current document, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
+    * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintPage2
     * @memberof MeadCoScriptX
     * @param {boolean} [bPrompt=true] bPrompt
@@ -368,7 +372,8 @@
     };
 
     /**
-     * Opens a preview of the printed current document (page).
+     * Opens a preview of the printed current document (page). This is a wrapper on the Preview() API.
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Preview | Preview() API}
      * @function PreviewPage
      * @memberof MeadCoScriptX
      * */
@@ -382,13 +387,14 @@
     // Print the content of the *named* frame with optional prompting (no prompt in the internetzone requires a license)
 
     /**
-    * Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license)
+    * Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
+    * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintFrame
     * @memberof MeadCoScriptX
     * @param {string|object} frame The frame object or the name of the frame to be printed.
     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
     * @returns {boolean} true if print was started, otherwise false
-    * @deprecated from 1.4 as the return value will be wrong for service since dialogs are async. Use PrintFrame2 if the return value matters
+    * @deprecated from 1.4 as the return value will be wrong for service when using prompted printing since dialogs are async. Use PrintFrame2 if the return value matters
      */
     scriptx.PrintFrame = function (frame, bPrompt) {
         if (scriptx.Init())
@@ -397,7 +403,8 @@
     };
 
     /**
-    * Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license)
+    * Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
+    * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintFrame2
     * @memberof MeadCoScriptX
     * @param {string|object} frame The frame object or the name of the frame to be printed.
@@ -422,7 +429,8 @@
     };
 
     /**
-     * Opens a preview of the printed frame).
+     * Opens a preview of the printed frame. This is a wrapper on the Preview() API.
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Preview | Preview() API}
      * @function PreviewPage
      * @memberof MeadCoScriptX
      * @param {string|object} frame The frame object or the name of the frame to be printed.
@@ -439,7 +447,21 @@
     // [optional] fnCallback(status,statusData,data)
     // [optional] data
     // 
+    // If no callback data provided, use "Job " + jobIndex - incrementing on each job
     var jobIndex = 1;
+
+    /**
+     * Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
+     * @function BackgroundPrintURL
+     * @memberof MeadCoScriptX
+     * @param {string} sUrl The url of the (html) document to download and print
+     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
+     * @param {callback} [fnCallback=log to console] Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)
+     * @param {object} [data="Job" + incrementing index] Data to pass to the event callback function
+     * @returns {boolean} for prompted printing returns true if the user started the print and it was queued, otherwise false. Always returns true for promptless printing   
+     * @deprecated from 1.4 as the return value will be wrong for service when using prompted printing since dialogs are async. Use BackgroundPrintURL2 if the return value matters
+     */
     scriptx.BackgroundPrintURL = function (sUrl, bPrompt, fnCallback, data) {
         if (scriptx.Init()) {
             if (typeof fnCallback === "undefined") {
@@ -453,6 +475,17 @@
         return false;
     };
 
+    /**
+     * Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
+     * @function BackgroundPrintURL2
+     * @memberof MeadCoScriptX
+     * @param {string} sUrl The url of the (html) document to download and print
+     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
+     * @param {callback} [fnCallback=log to console] Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)
+     * @param {object} [data="Job" + incrementing index] Data to pass to the event callback function
+     * @returns {Promise} Promise object represents boolean with value true for prompted printing and the user started the print and it was queued. For promptless printing always represents true.
+     */
     scriptx.BackgroundPrintURL2 = function (sUrl, bPrompt, fnCallback, data) {
         return new Promise(function (resolve, reject) {
             if (scriptx.Init()) {
@@ -477,17 +510,30 @@
         });
     };
 
-
-    // BackgroundPrintHTML - requires license
-    // Background print the html document contained in the string. The document must be complete and well formed.
-    // All resource references in the HTML must be fully qualified unless a base element is included.
+    /**
+      * Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol
+      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
+      * @function BackgroundPrintHTML
+      * @memberof MeadCoScriptX
+      * @param {string} sHtml The html to print. The document must be complete and well formed.All resource references in the HTML must be fully qualified unless a base element is included.
+      * @param {callback} [fnCallback=log to console] Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)
+      * @param {object} [data="Job" + incrementing index] Data to pass to the event callback function
+      * @returns {boolean} always returns true
+      */
     scriptx.BackgroundPrintHTML = function (sHtml, fnCallback, data) {
         return scriptx.BackgroundPrintURL("html://" + sHtml, false, fnCallback, data);
     };
 
     // Direct/RAW printing - requires a license 
 
-    // Send the given string (e.g. ZPL) directly to the printer as a byte stream 
+    /**
+     * Directly print a stream of characters to a printer without formatting, pagination or any other processing. This is a wrapper on the printString() API
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/rawPrinting/printString | printString() API}
+     * @function DirectPrintString
+     * @memberof MeadCoScriptX
+     * @param {string} sPrinterName The name of the printer to print to.
+     * @param {string} sData The string (e.g. ZPL) to send directly to the printer as a byte stream
+     */
     scriptx.DirectPrintString = function (sPrinterName, sData) {
 
         if (scriptx.Init()) {
@@ -498,7 +544,14 @@
         }
     };
 
-    // Download content from the url and send its contents (e.g. ZPL) directly to the printer as a byte stream 
+    /**
+     * Download content from a url and send its contents (e.g. ZPL) directly to the printer as a byte stream. This is a wrapper on the printDocument() API
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/rawPrinting/printDocument | printDocument() API}
+     * @function DirectPrintDocument
+     * @memberof MeadCoScriptX
+     * @param {string} sPrinterName The name of the printer to print to.
+     * @param {string} sUrl url of the file whose contents are to be sent to the printer. The url must be a fully qualified url.
+     */
     scriptx.DirectPrintDocument = function (sPrinterName, sUrl) {
 
         if (scriptx.Init()) {
@@ -512,12 +565,31 @@
     // Page/Print Setup - these will work with both add-on and service
     // but return value will be wrong for service since dialogs are async
     // If the return value matters use xxxx2 api below.
+
+    /**
+     * Invokes a Page Setup Dialog. This is a wrapper on the PageSetup API
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PageSetup | PageSetup API}
+     * @see PageSetup2
+     * @function PageSetup
+     * @memberof MeadCoScriptX
+     * @returns {boolean} true if the user closed the dialog with the OK button, otherwise false.
+     * @deprecated from 1.4 as the return value will be wrong for service since dialogs are async. Use PageSetup2 if the return value matters
+     */
     scriptx.PageSetup = function () {
         if (scriptx.Init())
             return scriptx.Printing.PageSetup();
         return false;
     };
 
+    /**
+    * Invokes a Print Setup Dialog. This is a wrapper on the PrintSetup API
+    * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintSetup | PrintSetup API}
+    * @see {@link MeadCoScriptX."PrintSetup2" | PrintSetup2 }
+    * @function PrintSetup
+    * @memberof MeadCoScriptX
+    * @returns {boolean} true if the user closed the dialog with the OK button, otherwise false.
+    * @deprecated from 1.4 as the return value will be wrong for service since dialogs are async. Use PrintSetup2 if the return value matters
+    */
     scriptx.PrintSetup = function () {
         if (scriptx.Init())
             return scriptx.Printing.PrintSetup();
@@ -527,6 +599,14 @@
     // Promise versions to work with async dialogs with service
     // These work with both add-on and service.
     //
+
+    /**
+     * Invokes a Page Setup Dialog. This is a wrapper on the PageSetup API
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PageSetup | PageSetup API}
+     * @function PageSetup2
+     * @memberof MeadCoScriptX
+     * @returns {Promise} Promise object represents boolean with value true if the user closed the dialog with the OK button, otherwise false.
+     */
     scriptx.PageSetup2 = function () {
         return new Promise(function (resolve, reject) {
             if (scriptx.Init()) {
@@ -551,6 +631,13 @@
         });
     };
 
+    /**
+    * Invokes a Print Setup Dialog. This is a wrapper on the PrintSetup API
+    * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintSetup | PrintSetup API}
+    * @function PrintSetup2
+    * @memberof MeadCoScriptX
+    * @returns {Promise} Promise object represents boolean with value true if the user closed the dialog with the OK button, otherwise false.
+    */
     scriptx.PrintSetup2 = function () {
         return new Promise(function (resolve, reject) {
             if (scriptx.Init()) {
@@ -579,6 +666,26 @@
     //
     // A wrapper to hide differences between Add-on and ScriptX.Print Services 
     //
+
+    /**
+     * Waits for all pending spooling and download operations originated with Print, PrintHTML and BatchPrintPDF to complete. This is useful
+     * for providing 'busy' UI or waiting for all jobs to complete before closing a window. 
+     * 
+     * This is a wrapper on the common use (no arguments) of the WaitForSpoolingComplete API and returns a Promise so that it can work with
+     * both ScriptX.Addon and ScriptX.Services
+     * 
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/WaitForSpoolingComplete | WaitForSpoolingComplete API }
+     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow/Stage7 | Working with ScriptX.Addon and ScriptX.Services }
+     * @see {@link https://meadco.github.io/ScriptX.Print.Client/index.html | ScriptX.Services Client Library }
+     * @function WaitForSpoolingComplete
+     * @memberof MeadCoScriptX
+     * @returns {Promise}
+     * @example 
+     * MeadCo.ScriptX.PrintPage(false);
+     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function() {
+     *  self.close();
+     * })
+     */
     scriptx.WaitForSpoolingComplete = function () {
         if (scriptx.Connector === scriptx.Connection.SERVICE) {
             return new Promise(function (resolve, reject) {
