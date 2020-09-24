@@ -1,4 +1,122 @@
-/**
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeadCo.ScriptXJS Library meadco-scriptx.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="style.css">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">MeadCo.ScriptXJS</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/MeadCo/MeadCo.ScriptXJS"
+                        >
+                            Github
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow"
+                        >
+                            Then to now walk through
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://scriptxprintsamples.meadroid.com"
+                        >
+                            Samples
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Namespaces</h3><ul><li><a href="MeadCoLicensing.html">MeadCo.Licensing</a></li><li><a href="MeadCoScriptX.html">MeadCo.ScriptX</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>meadco-scriptx.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Simple wrappers on the MeadCo ScriptX objects 'factory', 'factory.printing' and 'secmgr' with additional helper functions.
  * 
  * The implementation is for use in a browser only, not general runtime javascript environments and the code is necessarily 'old-fashioned' as it may find itself running in old versions of IE.
@@ -14,7 +132,7 @@
  *
  * ### MeadCo.ScriptX
  * 
- * The &lt;object /&gt; tag for ScriptX factory is assumed to have an id of 'factory', call MeadCo.ScriptX.Init() (or MeadCo.ScriptX.InitAsync()) to connect the wrappers to underlying implementations - returns true on success.
+ * The &amp;lt;object /&amp;gt; tag for ScriptX factory is assumed to have an id of 'factory', call MeadCo.ScriptX.Init() (or MeadCo.ScriptX.InitAsync()) to connect the wrappers to underlying implementations - returns true on success.
  *
  * 2 objects will then be available:22
  * 
@@ -25,24 +143,24 @@
  *
  * ### MeadCo.Licensing
  * 
- * The &lt;object /&gt; tag for MeadCo Security Manager is assumed to have an id of 'secmgr', call MeadCo.Licensing.IsLicensed() to test if the licensed is valid for the document and has been installed/accepted.
+ * The &amp;lt;object /&amp;gt; tag for MeadCo Security Manager is assumed to have an id of 'secmgr', call MeadCo.Licensing.IsLicensed() to test if the licensed is valid for the document and has been installed/accepted.
  * 
  * ## Use with ScriptX.Services
  * 
- * MeadCoScriptXJS supports working with ScriptX.Services or ScriptX.Add-on and so this librray provides an abstraction and helper functions for working seamlessly with either ScriptX.Addon or ScriptX.Services. This works by
+ * MeadCo.ScriptXJS supports working with ScriptX.Services or ScriptX.Add-on and so this librray provides an abstraction and helper functions for working seamlessly with either ScriptX.Addon or ScriptX.Services. This works by
  * utilising the [MeadCo ScriptX.Services Client Library]{@link https://meadco.github.io/ScriptX.Print.Client/} emulation of 'factory' and 'secmgr'. When both libraries are present, on IE 11 with ScriptX.Addon available it will 
  * take priority. On any other browser ScriptX.Services will be used.
  * 
  * Async scenarios with ScriptX.Print Services are supported by providing async wrappers on ScriptX.Addon functions with promises. A promise polyfill is required if promise is
  * not implemented in the browser we recommend (and test with) https://github.com/taylorhakes/promise-polyfill.
  * 
- * @example <caption>Example of initialisation and use of wrappers</caption>
+ * @example &lt;caption>Example of initialisation and use of wrappers&lt;/caption>
  *  $(window).on('load', function () {
  *    if ( MeadCo.ScriptX.Init() (
  *    {
  *       $("#info").text("ScriptX version: " + MeadCo.ScriptX.GetComponentVersion("scriptx.factory"));
  *       MeadCo.ScriptX.Printing.header =
- *        "MeadCo's ScriptX&b:&p of &P:&bBasic Printing Sample";
+ *        "MeadCo's ScriptX&amp;b:&amp;p of &amp;P:&amp;bBasic Printing Sample";
  *      MeadCo.ScriptX.Printing.footer =
  *        "The de facto standard for advanced web-based printing";
  *      MeadCo.ScriptX.Printing.orientation = "landscape";
@@ -51,7 +169,7 @@
  *   }
  * });
  * 
- * @example <caption>Example of MeadCo.Licensing.IsLicensed()</caption>
+ * @example &lt;caption>Example of MeadCo.Licensing.IsLicensed()&lt;/caption>
  * if ( MeadCo.Licensing.IsLicensed() ) {
  *  	...
  * }
@@ -59,7 +177,7 @@
  *    MeadCo.Licensing.ReportError();
  * }
  *
- * @namespace MeadCoScriptX
+ * @namespace MeadCo.ScriptX
  */
 
 // v1.4.0 and later require a promise polyfill if not implemented in the browser
@@ -92,7 +210,7 @@
      * 
      * @typedef {number} Connection
      * @enum {Connection}
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @readonly
      * @property {number} NONE 0 no connection wrapped (initialise not called or failed)
      * @property {number} ADDON 1 ScriptX.Addon is being wrapped
@@ -109,7 +227,7 @@
      *
      * @typedef {number} MeasurementUnits
      * @enum {MeasurementUnits}
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @readonly
      * @property {number} DEFAULT 0 use the default at the print server
      * @property {number} MM 2 millimeters  
@@ -134,14 +252,14 @@
 
     /**
      * The discovered connection - NONE, ADDON or SERVICE
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @readonly 
      */
     var Connector = enumConnection.NONE;
 
     /**
      * The semver version of this library
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @readonly
     */
     var LibVersion = version;
@@ -159,7 +277,7 @@
     * @see {@link https://meadco.github.io/ScriptX.Print.Client/ | MeadCo ScriptX.Services Client Library}
     * 
     * @function Init
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @returns {boolean} true if initialisation succeeded and implementations of the MeadCo ScriptX factory and printing objects are available, false if failed
     */
     scriptx.Init = function () {
@@ -195,7 +313,7 @@
     * ScriptX.Services.
     *
     * @function InitAsync
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @returns {Promise} 
     */
     scriptx.InitAsync = function () {
@@ -238,7 +356,7 @@
     *  Initialises the library and ensures that the installed version is at least some version. If ScriptX is available but not the required version an alert dialog is displayed.
     *  
     * @function InitWithVersion
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @param {string} strVersion minimum required version number (e.g. "7.1.2.65")
     * @returns {boolean} true if initialisation succeeded and implementations of the MeadCo ScriptX factory and printing objects are available at the required version of higher, false if failed
     * @deprecated from version 1.8.0
@@ -255,7 +373,7 @@
 
     /**
     * @function Version
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * 
     * @returns {string} the installed version number of ScriptX (if services is in use then returns the version of ScriptX.Addon being emulated).
     *
@@ -266,7 +384,7 @@
 
     /**
     * @function IsVersion
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @param {string} strVersion
     * @returns {boolean} true if the installed version is at least strVersion where strVersion is a dotted version number (e.g. "7.1.2.65")
     */
@@ -276,7 +394,7 @@
 
     /**
      * @function IsServices
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} strVersion
      * @returns {boolean} true if ScriptX.Services is/will be used
      *
@@ -308,7 +426,7 @@
      * Requires services 2.9 or later, earlier versions will return the client library version (1.x)
      * 
      * @function ServicesVersion
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {string}
      * */
     scriptx.ServicesVersion = function () {
@@ -321,7 +439,7 @@
 
     /**
      * @function IsServicesVersion
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} strVersion
      * @returns {boolean} true if the services server in use is at least strVersion where strVersion is a dotted version number (e.g. "7.1.2.65")
      */
@@ -337,7 +455,7 @@
     * Print the current document, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintPage
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
     * @returns {boolean} true if print was started, otherwise false
     * @deprecated from 1.4 as the return value will be wrong for service since dialogs are async. Use PrintPage2 if the return value matters
@@ -352,7 +470,7 @@
     * Print the current document, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintPage2
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @param {boolean} [bPrompt=true] bPrompt
     * @returns {Promise} Promise object represents boolean with value true if the print was started
     */
@@ -377,7 +495,7 @@
      * Opens a preview of the printed current document (page). This is a wrapper on the Preview() API.
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Preview | Preview() API}
      * @function PreviewPage
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * */
     scriptx.PreviewPage = function () {
         if (scriptx.Init()) {
@@ -392,7 +510,7 @@
     * Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintFrame
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @param {string|object} frame The frame object or the name of the frame to be printed.
     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
     * @returns {boolean} true if print was started, otherwise false
@@ -408,7 +526,7 @@
     * Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.
     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print | Print API}
     * @function PrintFrame2
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @param {string|object} frame The frame object or the name of the frame to be printed.
     * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
     * @returns {Promise} Promise object represents boolean with value true if the print was started
@@ -434,7 +552,7 @@
      * Opens a preview of the printed frame. This is a wrapper on the Preview() API.
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Preview | Preview() API}
      * @function PreviewPage
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string|object} frame The frame object or the name of the frame to be printed.
      */
     scriptx.PreviewFrame = function (frame) {
@@ -456,7 +574,7 @@
      * Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
      * @function BackgroundPrintURL
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} sUrl The url of the (html) document to download and print
      * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
      * @param {callback} [fnCallback=log to console] Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)
@@ -481,7 +599,7 @@
      * Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
      * @function BackgroundPrintURL2
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} sUrl The url of the (html) document to download and print
      * @param {boolean} [bPrompt=true] bPrompt True if a dialog is to prompt the user to confirm the print
      * @param {callback} [fnCallback=log to console] Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)
@@ -516,7 +634,7 @@
       * Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol
       * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
       * @function BackgroundPrintHTML
-      * @memberof MeadCoScriptX
+      * @memberof MeadCo.ScriptX
       * @param {string} sHtml The html to print. The document must be complete and well formed.All resource references in the HTML must be fully qualified unless a base element is included.
       * @param {callback} [fnCallback=log to console] Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)
       * @param {object} [data="Job" + incrementing index] Data to pass to the event callback function
@@ -532,7 +650,7 @@
      * Directly print a stream of characters to a printer without formatting, pagination or any other processing. This is a wrapper on the printString() API
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/rawPrinting/printString | printString() API}
      * @function DirectPrintString
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} sPrinterName The name of the printer to print to.
      * @param {string} sData The string (e.g. ZPL) to send directly to the printer as a byte stream
      */
@@ -550,7 +668,7 @@
      * Download content from a url and send its contents (e.g. ZPL) directly to the printer as a byte stream. This is a wrapper on the printDocument() API
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/rawPrinting/printDocument | printDocument() API}
      * @function DirectPrintDocument
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} sPrinterName The name of the printer to print to.
      * @param {string} sUrl url of the file whose contents are to be sent to the printer. The url must be a fully qualified url.
      */
@@ -573,7 +691,7 @@
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PageSetup | PageSetup API}
      * @see PageSetup2
      * @function PageSetup
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {boolean} true if the user closed the dialog with the OK button, otherwise false.
      * @deprecated from 1.4 as the return value will be wrong for service since dialogs are async. Use PageSetup2 if the return value matters
      */
@@ -586,9 +704,9 @@
     /**
     * Invokes a Print Setup Dialog. This is a wrapper on the PrintSetup API
     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintSetup | PrintSetup API}
-    * @see {@link MeadCoScriptX."PrintSetup2" | PrintSetup2 }
+    * @see {@link MeadCo.ScriptX."PrintSetup2" | PrintSetup2 }
     * @function PrintSetup
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @returns {boolean} true if the user closed the dialog with the OK button, otherwise false.
     * @deprecated from 1.4 as the return value will be wrong for service since dialogs are async. Use PrintSetup2 if the return value matters
     */
@@ -606,7 +724,7 @@
      * Invokes a Page Setup Dialog. This is a wrapper on the PageSetup API
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PageSetup | PageSetup API}
      * @function PageSetup2
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {Promise} Promise object represents boolean with value true if the user closed the dialog with the OK button, otherwise false.
      */
     scriptx.PageSetup2 = function () {
@@ -637,7 +755,7 @@
     * Invokes a Print Setup Dialog. This is a wrapper on the PrintSetup API
     * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintSetup | PrintSetup API}
     * @function PrintSetup2
-    * @memberof MeadCoScriptX
+    * @memberof MeadCo.ScriptX
     * @returns {Promise} Promise object represents boolean with value true if the user closed the dialog with the OK button, otherwise false.
     */
     scriptx.PrintSetup2 = function () {
@@ -680,7 +798,7 @@
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow/Stage7 | Working with ScriptX.Addon and ScriptX.Services }
      * @see {@link https://meadco.github.io/ScriptX.Print.Client/index.html | ScriptX.Services Client Library }
      * @function WaitForSpoolingComplete
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {Promise}
      * @example 
      * MeadCo.ScriptX.PrintPage(false);
@@ -706,7 +824,7 @@
 
     /**
      * @function HasOrientation
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {boolean} true if the 'orientation' property is available, otherwise the 'portrait' property must be used.
      * */
     scriptx.HasOrientation = function () {
@@ -721,7 +839,7 @@
      * Determnines the names of the printers available pon the device. This function wraps the EnumPrinters API in a more convenient form.
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/EnumPrinters | EnumPrinters API}
      * @function GetAvailablePrinters
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {string[]} array of the names of the available printers available.
      * */
     scriptx.GetAvailablePrinters = function () {
@@ -748,7 +866,7 @@
      * with all versions of ScriptX. Use the recommended alternatives.
      * 
      * @function GetComponentVersion
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} sComponent The component name, e.g. "ScriptX.Factory"
      * @returns {string} Installed version of the component or "Not installed"
      * @deprecated since v7 of ScriptX.Addon. Use ScriptX.Utils.ComponentVersionString or ScriptX.Utils.ScriptXVersion or ScriptX.Utils.SecurityManagerVersion
@@ -777,7 +895,7 @@
     /**
      * Get the installed version of ScriptX
      * @function ScriptXVersion
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {string} Installed version or "Not installed"
      */
     scriptx.ScriptXVersion = function () {
@@ -787,7 +905,7 @@
     /**
      * Get the installed version of MeadCo Security Manager
      * @function SecurityManagerVersion
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @returns {string} Installed version or "Not installed"
      */
     scriptx.SecurityManagerVersion = function () {
@@ -798,7 +916,7 @@
      * Determine if the installed version of a COM component is at least the given version
      * 
      * @function IsComponentVersion
-     * @memberof MeadCoScriptX
+     * @memberof MeadCo.ScriptX
      * @param {string} strComponentName The name of the COM Component 
      * @param {string} strVersionRequired minimum version in dotted form
      * @returns {boolean} true is the component is installed and at least the version required.
@@ -814,8 +932,8 @@
     // find an instance of 'factory', either the add-on or polyfill, optionally hook up to
     // the module and return the instance of the printing object (in Add-on this creates the object)
     function findFactory(bRecord) {
-        var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
-        if (f && typeof f.object !== "undefined" && f.object !== null) {
+        var f = window.factory || document.getElementById("factory"); // we assume the &lt;object /> has an id of 'factory'
+        if (f &amp;&amp; typeof f.object !== "undefined" &amp;&amp; f.object !== null) {
             if (bRecord) {
                 scriptx.Factory = f;
                 scriptx.Utils = f.object;
@@ -839,7 +957,7 @@
         if (a.length !== b.length)
             return false;
 
-        for (i = 0; i < a.length; i++) {
+        for (i = 0; i &lt; a.length; i++) {
             a[i] = parseInt(a[i]);
             b[i] = parseInt(b[i]);
         }
@@ -847,13 +965,13 @@
         if (a[0] > b[0])
             return true;
 
-        if (a[0] >= b[0] && a[1] > b[1])
+        if (a[0] >= b[0] &amp;&amp; a[1] > b[1])
             return true;
 
-        if (a[0] >= b[0] && a[1] >= b[1] && a[2] > b[2])
+        if (a[0] >= b[0] &amp;&amp; a[1] >= b[1] &amp;&amp; a[2] > b[2])
             return true;
 
-        if (a[0] >= b[0] && a[1] >= b[1] && a[2] >= b[2] && a[3] >= b[3])
+        if (a[0] >= b[0] &amp;&amp; a[1] >= b[1] &amp;&amp; a[2] >= b[2] &amp;&amp; a[3] >= b[3])
             return true;
 
         return false;
@@ -920,7 +1038,7 @@
 //
 
 /**
- * @namespace MeadCoLicensing
+ * @namespace MeadCo.Licensing
  */
 
 (function (topLeveNs) {
@@ -949,7 +1067,7 @@
     * @see {@link https://meadco.github.io/ScriptX.Print.Client/ | MeadCo ScriptX.Services Client Library}
     *
     * @function Init
-    * @memberof MeadCoLicensing
+    * @memberof MeadCo.Licensing
     * @returns {boolean} true if initialisation succeeded and implementations of the MeadCo Security Manager object is available, false if failed
     * @deprecated due to the synchronous ajax calls, use InitAsync
     */
@@ -979,7 +1097,7 @@
                 console.log("** Warning -- no secmgr **");
             }
         }
-        return licensing.LicMgr !== null && typeof (licensing.LicMgr.result) !== "undefined";
+        return licensing.LicMgr !== null &amp;&amp; typeof (licensing.LicMgr.result) !== "undefined";
     };
 
     /**
@@ -987,7 +1105,7 @@
     * the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.
     *
     * @function InitAsync
-    * @memberof MeadCoLicensing
+    * @memberof MeadCo.Licensing
     * @returns {Promise} 
     */
     licensing.InitAsync = function () {
@@ -1030,7 +1148,7 @@
      * Performs synchronous initialisation 
      *
      * @function IsLicensed
-     * @memberof MeadCoLicensing
+     * @memberof MeadCo.Licensing
      * @returns {boolean} true if a valid license is available
      *
      */
@@ -1038,7 +1156,7 @@
 
         if (licensing.Init()) {
             var l = licensing.LicMgr.License;
-            return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
+            return licensing.LicMgr.result === 0 &amp;&amp; licensing.LicMgr.validLicense;
         }
 
         console.log("WARNING :: MeadCo.Licensing.Init() failed so IsLicensed will return false.");
@@ -1049,7 +1167,7 @@
      * Performs asynchronous initialisation 
      *
      * @function IsLicensedAsync
-     * @memberof MeadCoLicensing
+     * @memberof MeadCo.Licensing
      * @returns {Promise} Promise object with a resolve of the loaded license detail
      *
      */
@@ -1072,7 +1190,7 @@
      * Obtain the description of the last error that occurred. 
      * 
      * @function ErrorMessage
-     * @memberof MeadCoLicensing
+     * @memberof MeadCo.Licensing
      * @returns {string} Text description of the last error or if no error has occurred, an empty string
      */
     licensing.ErrorMessage = function () {
@@ -1087,7 +1205,7 @@
      * If an error has occurred, displays an alert box with details of the licensing error with any given message appended.
      * 
      * @function ReportError
-     * @memberof MeadCoLicensing
+     * @memberof MeadCo.Licensing
      * @param {string} msg Text to append to the error message.
      */
     licensing.ReportError = function (msg) {
@@ -1161,7 +1279,7 @@
 
     function reportError(eMsg) {
         var msg = eMsg;
-        for (var i = 1; i < arguments.length; i++) {
+        for (var i = 1; i &lt; arguments.length; i++) {
             if (arguments[i])
                 msg += "\n\n" + arguments[i];
         }
@@ -1171,8 +1289,8 @@
     // try to find the Security Manager add-on on the page.
     // 
     function findSecMgr() {
-        var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
-        if (l && l.object !== null && typeof l.object !== "undefined") {
+        var l = window.secmgr || document.getElementById("secmgr");  // we assume the &lt;object /> has an id of 'secmgr'
+        if (l &amp;&amp; l.object !== null &amp;&amp; typeof l.object !== "undefined") {
             licensing.LicMgr = l.object;
             console.log("Found a secmgr: " + (typeof licensing.LicMgr.result !== "undefined"));
             return typeof (licensing.LicMgr.result) !== "undefined";
@@ -1182,3 +1300,24 @@
 
 }(window.MeadCo = window.MeadCo || {}));
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

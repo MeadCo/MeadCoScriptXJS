@@ -1,0 +1,6123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeadCo.ScriptXJS Library MeadCo.ScriptX</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="style.css">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">MeadCo.ScriptXJS</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/MeadCo/MeadCo.ScriptXJS"
+                        >
+                            Github
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow"
+                        >
+                            Then to now walk through
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://scriptxprintsamples.meadroid.com"
+                        >
+                            Samples
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Namespaces</h3><ul><li><a href="MeadCoLicensing.html">MeadCo.Licensing</a></li><li><a href="MeadCoScriptX.html">MeadCo.ScriptX</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Namespace</p>
+                    <h1>MeadCo.ScriptX</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>MeadCo.ScriptX</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Simple wrappers on the MeadCo ScriptX objects 'factory', 'factory.printing' and 'secmgr' with additional helper functions.</p>
+<p>The implementation is for use in a browser only, not general runtime javascript environments and the code is necessarily 'old-fashioned' as it may find itself running in old versions of IE.</p>
+<h2>Introduction</h2>
+<p>The library provides two objects within the MeadCo 'namespace':</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MeadCo.ScriptX</td>
+<td>wraps the classic 'factory' (MeadCo.ScriptX.Utils) and factory.printing (MeadCo.ScriptX.Printing) objects and provides useful helper functions for common processes.</td>
+</tr>
+<tr>
+<td>MeadCo.Licensing</td>
+<td>wraps the classic 'secmgr' object.</td>
+</tr>
+</tbody>
+</table>
+<h3>MeadCo.ScriptX</h3>
+<p>The &lt;object /&gt; tag for ScriptX factory is assumed to have an id of 'factory', call MeadCo.ScriptX.Init() (or MeadCo.ScriptX.InitAsync()) to connect the wrappers to underlying implementations - returns true on success.</p>
+<p>2 objects will then be available:22</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MeadCo.ScriptX.Utils</td>
+<td>the 'factory' object with all the properties and methods <a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory">as documented</a></td>
+</tr>
+<tr>
+<td>MeadCo.ScriptX.Printing</td>
+<td>the 'factory.printing' object with all the properties and methods <a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing">as documented</a>, e.g. MeadCo.ScriptX.Printing.header = &quot;My Report header&quot;.</td>
+</tr>
+</tbody>
+</table>
+<h3>MeadCo.Licensing</h3>
+<p>The &lt;object /&gt; tag for MeadCo Security Manager is assumed to have an id of 'secmgr', call MeadCo.Licensing.IsLicensed() to test if the licensed is valid for the document and has been installed/accepted.</p>
+<h2>Use with ScriptX.Services</h2>
+<p>MeadCo.ScriptXJS supports working with ScriptX.Services or ScriptX.Add-on and so this librray provides an abstraction and helper functions for working seamlessly with either ScriptX.Addon or ScriptX.Services. This works by
+utilising the <a href="https://meadco.github.io/ScriptX.Print.Client/">MeadCo ScriptX.Services Client Library</a> emulation of 'factory' and 'secmgr'. When both libraries are present, on IE 11 with ScriptX.Addon available it will
+take priority. On any other browser ScriptX.Services will be used.</p>
+<p>Async scenarios with ScriptX.Print Services are supported by providing async wrappers on ScriptX.Addon functions with promises. A promise polyfill is required if promise is
+not implemented in the browser we recommend (and test with) https://github.com/taylorhakes/promise-polyfill.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line1">line 1</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+        
+            <h3>Examples</h3>
+            
+        <p class="code-caption">Example of initialisation and use of wrappers</p>
+    
+    
+        <pre class="prettyprint"><code> $(window).on('load', function () {   if ( MeadCo.ScriptX.Init() (   {      $("#info").text("ScriptX version: " + MeadCo.ScriptX.GetComponentVersion("scriptx.factory"));      MeadCo.ScriptX.Printing.header =       "MeadCo's ScriptX&amp;b:&amp;p of &amp;P:&amp;bBasic Printing Sample";     MeadCo.ScriptX.Printing.footer =       "The de facto standard for advanced web-based printing";     MeadCo.ScriptX.Printing.orientation = "landscape";     $("#btnprint").click(function() {         MeadCo.ScriptX.PrintPage(false);  }});</code></pre>
+    
+
+        <p class="code-caption">Example of MeadCo.Licensing.IsLicensed()</p>
+    
+    
+        <pre class="prettyprint"><code>if ( MeadCo.Licensing.IsLicensed() ) { 	...}else {   MeadCo.Licensing.ReportError();}</code></pre>
+    
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Members</h1>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id=".Connector">
+    <a class="href-link" href="#.Connector">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        Connector
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>The discovered connection - NONE, ADDON or SERVICE</p>.</p>
+
+
+
+<div class="description">
+    <p>The discovered connection - NONE, ADDON or SERVICE</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line140">line 140</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+<h4 class="name" id=".LibVersion">
+    <a class="href-link" href="#.LibVersion">#</a>
+    
+        
+            <span class='tag'>static</span>
+        
+            <span class='tag'>readonly</span>
+        
+    
+    <span class="code-name">
+        LibVersion
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>The semver version of this library</p>.</p>
+
+
+
+<div class="description">
+    <p>The semver version of this library</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line147">line 147</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".BackgroundPrintHTML">
+        <a class="href-link" href="#.BackgroundPrintHTML">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                BackgroundPrintHTML<span class="signature">(sHtml, fnCallback<span class="signature-attributes">opt</span>, data<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Background print the html document contained in the string.</p>
+    
+    
+    <div class="description">
+        <p>Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sHtml</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The html to print. The document must be complete and well formed.All resource references in the HTML must be fully qualified unless a base element is included.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>fnCallback</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">callback</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          log to console
+      
+      </td>
+  
+
+  <td class="description last"><p>Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          "Job" + incrementing index
+      
+      </td>
+  
+
+  <td class="description last"><p>Data to pass to the event callback function</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx%20"> PrintHtmlEX() API</a>.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line515">line 515</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>always returns true</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".BackgroundPrintURL">
+        <a class="href-link" href="#.BackgroundPrintURL">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                BackgroundPrintURL<span class="signature">(sUrl, bPrompt<span class="signature-attributes">opt</span>, fnCallback<span class="signature-attributes">opt</span>, data<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Download and print an HTML document in the background.</p>
+    
+    
+    <div class="description">
+        <p>Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sUrl</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The url of the (html) document to download and print</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bPrompt</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>bPrompt True if a dialog is to prompt the user to confirm the print</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>fnCallback</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">callback</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          log to console
+      
+      </td>
+  
+
+  <td class="description last"><p>Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          "Job" + incrementing index
+      
+      </td>
+  
+
+  <td class="description last"><p>Data to pass to the event callback function</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>from 1.4 as the return value will be wrong for service when using prompted printing since dialogs are async. Use BackgroundPrintURL2 if the return value matters</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx%20"> PrintHtmlEX() API</a>.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line455">line 455</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>for prompted printing returns true if the user started the print and it was queued, otherwise false. Always returns true for promptless printing</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".BackgroundPrintURL2">
+        <a class="href-link" href="#.BackgroundPrintURL2">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                BackgroundPrintURL2<span class="signature">(sUrl, bPrompt<span class="signature-attributes">opt</span>, fnCallback<span class="signature-attributes">opt</span>, data<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Download and print an HTML document in the background.</p>
+    
+    
+    <div class="description">
+        <p>Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sUrl</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The url of the (html) document to download and print</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bPrompt</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>bPrompt True if a dialog is to prompt the user to confirm the print</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>fnCallback</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">callback</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          log to console
+      
+      </td>
+  
+
+  <td class="description last"><p>Callback function called on progress events fnCallback(nStatus, strStatusData, callbackData)</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>data</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          "Job" + incrementing index
+      
+      </td>
+  
+
+  <td class="description last"><p>Data to pass to the event callback function</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx%20"> PrintHtmlEX() API</a>.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line480">line 480</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object represents boolean with value true for prompted printing and the user started the print and it was queued. For promptless printing always represents true.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".DirectPrintDocument">
+        <a class="href-link" href="#.DirectPrintDocument">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                DirectPrintDocument<span class="signature">(sPrinterName, sUrl)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Download content from a url and send its contents (e.g.</p>
+    
+    
+    <div class="description">
+        <p>Download content from a url and send its contents (e.g. ZPL) directly to the printer as a byte stream. This is a wrapper on the printDocument() API</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sPrinterName</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The name of the printer to print to.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sUrl</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>url of the file whose contents are to be sent to the printer. The url must be a fully qualified url.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/rawPrinting/printDocument%20"> printDocument() API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line549">line 549</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".DirectPrintString">
+        <a class="href-link" href="#.DirectPrintString">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                DirectPrintString<span class="signature">(sPrinterName, sData)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Directly print a stream of characters to a printer without formatting, pagination or any other processing.</p>
+    
+    
+    <div class="description">
+        <p>Directly print a stream of characters to a printer without formatting, pagination or any other processing. This is a wrapper on the printString() API</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sPrinterName</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The name of the printer to print to.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sData</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The string (e.g. ZPL) to send directly to the printer as a byte stream</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/rawPrinting/printString%20"> printString() API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line531">line 531</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".GetAvailablePrinters">
+        <a class="href-link" href="#.GetAvailablePrinters">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                GetAvailablePrinters<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Determnines the names of the printers available pon the device.</p>
+    
+    
+    <div class="description">
+        <p>Determnines the names of the printers available pon the device. This function wraps the EnumPrinters API in a more convenient form.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/EnumPrinters%20"> EnumPrinters API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line720">line 720</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>array of the names of the available printers available.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".GetComponentVersion">
+        <a class="href-link" href="#.GetComponentVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                GetComponentVersion<span class="signature">(sComponent)</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Returns the version of an installed component as a dotted version string.</p>
+    
+    
+    <div class="description">
+        <p>Returns the version of an installed component as a dotted version string. This wraps the deprecated API GetComponentVersion which is available
+with all versions of ScriptX. Use the recommended alternatives.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>sComponent</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The component name, e.g. &quot;ScriptX.Factory&quot;</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>since v7 of ScriptX.Addon. Use ScriptX.Utils.ComponentVersionString or ScriptX.Utils.ScriptXVersion or ScriptX.Utils.SecurityManagerVersion</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/ComponentVersionString%20"> ComponentVersionString API</a></li>
+        
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/ScriptXVersion%20"> ScriptXVersion API</a></li>
+        
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/SecurityManagerVersion%20"> SecurityManagerVersion API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line746">line 746</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Installed version of the component or &quot;Not installed&quot;</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".HasOrientation">
+        <a class="href-link" href="#.HasOrientation">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                HasOrientation<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line707">line 707</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if the 'orientation' property is available, otherwise the 'portrait' property must be used.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".Init">
+        <a class="href-link" href="#.Init">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                Init<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
+the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.</p></p>
+    
+    
+    <div class="description">
+        <p>Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
+the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.</p>
+<p>With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://meadco.github.io/ScriptX.Print.Client/%20"> MeadCo ScriptX.Services Client Library</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line153">line 153</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if initialisation succeeded and implementations of the MeadCo ScriptX factory and printing objects are available, false if failed</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".InitAsync">
+        <a class="href-link" href="#.InitAsync">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                InitAsync<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Performs asynchronous initialisation by discovering and connecting to either ScriptX.Addon or
+ScriptX.Services.</p></p>
+    
+    
+    <div class="description">
+        <p>Performs asynchronous initialisation by discovering and connecting to either ScriptX.Addon or
+ScriptX.Services.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line193">line 193</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".InitWithVersion">
+        <a class="href-link" href="#.InitWithVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                InitWithVersion<span class="signature">(strVersion)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Initialises the library and ensures that the installed version is at least some version.</p>
+    
+    
+    <div class="description">
+        <p>Initialises the library and ensures that the installed version is at least some version. If ScriptX is available but not the required version an alert dialog is displayed.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strVersion</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>minimum required version number (e.g. &quot;7.1.2.65&quot;)</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>from version 1.8.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line237">line 237</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if initialisation succeeded and implementations of the MeadCo ScriptX factory and printing objects are available at the required version of higher, false if failed</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".IsComponentVersion">
+        <a class="href-link" href="#.IsComponentVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                IsComponentVersion<span class="signature">(strComponentName, strVersionRequired)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Determine if the installed version of a COM component is at least the given version</p>.</p>
+    
+    
+    <div class="description">
+        <p>Determine if the installed version of a COM component is at least the given version</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strComponentName</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The name of the COM Component</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strVersionRequired</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>minimum version in dotted form</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line797">line 797</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true is the component is installed and at least the version required.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".IsServices">
+        <a class="href-link" href="#.IsServices">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                IsServices<span class="signature">(strVersion)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strVersion</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line277">line 277</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if ScriptX.Services is/will be used</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".IsServicesVersion">
+        <a class="href-link" href="#.IsServicesVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                IsServicesVersion<span class="signature">(strVersion)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strVersion</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line322">line 322</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if the services server in use is at least strVersion where strVersion is a dotted version number (e.g. &quot;7.1.2.65&quot;)</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".IsVersion">
+        <a class="href-link" href="#.IsVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                IsVersion<span class="signature">(strVersion)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strVersion</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line267">line 267</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if the installed version is at least strVersion where strVersion is a dotted version number (e.g. &quot;7.1.2.65&quot;)</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PageSetup">
+        <a class="href-link" href="#.PageSetup">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PageSetup<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Invokes a Page Setup Dialog.</p>
+    
+    
+    <div class="description">
+        <p>Invokes a Page Setup Dialog. This is a wrapper on the PageSetup API</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>from 1.4 as the return value will be wrong for service since dialogs are async. Use PageSetup2 if the return value matters</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PageSetup%20"> PageSetup API</a></li>
+        
+            <li>PageSetup2</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line571">line 571</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if the user closed the dialog with the OK button, otherwise false.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PageSetup2">
+        <a class="href-link" href="#.PageSetup2">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PageSetup2<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Invokes a Page Setup Dialog.</p>
+    
+    
+    <div class="description">
+        <p>Invokes a Page Setup Dialog. This is a wrapper on the PageSetup API</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PageSetup%20"> PageSetup API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line605">line 605</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object represents boolean with value true if the user closed the dialog with the OK button, otherwise false.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PreviewPage">
+        <a class="href-link" href="#.PreviewPage">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PreviewPage<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Opens a preview of the printed current document (page).</p>
+    
+    
+    <div class="description">
+        <p>Opens a preview of the printed current document (page). This is a wrapper on the Preview() API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Preview%20"> Preview() API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line376">line 376</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PreviewPage">
+        <a class="href-link" href="#.PreviewPage">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PreviewPage<span class="signature">(frame)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Opens a preview of the printed frame.</p>
+    
+    
+    <div class="description">
+        <p>Opens a preview of the printed frame. This is a wrapper on the Preview() API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>frame</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The frame object or the name of the frame to be printed.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Preview%20"> Preview() API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line433">line 433</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PrintFrame">
+        <a class="href-link" href="#.PrintFrame">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PrintFrame<span class="signature">(frame, bPrompt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license).</p>
+    
+    
+    <div class="description">
+        <p>Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>frame</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The frame object or the name of the frame to be printed.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bPrompt</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>bPrompt True if a dialog is to prompt the user to confirm the print</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>from 1.4 as the return value will be wrong for service when using prompted printing since dialogs are async. Use PrintFrame2 if the return value matters</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print%20"> Print API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line391">line 391</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if print was started, otherwise false</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PrintFrame2">
+        <a class="href-link" href="#.PrintFrame2">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PrintFrame2<span class="signature">(frame, bPrompt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license).</p>
+    
+    
+    <div class="description">
+        <p>Print the content of the frame, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>frame</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+|
+
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+      </td>
+  
+
+  <td class="description last"><p>The frame object or the name of the frame to be printed.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bPrompt</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>bPrompt True if a dialog is to prompt the user to confirm the print</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print%20"> Print API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line407">line 407</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object represents boolean with value true if the print was started</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PrintPage">
+        <a class="href-link" href="#.PrintPage">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PrintPage<span class="signature">(bPrompt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Print the current document, with optional prompting (no prompt in the internetzone requires a license).</p>
+    
+    
+    <div class="description">
+        <p>Print the current document, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bPrompt</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>bPrompt True if a dialog is to prompt the user to confirm the print</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>from 1.4 as the return value will be wrong for service since dialogs are async. Use PrintPage2 if the return value matters</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print%20"> Print API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line336">line 336</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if print was started, otherwise false</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PrintPage2">
+        <a class="href-link" href="#.PrintPage2">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PrintPage2<span class="signature">(bPrompt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Print the current document, with optional prompting (no prompt in the internetzone requires a license).</p>
+    
+    
+    <div class="description">
+        <p>Print the current document, with optional prompting (no prompt in the internetzone requires a license). This is a wrapper on the Print API.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+            <th>Attributes</th>
+            
+
+            
+            <th>Default</th>
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bPrompt</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+      <td class="attributes">
+      
+          &lt;optional><br>
+      
+
+      
+
+      
+      </td>
+  
+
+  
+      <td class="default">
+      
+          true
+      
+      </td>
+  
+
+  <td class="description last"><p>bPrompt</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/Print%20"> Print API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line351">line 351</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object represents boolean with value true if the print was started</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PrintSetup">
+        <a class="href-link" href="#.PrintSetup">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PrintSetup<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Invokes a Print Setup Dialog.</p>
+    
+    
+    <div class="description">
+        <p>Invokes a Print Setup Dialog. This is a wrapper on the PrintSetup API</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>from 1.4 as the return value will be wrong for service since dialogs are async. Use PrintSetup2 if the return value matters</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintSetup%20"> PrintSetup API</a></li>
+        
+            <li> PrintSetup2 </li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line586">line 586</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>true if the user closed the dialog with the OK button, otherwise false.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">boolean</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".PrintSetup2">
+        <a class="href-link" href="#.PrintSetup2">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                PrintSetup2<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Invokes a Print Setup Dialog.</p>
+    
+    
+    <div class="description">
+        <p>Invokes a Print Setup Dialog. This is a wrapper on the PrintSetup API</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintSetup%20"> PrintSetup API</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line636">line 636</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object represents boolean with value true if the user closed the dialog with the OK button, otherwise false.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".ScriptXVersion">
+        <a class="href-link" href="#.ScriptXVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                ScriptXVersion<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Get the installed version of ScriptX</p>.</p>
+    
+    
+    <div class="description">
+        <p>Get the installed version of ScriptX</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line777">line 777</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Installed version or &quot;Not installed&quot;</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".SecurityManagerVersion">
+        <a class="href-link" href="#.SecurityManagerVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                SecurityManagerVersion<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary"><p>Get the installed version of MeadCo Security Manager</p>.</p>
+    
+    
+    <div class="description">
+        <p>Get the installed version of MeadCo Security Manager</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line787">line 787</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Installed version or &quot;Not installed&quot;</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".ServicesVersion">
+        <a class="href-link" href="#.ServicesVersion">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                ServicesVersion<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">If services is in use, returns the version of the services server.</p>
+    
+    
+    <div class="description">
+        <p>If services is in use, returns the version of the services server. If addon is in use returns &quot;&quot;</p>
+<p>Requires services 2.9 or later, earlier versions will return the client library version (1.x)</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line305">line 305</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".Version">
+        <a class="href-link" href="#.Version">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                Version<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line256">line 256</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>the installed version number of ScriptX (if services is in use then returns the version of ScriptX.Addon being emulated).</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".WaitForSpoolingComplete">
+        <a class="href-link" href="#.WaitForSpoolingComplete">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                WaitForSpoolingComplete<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Waits for all pending spooling and download operations originated with Print, PrintHTML and BatchPrintPDF to complete.</p>
+    
+    
+    <div class="description">
+        <p>Waits for all pending spooling and download operations originated with Print, PrintHTML and BatchPrintPDF to complete. This is useful
+for providing 'busy' UI or waiting for all jobs to complete before closing a window.</p>
+<p>This is a wrapper on the common use (no arguments) of the WaitForSpoolingComplete API and returns a Promise so that it can work with
+both ScriptX.Addon and ScriptX.Services</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/WaitForSpoolingComplete%20"> WaitForSpoolingComplete API </a></li>
+        
+            <li><a href="https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow/Stage7%20"> Working with ScriptX.Addon and ScriptX.Services </a></li>
+        
+            <li><a href="https://meadco.github.io/ScriptX.Print.Client/index.html%20"> ScriptX.Services Client Library </a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line672">line 672</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+    <h5>Example</h5>
+    
+    
+        <pre class="prettyprint"><code>MeadCo.ScriptX.PrintPage(false);MeadCo.ScriptX.WaitForSpoolingComplete().finally(function() { self.close();})</code></pre>
+    
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Type Definitions</h1>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">number</span>
+
+
+    </span>
+
+<h4 class="name" id=".Connection">
+    <a class="href-link" href="#.Connection">#</a>
+    
+    <span class="code-name">
+        Connection
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Enum to describe the implementation being wrapped : .Addon or .Services</p>.</p>
+
+
+
+<div class="description">
+    <p>Enum to describe the implementation being wrapped : .Addon or .Services</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>NONE</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>0 no connection wrapped (initialise not called or failed)</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>ADDON</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>1 ScriptX.Addon is being wrapped</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>SERVICE</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>2 ScriptX.Services is being wrapped</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line90">line 90</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">number</span>
+
+
+    </span>
+
+<h4 class="name" id=".MeasurementUnits">
+    <a class="href-link" href="#.MeasurementUnits">#</a>
+    
+    <span class="code-name">
+        MeasurementUnits
+    </span>
+    
+</h4>
+
+
+<p class="summary">Enum to describe the units used on measurements.</p>
+
+
+
+<div class="description">
+    <p>Enum to describe the units used on measurements. These values do match the values used by the MeadCo ScriptX COM Servers.</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>DEFAULT</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>0 use the default at the print server</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>MM</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>2 millimeters</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>INCHES</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>2 inches</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line107">line 107</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>
