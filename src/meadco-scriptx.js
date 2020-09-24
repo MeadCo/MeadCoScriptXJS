@@ -700,10 +700,10 @@
      * @see {@link https://meadco.github.io/ScriptX.Print.Client/index.html | ScriptX.Services Client Library }
      * @function WaitForSpoolingComplete
      * @memberof MeadCoScriptX
-     * @returns {Promise}
+     * @returns {Promise} Promise object represents boolean with value true if all jobs have been completed (will always be true).
      * @example 
      * MeadCo.ScriptX.PrintPage(false);
-     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function() {
+     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bJobsNotComplete) {
      *  self.close();
      * })
      */
@@ -716,8 +716,7 @@
 
         return new Promise(function (resolve, reject) {
             window.setTimeout(function () {
-                scriptx.Printing.WaitForSpoolingComplete();
-                resolve();
+                resolve(scriptx.Printing.WaitForSpoolingComplete());
             }, 1);
         });
 
