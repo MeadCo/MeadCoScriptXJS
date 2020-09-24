@@ -83,7 +83,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    var version = "1.8.2-beta01";
+    var version = "1.9.0-beta01";
 
     var scriptx = topLevelNs.ScriptX;
 
@@ -112,7 +112,7 @@
      * @memberof MeadCoScriptX
      * @readonly
      * @property {number} DEFAULT 0 use the default at the print server
-     * @property {number} MM 2 millimeters  
+     * @property {number} MM 1 millimeters  
      * @property {number} INCHES 2 inches
      */
     var enumMeasurementUnits = {
@@ -120,6 +120,35 @@
         MM: 1,
         INCHES: 2
     };
+
+    /**
+     * @typedef Margins
+     * @memberof MeadCoScriptX
+     * @property {number} left
+     * @property {number} right
+     * @property {number} top
+     * @property {number} bottom
+     *
+     */
+
+    /**
+     * Describe pagesetup - orientation and the margins to use
+     * 
+     * @typedef {Object} PageSetup
+     * @memberof MeadCoScriptX
+     * @property {MeasurementUnits} units The units used for margins
+     * @property {string} orientation valid values are 'landscape' and 'portrait'
+     * @property {Margins} margins the margins to use
+     */
+
+
+    /**
+     * @typedef {Object} PrintSettings
+     * @memberof MeadCoScriptX
+     * @property {string} header
+     * @property {string} footer 
+     * @property {PageSetup} pageSetup
+     */
 
     console.log("Initialising MeadCo.ScriptX: " + version);
 
@@ -149,6 +178,50 @@
     // exposed values.
     scriptx.Connector = enumConnection.NONE;
     scriptx.LibVersion = version;
+
+    /**
+     * Perform full asynchronous initialisation - connecting to a secmgr implementation, checking for a license and connecting to factory and printing implementations. 
+     * Lastly apply print settings as defined.
+     * 
+     * This is the preferred library initialisation call.
+     * 
+     * @function Start
+     * @memberof MeadCoScriptX
+     * @param {PrintSettings} settings 
+     * @returns {Promise} Promise object presents connection (implementation) type and license detail to resolve and error message to reject
+     */
+    scriptx.Start = function (settings) {
+
+        return new Promise(function (resolve, reject) {
+            MeadCo.Licensing.IsLicensedAsync()
+                .then(function (license) {
+                    MeadCo.ScriptX.InitAsync()
+                        .then(function (connection) {
+                            // good to go, apply any given settings ...
+                            try {
+                                applySettings(settings)
+                                resolve(connection, license);
+                            }
+                            catch (e) {
+                                console.error("Exception while applying settings: " + e.message);
+                                if (reject) {
+                                    reject(e.message)
+                                }
+                            }
+                        })
+                        .catch(function (errorMessage) {
+                            if (reject) {
+                                reject(errorMesssage);
+                            }
+                        });
+                })
+                .catch(function (errorMessage) {
+                    if (reject) {
+                        reject(errorMesssage);
+                    }
+                });
+        });
+    }
 
     /**
     * Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
@@ -222,7 +295,9 @@
                     }
                 } else {
                     console.log("** Warning -- no factory **");
-                    reject("Unable to find a ScriptX 'factory' object.");
+                    if (reject) {
+                        reject("Unable to find a ScriptX 'factory' object.");
+                    }
                 }
             });
         } else {
@@ -951,6 +1026,50 @@
         }
     }
 
+    function applySettings(objSettings) {
+
+        if (typeof objSettings === "object") {
+            if (typeof objSettings.header === "string") {
+                MeadCo.ScriptX.Printing.header = objSettings.header;
+            }
+            if (typeof objSettings.footer === "string") {
+                MeadCo.ScriptX.Printing.footer = objSettings.footer;
+            }
+
+            if (typeof objSettings.pageSetup === "object") {
+                var ps = objSettings.pageSetup;
+                if (typeof ps.units !== "undefined") {
+                    MeadCo.ScriptX.Printing.SetMarginMeasure(ps.units);
+                }
+                if (typeof ps.orientation === "string") {
+                    MeadCo.ScriptX.Printing.orientation = ps.orientation;
+                }
+
+                if (typeof ps.margins === "object") {
+                    var m = ps.margins;
+
+                    if (typeof m.left !== "undefined") {
+                        MeadCo.ScriptX.Printing.leftMargin = m.left;
+                    }
+
+                    if (typeof m.right !== "undefined") {
+                        MeadCo.ScriptX.Printing.rightMargin = m.right;
+                    }
+
+                    if (typeof m.top !== "undefined") {
+                        MeadCo.ScriptX.Printing.topMargin = m.top;
+                    }
+
+                    if (typeof m.bottom !== "undefined") {
+                        MeadCo.ScriptX.Printing.bottomMargin = m.bottom;
+                    }
+                }
+            }
+        }
+
+    }
+
+
 }(window.MeadCo = window.MeadCo || {}));
 
 // MeadCo.Licensing - singleton
@@ -1091,7 +1210,7 @@
      *
      * @function IsLicensedAsync
      * @memberof MeadCoLicensing
-     * @returns {Promise} Promise object with a resolve of the loaded license detail
+     * @returns {Promise} Promise object with a resolve of the loaded license detail and reject of the error message
      *
      */
     licensing.IsLicensedAsync = function () {

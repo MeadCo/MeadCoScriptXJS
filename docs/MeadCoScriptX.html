@@ -324,7 +324,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line140">line 140</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line169">line 169</a>
             </span>
         </p>
     
@@ -401,7 +401,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line147">line 147</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line176">line 176</a>
             </span>
         </p>
     
@@ -446,7 +446,9 @@ not implemented in the browser we recommend (and test with) https://github.com/t
     
     
     <div class="description">
-        <p>Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol</p>
+        <p>Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol.</p>
+<p>Note that processing after call is asynchronous. There is no Promise returning version as the function always returns true (there is no prompting).
+See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous coding.</p>
     </div>
     
 
@@ -653,7 +655,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line515">line 515</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line594">line 594</a>
             </span>
         </p>
     
@@ -980,7 +982,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line455">line 455</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line531">line 531</a>
             </span>
         </p>
     
@@ -1305,7 +1307,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line480">line 480</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line556">line 556</a>
             </span>
         </p>
     
@@ -1352,6 +1354,160 @@ not implemented in the browser we recommend (and test with) https://github.com/t
                 
         </div>
     </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".CloseWindow">
+        <a class="href-link" href="#.CloseWindow">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                CloseWindow<span class="signature">(oWindow)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Ensures orderly closing of a window in ScriptX.Services by waiting for jobs to complete before the window closes.</p>
+    
+    
+    <div class="description">
+        <p>Ensures orderly closing of a window in ScriptX.Services by waiting for jobs to complete before the window closes. This is done automatically by ScriptX.Addon</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>oWindow</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The window to close</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line801">line 801</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1516,7 +1672,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line549">line 549</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line631">line 631</a>
             </span>
         </p>
     
@@ -1702,7 +1858,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line531">line 531</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line613">line 613</a>
             </span>
         </p>
     
@@ -1812,7 +1968,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line720">line 720</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line832">line 832</a>
             </span>
         </p>
     
@@ -2005,7 +2161,7 @@ with all versions of ScriptX. Use the recommended alternatives.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line746">line 746</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line858">line 858</a>
             </span>
         </p>
     
@@ -2127,7 +2283,7 @@ with all versions of ScriptX. Use the recommended alternatives.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line707">line 707</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line819">line 819</a>
             </span>
         </p>
     
@@ -2265,7 +2421,7 @@ the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.</p
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line153">line 153</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line226">line 226</a>
             </span>
         </p>
     
@@ -2395,7 +2551,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line193">line 193</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line266">line 266</a>
             </span>
         </p>
     
@@ -2425,6 +2581,8 @@ ScriptX.Services.</p>
                     
 
 <div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object represents enum Connection with value of the connection found (NONE, ADDON or SERVICES)</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -2574,7 +2732,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line237">line 237</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line313">line 313</a>
             </span>
         </p>
     
@@ -2778,7 +2936,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line797">line 797</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line909">line 909</a>
             </span>
         </p>
     
@@ -2951,7 +3109,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line277">line 277</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line353">line 353</a>
             </span>
         </p>
     
@@ -3124,7 +3282,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line322">line 322</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line398">line 398</a>
             </span>
         </p>
     
@@ -3297,7 +3455,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line267">line 267</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line343">line 343</a>
             </span>
         </p>
     
@@ -3436,7 +3594,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line571">line 571</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line653">line 653</a>
             </span>
         </p>
     
@@ -3571,7 +3729,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line605">line 605</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line687">line 687</a>
             </span>
         </p>
     
@@ -3706,7 +3864,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line376">line 376</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line452">line 452</a>
             </span>
         </p>
     
@@ -3870,7 +4028,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line433">line 433</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line509">line 509</a>
             </span>
         </p>
     
@@ -4093,7 +4251,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line391">line 391</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line467">line 467</a>
             </span>
         </p>
     
@@ -4339,7 +4497,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line407">line 407</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line483">line 483</a>
             </span>
         </p>
     
@@ -4547,7 +4705,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line336">line 336</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line412">line 412</a>
             </span>
         </p>
     
@@ -4753,7 +4911,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line351">line 351</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line427">line 427</a>
             </span>
         </p>
     
@@ -4892,7 +5050,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line586">line 586</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line668">line 668</a>
             </span>
         </p>
     
@@ -5027,7 +5185,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line636">line 636</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line723">line 723</a>
             </span>
         </p>
     
@@ -5155,7 +5313,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line777">line 777</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line889">line 889</a>
             </span>
         </p>
     
@@ -5283,7 +5441,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line787">line 787</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line899">line 899</a>
             </span>
         </p>
     
@@ -5412,7 +5570,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line305">line 305</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line381">line 381</a>
             </span>
         </p>
     
@@ -5448,6 +5606,187 @@ ScriptX.Services.</p>
         <label>Type: </label>
         
 <span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".Start">
+        <a class="href-link" href="#.Start">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                Start<span class="signature">(settings)</span><span class="type-signature"> &rarr; {Promise}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">Perform full asynchronous initialisation - connecting to a secmgr implementation, checking for a license and connecting to factory and printing implementations.</p>
+    
+    
+    <div class="description">
+        <p>Perform full asynchronous initialisation - connecting to a secmgr implementation, checking for a license and connecting to factory and printing implementations.
+Lastly apply print settings as defined.</p>
+<p>This is the preferred library initialisation call.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>settings</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">PrintSettings</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line182">line 182</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Promise object presents connection (implementation) type and license detail to resolve and error message to reject</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Promise</span>
 
 
     </div>
@@ -5532,7 +5871,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line256">line 256</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line332">line 332</a>
             </span>
         </p>
     
@@ -5674,7 +6013,7 @@ both ScriptX.Addon and ScriptX.Services</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line672">line 672</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line767">line 767</a>
             </span>
         </p>
     
@@ -5705,6 +6044,8 @@ both ScriptX.Addon and ScriptX.Services</p>
 
 <div class="columns">
     
+    <div class='param-desc column is-7'><p>Promise object represents boolean with value true if all jobs have been completed (will always be true).</p></div>
+    
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
@@ -5726,7 +6067,7 @@ both ScriptX.Addon and ScriptX.Services</p>
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>MeadCo.ScriptX.PrintPage(false);MeadCo.ScriptX.WaitForSpoolingComplete().finally(function() { self.close();})</code></pre>
+        <pre class="prettyprint"><code>MeadCo.ScriptX.PrintPage(false);MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bJobsNotComplete) { self.close();})</code></pre>
     
 
 
@@ -5920,6 +6261,192 @@ both ScriptX.Addon and ScriptX.Services</p>
             
                 <div class="member">
 
+<h4 class="name" id=".Margins">
+    <a class="href-link" href="#.Margins">#</a>
+    
+    <span class="code-name">
+        Margins
+    </span>
+    
+</h4>
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>left</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>right</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>top</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>bottom</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">number</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line124">line 124</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
@@ -6015,7 +6542,7 @@ both ScriptX.Addon and ScriptX.Services</p>
 
     
 
-    <td class="description last"><p>2 millimeters</p></td>
+    <td class="description last"><p>1 millimeters</p></td>
 </tr>
 
         
@@ -6084,6 +6611,354 @@ both ScriptX.Addon and ScriptX.Services</p>
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
                 <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line107">line 107</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">Object</span>
+
+
+    </span>
+
+<h4 class="name" id=".PageSetup">
+    <a class="href-link" href="#.PageSetup">#</a>
+    
+    <span class="code-name">
+        PageSetup
+    </span>
+    
+</h4>
+
+
+<p class="summary"><p>Describe pagesetup - orientation and the margins to use</p>.</p>
+
+
+
+<div class="description">
+    <p>Describe pagesetup - orientation and the margins to use</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>units</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">MeasurementUnits</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>The units used for margins</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>orientation</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>valid values are 'landscape' and 'portrait'</p></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>margins</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Margins</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>the margins to use</p></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line134">line 134</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">Object</span>
+
+
+    </span>
+
+<h4 class="name" id=".PrintSettings">
+    <a class="href-link" href="#.PrintSettings">#</a>
+    
+    <span class="code-name">
+        PrintSettings
+    </span>
+    
+</h4>
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+<div class="table-container">
+    <table class="props table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>header</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>footer</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+            
+<tr class="deep-level-0">
+    
+        <td class="name"><code>pageSetup</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">PageSetup</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"></td>
+</tr>
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line145">line 145</a>
             </span>
         </p>
     

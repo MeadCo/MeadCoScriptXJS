@@ -201,7 +201,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    var version = "1.8.2-beta01";
+    var version = "1.9.0-beta01";
 
     var scriptx = topLevelNs.ScriptX;
 
@@ -230,7 +230,7 @@
      * @memberof MeadCo.ScriptX
      * @readonly
      * @property {number} DEFAULT 0 use the default at the print server
-     * @property {number} MM 2 millimeters  
+     * @property {number} MM 1 millimeters  
      * @property {number} INCHES 2 inches
      */
     var enumMeasurementUnits = {
@@ -238,6 +238,35 @@
         MM: 1,
         INCHES: 2
     };
+
+    /**
+     * @typedef Margins
+     * @memberof MeadCo.ScriptX
+     * @property {number} left
+     * @property {number} right
+     * @property {number} top
+     * @property {number} bottom
+     *
+     */
+
+    /**
+     * Describe pagesetup - orientation and the margins to use
+     * 
+     * @typedef {Object} PageSetup
+     * @memberof MeadCo.ScriptX
+     * @property {MeasurementUnits} units The units used for margins
+     * @property {string} orientation valid values are 'landscape' and 'portrait'
+     * @property {Margins} margins the margins to use
+     */
+
+
+    /**
+     * @typedef {Object} PrintSettings
+     * @memberof MeadCo.ScriptX
+     * @property {string} header
+     * @property {string} footer 
+     * @property {PageSetup} pageSetup
+     */
 
     console.log("Initialising MeadCo.ScriptX: " + version);
 
@@ -267,6 +296,50 @@
     // exposed values.
     scriptx.Connector = enumConnection.NONE;
     scriptx.LibVersion = version;
+
+    /**
+     * Perform full asynchronous initialisation - connecting to a secmgr implementation, checking for a license and connecting to factory and printing implementations. 
+     * Lastly apply print settings as defined.
+     * 
+     * This is the preferred library initialisation call.
+     * 
+     * @function Start
+     * @memberof MeadCo.ScriptX
+     * @param {PrintSettings} settings 
+     * @returns {Promise} Promise object presents connection (implementation) type and license detail to resolve and error message to reject
+     */
+    scriptx.Start = function (settings) {
+
+        return new Promise(function (resolve, reject) {
+            MeadCo.Licensing.IsLicensedAsync()
+                .then(function (license) {
+                    MeadCo.ScriptX.InitAsync()
+                        .then(function (connection) {
+                            // good to go, apply any given settings ...
+                            try {
+                                applySettings(settings)
+                                resolve(connection, license);
+                            }
+                            catch (e) {
+                                console.error("Exception while applying settings: " + e.message);
+                                if (reject) {
+                                    reject(e.message)
+                                }
+                            }
+                        })
+                        .catch(function (errorMessage) {
+                            if (reject) {
+                                reject(errorMesssage);
+                            }
+                        });
+                })
+                .catch(function (errorMessage) {
+                    if (reject) {
+                        reject(errorMesssage);
+                    }
+                });
+        });
+    }
 
     /**
     * Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
@@ -314,7 +387,7 @@
     *
     * @function InitAsync
     * @memberof MeadCo.ScriptX
-    * @returns {Promise} 
+    * @returns {Promise} Promise object represents enum Connection with value of the connection found (NONE, ADDON or SERVICES)
     */
     scriptx.InitAsync = function () {
         var prom;
@@ -340,10 +413,13 @@
                     }
                 } else {
                     console.log("** Warning -- no factory **");
-                    reject("Unable to find a ScriptX 'factory' object.");
+                    if (reject) {
+                        reject("Unable to find a ScriptX 'factory' object.");
+                    }
                 }
             });
         } else {
+            // already initialised
             prom = new Promise(function (resolve, reject) {
                 resolve(scriptx.Connector);
             });
@@ -625,13 +701,19 @@
                     resolve(scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data));
                 }
             }
-            else
-                reject();
+            else {
+                if (reject) {
+                    reject();
+                }
+            }
         });
     };
 
     /**
-      * Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol
+      * Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol. 
+      * 
+      * Note that processing after call is asynchronous. There is no Promise returning version as the function always returns true (there is no prompting).
+      * See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous coding.
       * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
       * @function BackgroundPrintHTML
       * @memberof MeadCo.ScriptX
@@ -735,14 +817,19 @@
                     scriptx.Printing.PageSetup(function (dlgOK) {
                         if (dlgOK)
                             resolve();
-                        else
-                            reject();
+                        else {
+                            if (reject) {
+                                reject();
+                            }
+                        }
                     });
                 } else {
                     if (scriptx.Printing.PageSetup()) {
                         resolve();
                     } else {
-                        reject();
+                        if (reject) {
+                            reject();
+                        }
                     }
                 }
             }
@@ -765,19 +852,27 @@
                     scriptx.Printing.PrintSetup(function (dlgOK) {
                         if (dlgOK)
                             resolve();
-                        else
-                            reject();
+                        else {
+                            if (reject) {
+                                reject();
+                            }
+                        }
                     });
                 } else {
                     if (scriptx.Printing.PrintSetup()) {
                         resolve();
                     } else {
-                        reject();
+                        if (reject) {
+                            reject();
+                        }
                     }
                 }
             }
-            else
-                reject();
+            else {
+                if (reject) {
+                    reject();
+                }                
+            }
         });
     };
 
@@ -799,10 +894,10 @@
      * @see {@link https://meadco.github.io/ScriptX.Print.Client/index.html | ScriptX.Services Client Library }
      * @function WaitForSpoolingComplete
      * @memberof MeadCo.ScriptX
-     * @returns {Promise}
+     * @returns {Promise} Promise object represents boolean with value true if all jobs have been completed (will always be true).
      * @example 
      * MeadCo.ScriptX.PrintPage(false);
-     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function() {
+     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bJobsNotComplete) {
      *  self.close();
      * })
      */
@@ -815,12 +910,29 @@
 
         return new Promise(function (resolve, reject) {
             window.setTimeout(function () {
-                scriptx.Printing.WaitForSpoolingComplete();
-                resolve();
+                resolve(scriptx.Printing.WaitForSpoolingComplete());
             }, 1);
         });
 
     };
+
+    /**
+     * Ensures orderly closing of a window in ScriptX.Services by waiting for jobs to complete before the window closes. This is done automatically by ScriptX.Addon
+     * @function CloseWindow
+     * @memberof MeadCo.ScriptX
+     * @param {object} oWindow The window to close
+     */
+    scriptx.CloseWindow = function (oWindow) {
+
+        if (scriptx.IsServices()) {
+            scriptx.Printing.WaitForSpoolingComplete(5000,function () {
+                oWindow.close();
+            });
+        }
+        else {
+            oWindow.close();
+        }
+    }
 
     /**
      * @function HasOrientation
@@ -1032,6 +1144,50 @@
         }
     }
 
+    function applySettings(objSettings) {
+
+        if (typeof objSettings === "object") {
+            if (typeof objSettings.header === "string") {
+                MeadCo.ScriptX.Printing.header = objSettings.header;
+            }
+            if (typeof objSettings.footer === "string") {
+                MeadCo.ScriptX.Printing.footer = objSettings.footer;
+            }
+
+            if (typeof objSettings.pageSetup === "object") {
+                var ps = objSettings.pageSetup;
+                if (typeof ps.units !== "undefined") {
+                    MeadCo.ScriptX.Printing.SetMarginMeasure(ps.units);
+                }
+                if (typeof ps.orientation === "string") {
+                    MeadCo.ScriptX.Printing.orientation = ps.orientation;
+                }
+
+                if (typeof ps.margins === "object") {
+                    var m = ps.margins;
+
+                    if (typeof m.left !== "undefined") {
+                        MeadCo.ScriptX.Printing.leftMargin = m.left;
+                    }
+
+                    if (typeof m.right !== "undefined") {
+                        MeadCo.ScriptX.Printing.rightMargin = m.right;
+                    }
+
+                    if (typeof m.top !== "undefined") {
+                        MeadCo.ScriptX.Printing.topMargin = m.top;
+                    }
+
+                    if (typeof m.bottom !== "undefined") {
+                        MeadCo.ScriptX.Printing.bottomMargin = m.bottom;
+                    }
+                }
+            }
+        }
+
+    }
+
+
 }(window.MeadCo = window.MeadCo || {}));
 
 // MeadCo.Licensing - singleton
@@ -1131,11 +1287,15 @@
                     }
                 } else {
                     console.log("** Warning -- no secmgr **");
-                    reject();
+                    if (reject) {
+                        reject();
+                    }  
                 }
             } else {
                 if (licensing.Connector === licensing.Connection.NONE) {
-                    reject();
+                    if (reject) {
+                        reject();
+                    }  
                 } else {
                     resolve();
                 }
@@ -1168,7 +1328,7 @@
      *
      * @function IsLicensedAsync
      * @memberof MeadCo.Licensing
-     * @returns {Promise} Promise object with a resolve of the loaded license detail
+     * @returns {Promise} Promise object with a resolve of the loaded license detail and reject of the error message
      *
      */
     licensing.IsLicensedAsync = function () {
@@ -1181,7 +1341,11 @@
                         resolve(licensing.LicMgr.License);
                     }
                 })
-                .catch(function () { reject(lookupError()); });
+                .catch(function () {
+                    if (reject) {
+                        reject(lookupError());
+                    }  
+                });
         });
     };
 
@@ -1224,7 +1388,7 @@
         "The license for this site not installed on this machine.",
         "The license for this site has not been accepted by the user.",
         "There was an error loading the license. ",
-        "Unable to connect to ScriptX.Services license management."
+        "There was an error in ScriptX.Services license management."
     );
 
     function lookupError() {
@@ -1241,6 +1405,9 @@
                     break;
 
                 case 5: // scriptx.print service error
+                    if (typeof licensing.LicMgr.errorMessage === "function") {
+                        return licensing.LicMgr.errorMessage;
+                    }
                     eIndex = 5;
                     break;
 
