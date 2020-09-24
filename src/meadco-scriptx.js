@@ -507,13 +507,19 @@
                     resolve(scriptx.Printing.PrintHTMLEx(sUrl, bPrompt, fnCallback, data));
                 }
             }
-            else
-                reject();
+            else {
+                if (reject) {
+                    reject();
+                }
+            }
         });
     };
 
     /**
-      * Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol
+      * Background print the html document contained in the string. This is a wrapper on the PrintHtmlEX() API using html:// protocol. 
+      * 
+      * Note that processing after call is asynchronous. There is no Promise returning version as the function always returns true (there is no prompting).
+      * See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous coding.
       * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/printing/PrintHTMLEx | PrintHtmlEX() API}.
       * @function BackgroundPrintHTML
       * @memberof MeadCoScriptX
@@ -617,14 +623,19 @@
                     scriptx.Printing.PageSetup(function (dlgOK) {
                         if (dlgOK)
                             resolve();
-                        else
-                            reject();
+                        else {
+                            if (reject) {
+                                reject();
+                            }
+                        }
                     });
                 } else {
                     if (scriptx.Printing.PageSetup()) {
                         resolve();
                     } else {
-                        reject();
+                        if (reject) {
+                            reject();
+                        }
                     }
                 }
             }
@@ -647,19 +658,27 @@
                     scriptx.Printing.PrintSetup(function (dlgOK) {
                         if (dlgOK)
                             resolve();
-                        else
-                            reject();
+                        else {
+                            if (reject) {
+                                reject();
+                            }
+                        }
                     });
                 } else {
                     if (scriptx.Printing.PrintSetup()) {
                         resolve();
                     } else {
-                        reject();
+                        if (reject) {
+                            reject();
+                        }
                     }
                 }
             }
-            else
-                reject();
+            else {
+                if (reject) {
+                    reject();
+                }                
+            }
         });
     };
 
@@ -1013,11 +1032,15 @@
                     }
                 } else {
                     console.log("** Warning -- no secmgr **");
-                    reject();
+                    if (reject) {
+                        reject();
+                    }  
                 }
             } else {
                 if (licensing.Connector === licensing.Connection.NONE) {
-                    reject();
+                    if (reject) {
+                        reject();
+                    }  
                 } else {
                     resolve();
                 }
@@ -1063,7 +1086,11 @@
                         resolve(licensing.LicMgr.License);
                     }
                 })
-                .catch(function () { reject(lookupError()); });
+                .catch(function () {
+                    if (reject) {
+                        reject(lookupError());
+                    }  
+                });
         });
     };
 
