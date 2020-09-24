@@ -723,6 +723,24 @@
     };
 
     /**
+     * Ensures orderly closing of a window in ScriptX.Services by waiting for jobs to complete before the window closes. This is done automatically by ScriptX.Addon
+     * @function CloseWindow
+     * @memberof MeadCoScriptX
+     * @param {object} oWindow The window to close
+     */
+    scriptx.CloseWindow = function (oWindow) {
+
+        if (scriptx.IsServices()) {
+            scriptx.Printing.WaitForSpoolingComplete(5000,function () {
+                oWindow.close();
+            });
+        }
+        else {
+            oWindow.close();
+        }
+    }
+
+    /**
      * @function HasOrientation
      * @memberof MeadCoScriptX
      * @returns {boolean} true if the 'orientation' property is available, otherwise the 'portrait' property must be used.
