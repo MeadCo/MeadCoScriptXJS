@@ -196,7 +196,7 @@
     *
     * @function InitAsync
     * @memberof MeadCoScriptX
-    * @returns {Promise} 
+    * @returns {Promise} Promise object represents enum Connection with value of the connection found (NONE, ADDON or SERVICES)
     */
     scriptx.InitAsync = function () {
         var prom;
@@ -226,6 +226,7 @@
                 }
             });
         } else {
+            // already initialised
             prom = new Promise(function (resolve, reject) {
                 resolve(scriptx.Connector);
             });
