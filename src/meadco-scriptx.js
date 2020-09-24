@@ -1133,7 +1133,7 @@
         "The license for this site not installed on this machine.",
         "The license for this site has not been accepted by the user.",
         "There was an error loading the license. ",
-        "Unable to connect to ScriptX.Services license management."
+        "There was an error in ScriptX.Services license management."
     );
 
     function lookupError() {
@@ -1150,6 +1150,9 @@
                     break;
 
                 case 5: // scriptx.print service error
+                    if (typeof licensing.LicMgr.errorMessage === "function") {
+                        return licensing.LicMgr.errorMessage;
+                    }
                     eIndex = 5;
                     break;
 
