@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Async Test Page :: Calling ScriptX.Print Service";
+}
+
+<div class="jumbotron">
+    <h1>MeadCoScriptXJS</h1>
+    <p class="lead">MeadCoScriptXJS is a simple javascript wrapper library for use with MeadCo's ScriptX Add-on () for Microsoft Internet Explorer. This library has been used with our samples system for some time.</p>
+    <p><a href="http://scriptx.meadroid.com" class="btn btn-primary btn-lg">Learn more about ScriptX &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>This is a simple test page for the async functions in the library (<span id="libVersion">Waiting ...</span>). A ScriptX.Print Service should be available.</p>
+        <h3>Installed version</h3>
+        <p>The following (emulation) version of ScriptX has been found: <span class="text-danger" data-purpose="sxversion">Waiting....</span>. The license is <span class="text-danger" id="licCheck">Waiting ...</span> <span id="errMsg">error message</span></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test1">Preview</button></div>
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test4">Prompt print</button></div>
+    <div class="col-md-1"><button class="btn btn-default" id="btn-test2">PrintHTML</button></div>
+    <div class="col-md-8">@Html.ActionLink("Home", "Index", null, new { @class = "btn btn-default" })</div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-core.js"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprintlicensing.js"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-secmgr.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js"></script>
+
+    <script src="~/Scripts/promise.min.js"></script>
+
+    <script src="@Url.Action("Script", new {filename = "meadco-scriptx.js"})"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/jQuery-MeadCo.ScriptX.Print.UI.js"></script>
+
+    <script type="text/javascript">
+        var goodLicense = "{13598d2f-8724-467b-ae64-6e53e9e9f644}";
+        var badLicense = "{13598d2f-8724-467b-ae64-6e53e9e9f643}";
+
+        $(window).on("load",
+            function () {
+                MeadCo.ScriptX.StartAsync({
+                    serviceConnection: {
+                        serverUrl: "https://scriptxservices.meadroid.com/",
+                        licenseGuid: goodLicense
+                    },
+                    printSettings: {
+                        header: "Page heading",
+                        footer: "Footer&b&p of &P"
+                    }
+                    })
+                    .then(function (r) {
+                        var c = r.connection;
+                        var l = r.license;
+                        console.log("Init succeeded to: " + c);
+                        $("span[data-purpose='sxversion']").text(MeadCo.ScriptX.Version()).addClass("text-success")
+                            .removeClass("text-danger");
+
+                        $("#licCheck").text("VALID: [" + l.company + "]").addClass("text-success").removeClass("text-danger");
+
+                        $("#btn-test1").click(function () {
+                            MeadCo.ScriptX.PreviewPage();
+                        });
+
+                        $("#btn-test2").click(function () {
+                             MeadCo.ScriptX.BackgroundPrintHTML("<html><body><h1>Hello</h1><p>testing 123</p></body></html>");
+                        });
+
+                        $("#btn-test4").click(function () {
+                            MeadCo.ScriptX.PrintPage2(true).then(function (bStarted) {
+                                console.log("Print started: " + bStarted);
+                                MeadCo.ScriptX.WaitForSpoolingComplete().then(function () {
+                                    console.log("printing completed.");
+                                });
+                            });
+                        });
+
+
+                    })
+                    .catch(function (e) {
+                        $("span[data-purpose='sxversion']").text("** UNKNOWN (Failed to init) **");
+                        $("#licCheck").text("** UNKNOWN **");
+                        console.error(":: Failed to initialise scriptx, is it installed? : " + e);
+                        alert(e);
+                    });
+            }
+        );
+
+     </script>
+
+}

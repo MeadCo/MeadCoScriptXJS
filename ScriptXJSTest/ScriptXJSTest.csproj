@@ -166,6 +166,7 @@
     <Content Include="Views\Home\AsyncAddon.cshtml" />
     <Content Include="Views\Home\AsyncService.cshtml" />
     <Content Include="Views\Home\SyncService.cshtml" />
+    <Content Include="Views\Home\AsyncService2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

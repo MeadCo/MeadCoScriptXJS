@@ -25,6 +25,12 @@ namespace ScriptXJSTest.Controllers
             return View();
         }
 
+        public ActionResult AsyncService2()
+        {
+            return View();
+        }
+
+
         public ActionResult SyncService()
         {
             return View();
