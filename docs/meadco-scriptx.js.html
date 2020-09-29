@@ -268,6 +268,23 @@
      * @property {PageSetup} pageSetup
      */
 
+    /**
+     * @typedef {Object} ServiceConnection
+     * @memberof MeadCo.ScriptX
+     * @property {string} serverUrl
+     * @property {string} licenseGuid
+     * @property {number} licenseRevision
+     * @property {string} licensePath
+     * 
+     */
+
+    /**
+     * @typedef {Object} StartupSettings
+     * @memberof MeadCo.ScriptX
+     * @property {ServiceConnection} serviceConnection;
+     * @property {PrintSettings} printSettings
+     */
+
     console.log("Initialising MeadCo.ScriptX: " + version);
 
     // expose enumerations
@@ -298,44 +315,84 @@
     scriptx.LibVersion = version;
 
     /**
-     * Perform full asynchronous initialisation - connecting to a secmgr implementation, checking for a license and connecting to factory and printing implementations. 
+     * Perform full asynchronous initialisation - for services, connecting to a server, then for addon and services connecting to a secmgr implementation, checking for a 
+     * license and connecting to factory and printing implementations. 
+     * 
      * Lastly apply print settings as defined.
      * 
-     * This is the preferred library initialisation call.
+     * This is the preferred library initialisation call especially when wishing to support working with ScriptX.Services as it a) ensures a license is available
+     * before attempting services calls and b) is asynchronous and c) hides a lot of code in a simple call.
      * 
      * @function Start
      * @memberof MeadCo.ScriptX
-     * @param {PrintSettings} settings 
-     * @returns {Promise} Promise object presents connection (implementation) type and license detail to resolve and error message to reject
+     * @param {StartupSettings} settings
+     * @returns {Promise} Promise object presents .connection (implementation type) and .license (detail) to resolve and error message to reject
+     * @example
+     *  $(window).on('load', function () {
+     *    MeadCo.ScriptX.StartAsync({
+     *          serviceConnection: {
+     *              serverUrl: "http://127.0.0.1:41191",
+     *              licenseGuid: "{370000ED-D40C-43D4-B3D3-F2E7D2EFF47D}", // invalid example, use same as for addon
+     *              licenseRevision: 0,
+     *              licensePath: "warehouse"
+     *          },
+     *          printSettings: {
+     *              header: "Page &amp;p of &amp;P",
+     *              footer: "&amp;D",
+     *              pageSetup: {
+     *                  orientation: "landscape"
+     *              }              
+     *          }
+     *      })
+     *      .then(function() {
+     *          $("#btn-print").click(function() {
+     *              MeadCo.ScriptX.PrintPage(false);
+     *          });
+     *      })
+     *      .catch(function(e) {
+     *          alert("An error occurred, printing will not be available.\n\n"+e);
+     *      });
      */
-    scriptx.Start = function (settings) {
-
+    scriptx.StartAsync = function (settings) {
         return new Promise(function (resolve, reject) {
-            MeadCo.Licensing.IsLicensedAsync()
-                .then(function (license) {
-                    MeadCo.ScriptX.InitAsync()
-                        .then(function (connection) {
-                            // good to go, apply any given settings ...
-                            try {
-                                applySettings(settings)
-                                resolve(connection, license);
-                            }
-                            catch (e) {
-                                console.error("Exception while applying settings: " + e.message);
-                                if (reject) {
-                                    reject(e.message)
-                                }
-                            }
+            ifServiceSettingsThenConnect(settings)
+                .then(function () {
+                    MeadCo.Licensing.IsLicensedAsync()
+                        .then(function (license) {
+                            MeadCo.ScriptX.InitAsync()
+                                .then(function (connection) {
+                                    // good to go, apply any given settings ...
+                                    try {
+                                        if (settings &amp;&amp; settings.printSettings) {
+                                            applySettings(settings.printSettings);
+                                        }
+                                        resolve({
+                                            license: license,
+                                            connection: connection
+                                        });
+                                    }
+                                    catch (e) {
+                                        console.error("Exception while applying settings: " + e.message);
+                                        if (reject) {
+                                            reject(e.message)
+                                        }
+                                    }
+                                })
+                                .catch(function (errorMessage) {
+                                    if (reject) {
+                                        reject(errorMesssage);
+                                    }
+                                });
                         })
                         .catch(function (errorMessage) {
                             if (reject) {
-                                reject(errorMesssage);
+                                reject(errorMessage);
                             }
                         });
                 })
                 .catch(function (errorMessage) {
                     if (reject) {
-                        reject(errorMesssage);
+                        reject(errorMessage);
                     }
                 });
         });
@@ -1144,6 +1201,72 @@
         }
     }
 
+    // if the settings describe a service connection then start it up. Otherwise, assume Addon is being used.
+    //
+    // Returns a Promise of resolved or rejected with an error message
+    //
+    // @param { StartupSettings } settings
+    // @returns { Promise } Promise object represents null on success and error message on error.
+    //
+    function ifServiceSettingsThenConnect(settings) {
+
+        return new Promise(function (resolve, reject) {
+            if (settings &amp;&amp; settings.serviceConnection) {
+                var sc = settings.serviceConnection;
+
+                // connect up licensing so can query license.
+                MeadCo.ScriptX.Print.Licensing.connect(sc.serverUrl, sc.licenseGuid);
+
+                if4WPCLicenseApply(sc)
+                    .then(function () {
+                        MeadCo.ScriptX.Print.HTML.connectAsync(
+                            sc.serverUrl,
+                            sc.licenseGuid,
+                            function () {
+                                resolve();
+                            },
+                            function (errorMsg) {
+                                reject(errorMsg);
+                            });
+                    })
+                    .catch(function (e) {
+                        reject(e);
+                    });   
+            }
+            else {
+                resolve();
+            }
+        });
+
+    }
+
+    // if a 4WPC license (mlf file) is defined then it must be given (applied) to the service before being used.
+    // Cloud merely needs the licenseGuid on each call and On Premise needs nothing.
+    //
+    function if4WPCLicenseApply(sc) {
+        return new Promise(function (resolve, reject) {
+           if (sc.licensePath &amp;&amp; sc.licenseRevision) {
+                MeadCo.ScriptX.Print.Licensing.applyAsync(
+                    sc.licenseGuid,
+                    sc.licenseRevision,
+                    sc.licensePath,
+                    function () {
+                        resolve();
+                    },
+                    function (errorMsg) {
+                        reject(errorMsg);
+                    });
+            }
+            else {
+                resolve();
+            }
+        });
+    }
+
+
+    // applySetting
+    //
+    // set given values
     function applySettings(objSettings) {
 
         if (typeof objSettings === "object") {
