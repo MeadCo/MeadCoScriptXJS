@@ -1,0 +1,57 @@
+{
+  "opts": {
+    "template": "./node_modules/better-docs",
+    "encoding": "utf8",
+    "destination": "./docs/",
+    "readme": "./docs-src/readme.md",
+    "recurse": true,
+    "verbose": true,
+    "tutorials": "./docs-src/tutorials"
+  },
+  "source": {
+    "include": [ "./src" ],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": [ "jsdoc", "closure" ]
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/better-docs/category",
+    "plugins/summarize"
+  ],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "search": true,
+    "default": {
+      "staticFiles": {
+        "include": [
+        ]
+      }
+    },
+    "better-docs": {
+      "name": "MeadCoScriptXJS",
+      "title": "MeadCoScriptXJS Library",
+      "css": "style.css",
+      "hideGenerator": true,
+      "navLinks": [
+        {
+          "label": "Github",
+          "href": "https://github.com/MeadCo/MeadCoScriptXJS"
+        },
+        {
+          "label": "Then to now walk through",
+          "href": "https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow"
+        },
+        {
+          "label": "Samples",
+          "href": "https://scriptxprintsamples.meadroid.com"
+        }
+      ]
+    }
+  }
+
+}
