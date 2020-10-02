@@ -5,9 +5,10 @@
  * 
  * The object is referenced with the property window.factory which exposes properties and methods to define print setting and perform operations such as printing a document or frame.
  * 
- * The object has two further properties:
+ * The object has three further properties:
  * - object
  *   - js
+ * - rawPrinting  
  * - printing
  *   - printerControl
  *   - enhancedFormatting
@@ -15,6 +16,8 @@
  * This javascript 'module' provides partial emulation of window.factory, window.factory.object and window.factory.object.js
  * 
  * Full emulation (and almost complete implementation) is provided for window.factory.printing, window.factory.printing.printerControl, window.factory.printing.enhancedFormatting. The most notable absent implementation is an implementation of print preview.
+ * 
+ * Full emulation is provided for window.factory.rawPrinting. Please note that the implementation is synchronous and browsers will issue a warning to the console.
  * 
  * ScriptX Add-on for Internet Explorer intercepts the browser UI for printing. For obvious reasons this is not possible with javascript, however ::
  * 
@@ -59,22 +62,22 @@
 ; (function (name, definition, undefined) {
 
     if (this[name] !== undefined || document.getElementById(name) !== null) {
-        console.log("ScriptX factory anti-polyfill believes it may not be requred.");
+        MeadCo.log("ScriptX.Services ScriptX.factory emulation believes it may not be requred.");
         if (this[name] !== undefined) {
-            console.log("this[" + name + "] is defined");
+            MeadCo.log("this[" + name + "] is defined");
         }
         if (document.getElementById(name) !== null) {
-            console.log("document.getElementById(" + name + ") is defined");
+            MeadCo.log("document.getElementById(" + name + ") is defined");
         }
         if (this[name].object !== undefined) {
-            console.log("this[" + name + "].object is defined -- not required!!!");
+            MeadCo.log("this[" + name + "].object is defined -- not required!!!");
             return;
         } else {
-            console.log("this[" + name + "].object is *not* defined");
+            MeadCo.log("this[" + name + "].object is *not* defined");
         }
     }
 
-    console.log("ScriptX factory anti-polyfill believes it is requred.");
+    MeadCo.log("ScriptX.Services ScriptX.factory emulation believes it is requred.");
     var theModule = definition();
 
     // Assign to the global object (window)
@@ -83,12 +86,16 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.5.9.0";
+    var moduleversion = "1.7.0.7";
     var emulatedVersion = "8.2.0.0";
+    var servicesVersion = "";
+    var printApi = MeadCo.ScriptX.Print;
+    var logApi = MeadCo; // could be console
+
     var module = this;
 
     function log(str) {
-        console.log("factory anti-polyfill :: " + str);
+        logApi.log("factory emulation :: " + str);
     }
 
     // extend the namespace
@@ -119,7 +126,6 @@
 
     };
 
-
     log("'factory' loaded " + moduleversion);
 
     // public API.
@@ -130,7 +136,7 @@
 
         /* GetComponentVersion is no longer documented . It is implemented as MeadCoScriptJS relies on it.
          * 
-         * Only ScriptX related ProgIds are supported.
+         * We support ScriptX ProgIds and progid style names for scriptx services.
          */
         GetComponentVersion: function (sComponent, a, b, c, d) {
             log("factory.object.getcomponentversion: " + sComponent);
@@ -143,6 +149,27 @@
 
                 case "scriptx.factory.services":
                     v = moduleversion;
+                    break;
+
+                case "scriptx.services":
+                    if (servicesVersion === "") {
+                        if (typeof printApi !== "undefined") {
+                            var ea = printApi.onErrorAction;
+
+                            printApi.onErrorAction = printApi.ErrorAction.THROW;
+
+                            try {
+                                var sd = printApi.serviceDescription();
+                                if (sd !== null) {
+                                    var sv = sd.serviceVersion;
+                                    servicesVersion = sv.major + "." + sv.minor + "." + sv.build + "." + sv.revision;
+                                }
+                            } catch (e) { servicesVersion = moduleversion; }
+
+                            printApi.onErrorAction = ea;
+                        }
+                    }
+                    v = servicesVersion;
                     break;
 
                 case "meadco.secmgr":
@@ -183,7 +210,7 @@
         get SecurityManagerVersion() { return emulatedVersion; },
 
         /*
-         * Unique IDs are not suported in servics
+         * Unique IDs are not suported in services
          */
         IsUniqueIDAvailable: function (bForMachine) { return false; },
         UniqueID: function (bForMachine) { return 0; },
@@ -213,6 +240,56 @@
             }
         },
 
+        get rawPrinting() {
+            var sPrinterName = "";
+            var printApi = MeadCo.ScriptX.Print;
+
+            function printDirect(eContentType, sContent) {
+
+                var bPrinted = false;
+
+                if (typeof printApi !== "undefined") {
+
+                    var p = factory.printing.printer;
+
+                    factory.printing.printer = sPrinterName;
+
+                    if (eContentType === printApi.ContentType.URL) {
+                        sContent = module.factory.baseURL(sContent);
+                    }
+
+                    bPrinted = printApi.printDirect(eContentType, sContent);
+
+                    factory.printing.printer = p;
+                }
+
+                return bPrinted;
+            }
+
+            return {
+
+                get printer() { return sPrinterName; },
+                set printer(printerName) {
+                    var p = factory.printing.printer;
+                    factory.printing.printer = printerName;
+                    if (factory.printing.printer !== printerName) {
+                        throw "Unknown printer";
+                    }
+                    factory.printing.printer = p;
+                    sPrinterName = printerName;
+                },
+
+                printString: function (s) {
+                    return typeof printApi !== "undefined" ? printDirect(printApi.ContentType.STRING, s) : false;
+                },
+
+                printDocument: function (sUrl) {
+                    return typeof printApi !== "undefined" ? printDirect(printApi.ContentType.URL, sUrl) : false;
+                }
+            };
+        },
+
+
         /*
          * A no op for services 
          */
@@ -233,7 +310,6 @@
     var printPdf = MeadCo.ScriptX.Print.PDF;
     var settings = printHtml.settings;
     var printApi = MeadCo.ScriptX.Print;
-    var licenseApi = MeadCo.ScriptX.Print.Licensing;
 
     var module = this;
 
@@ -271,7 +347,7 @@
                 MeadCo.log("promptAndPrint exits ...");
                 return bStarted;
             }
-            console.warn("prompted print requested but no UI library loaded");
+            MeadCo.warn("prompted print requested but no UI library loaded. See: https://www.meadroid.com/Developers/KnowledgeBank/Articles/Dialogs");
         }
 
         try {
@@ -337,14 +413,13 @@
         module.factory.log("overwriting module.print");
         module.print = function () {
             module.factory.log("window.print() called and being handled.");
-            // printHtml.printDocument(true);
             promptAndPrint(
                 true,
                 function () {
                     return printHtml.printDocument();
                 },
                 function () { });
-        }
+        };
     }
 
     var iEnhancedFormatting = {
@@ -497,6 +572,21 @@
 
     if (typeof printApi !== "undefined") {
         printApi.useAttributes();
+
+        // ScriptX.Addon printing intercepts Ctrl-p ...
+        // listen for Ctrl-P and override ...
+        document.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && e.keyCode == 80 && !e.shiftKey) {
+                e.preventDefault();
+                module.factory.log("ctrl-p being handled.");
+                promptAndPrint(
+                    true,
+                    function () {
+                        return printHtml.printDocument();
+                    },
+                    function () { });
+            }
+        });
     }
     else {
         MeadCo.error("MeadCo.ScriptX.Print is not available to ScriptX.Services factory emulation.");
@@ -610,28 +700,28 @@
 
         PageSetup: function (fnNotify) {
             if (typeof fnNotify !== "function") {
-                console.warn("PageSetup API in ScriptX.Print Service is not synchronous, there is no return value.");
-                fnNotify = function (bDlgOK) { console.log("PageSetupDlg: " + bDlgOK); };
+                MeadCo.warn("PageSetup API in ScriptX.Print Service is not synchronous, there is no return value.");
+                fnNotify = function (bDlgOK) { MeadCo.log("PageSetupDlg: " + bDlgOK); };
             }
 
             if (MeadCo.ScriptX.Print.UI) {
                 MeadCo.ScriptX.Print.UI.PageSetup(fnNotify);
             } else {
-                printApi.reportFeatureNotImplemented("Page setup dialog");
+                MeadCo.error("PageSetup dialog in ScriptX.Services needs a dialog implementation. See: https://www.meadroid.com/Developers/KnowledgeBank/Articles/Dialogs");
                 fnNotify(false);
             }
         },
 
         PrintSetup: function (fnNotify) {
             if (typeof fnNotify !== "function") {
-                console.warn("PrintSetup API in ScriptX.Print Service is not synchronous, there is no return value.");
+                MeadCo.warn("PrintSetup API in ScriptX.Print Service is not synchronous, there is no return value.");
                 fnNotify = function (bDlgOK) { MeadCo.log("PrintSetupDlg: " + bDlgOK); }
             }
 
             if (MeadCo.ScriptX.Print.UI) {
                 MeadCo.ScriptX.Print.UI.PrinterSettings(fnNotify);
             } else {
-                printApi.reportFeatureNotImplemented("Print settings dialog");
+                MeadCo.error("PrintSettings dialog in ScriptX.Services needs a dialog implementation. See: https://www.meadroid.com/Developers/KnowledgeBank/Articles/Dialogs");
                 fnNotify(false);
             }
         },
@@ -641,10 +731,18 @@
         },
 
         Print: function (bPrompt, sOrOFrame, fnNotifyStarted) { // needs and wants update to ES2015 (for default values)
-            if (typeof fnNotifyStarted === "undefined") {
+            if ( !fnNotifyStarted ) {
                 fnNotifyStarted = function (bStarted) { MeadCo.log("A print has started"); };
             }
-            if (typeof (sOrOFrame) === 'undefined') sOrOFrame = null;
+            if (!sOrOFrame) {
+                sOrOFrame = null;
+            }
+            else {
+                // passing in window, or window.self etc will not have an id .. don't barf on that code
+                if (typeof (sOrOFrame) === 'object' && !sOrOFrame.id) {
+                    sOrOFrame = null;
+                }
+            }
 
             return promptAndPrint(bPrompt,
                 function () {
@@ -690,11 +788,11 @@
                 }
 
                 if (typeof options.autorotatecenter !== "undefined") {
-                    printPdf.settings.autorotatecenter = options.autorotatecenter
+                    printPdf.settings.autoRotateCenter = options.autorotatecenter
                         ? printPdf.BooleanOption.TRUE
                         : printPdf.BooleanOption.FALSE;
                 } else
-                    printPdf.settings.autorotatecenter = printPdf.BooleanOption.DEFAULT;
+                    printPdf.settings.autoRotateCenter = printPdf.BooleanOption.DEFAULT;
 
                 if (typeof options.orientation !== "undefined") {
                     printPdf.settings.orientation = options.orientation === 1
@@ -772,7 +870,7 @@
                 printPdf.settings.pageRange = iEnhancedFormatting.pageRange;
                 printPdf.settings.pageScaling = settings.viewScale === -1
                     ? printPdf.PdfPageScaling.SHRINKLARGEPAGES
-                    : printPdf.PdfPageScaling.DEFAULT;
+                    : printPdf.PdfPageScaling.UNDEFINED;
                 printPdf.settings.orientation = this.portrait
                     ? printPdf.PageOrientation.PORTRAIT
                     : printPdf.PageOrientation.LANDSCAPE;
@@ -940,8 +1038,8 @@
             }
         },
 
-        set printToFileName(fn) {
-            printApi.reportFeatureNotImplemented("printToFileName", fn);
+        set printToFileName(sFileName) {
+            printApi.deviceSettings.printToFileName = sFileName;
         },
 
         get printBackground() {
@@ -1162,7 +1260,9 @@
         // helpers for wrapper MeadCoJS
         PolyfillInit: function () {
             if (!MeadCo.ScriptX.Print.isConnected) {
-                printHtml.connect("", "");
+                printHtml.connect("", "", function (e) {
+                    MeadCo.warn("Services server connection failed: " + e);
+                });
             }
             return MeadCo.ScriptX.Print.isConnected;
         },

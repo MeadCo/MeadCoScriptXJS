@@ -20,7 +20,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.PDF', function () {
 
-    var moduleversion = "1.5.9.0";
+    var moduleversion = "1.7.0.0";
 
     /**
      * Enum to describe the orientation of the paper
@@ -99,8 +99,8 @@
         pageScaling: mPdfPageScaling.UNDEFINED,
         autoRotateCenter: mBooleanOption.DEFAULT,
         orientation: mPageOrientation.DEFAULT,
-        monochrome: false,
-        normalise: false,
+        monochrome: mBooleanOption.DEFAULT,
+        normalise: mBooleanOption.DEFAULT,
         printQuality: mPdfPrintQuality.NORMAL
     };
 
@@ -151,8 +151,8 @@
             PdfPrintSettings.pageScaling = mPdfPageScaling.UNDEFINED;
             PdfPrintSettings.autoRotateCenter = mBooleanOption.DEFAULT;
             PdfPrintSettings.orientation = mPageOrientation.DEFAULT;
-            PdfPrintSettings.monochrome = false;
-            PdfPrintSettings.normalise = false;
+            PdfPrintSettings.monochrome = mBooleanOption.DEFAULT;
+            PdfPrintSettings.normalise = mBooleanOption.DEFAULT;
             PdfPrintSettings.printQuality = mPdfPrintQuality.NORMAL;
         },
 

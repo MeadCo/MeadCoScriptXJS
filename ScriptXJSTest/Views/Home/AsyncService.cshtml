@@ -1,5 +1,8 @@
 ﻿@{
     ViewBag.Title = "Async Test Page :: Calling ScriptX.Print Service";
+
+    // var serviceUrl = "https://scriptxservices.meadroid.com/";
+    var serviceUrl = "https://magma/scriptxservices/";
 }
 
 <div class="jumbotron">
@@ -25,21 +28,21 @@
 
 @section scripts
 {
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-core.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-core-1.7.0-beta05.js"></script>
 
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprintlicensing.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprintlicensing-1.7.0-beta05.js"></script>
 
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint-1.7.0-beta05.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml-1.7.0-beta05.js"></script>
 
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-secmgr.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-server="https://scriptxservices.meadroid.com/" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f643}" data-meadco-syncinit="false"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-secmgr-1.7.0-beta05.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory-1.7.0-beta05.js" data-meadco-server="@serviceUrl" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f642}" data-meadco-syncinit="false"></script>
 
     <script src="~/Scripts/promise.min.js"></script>
 
     <script src="@Url.Action("Script", new {filename = "meadco-scriptx.js"})"></script>
 
-    <script src="~/Scripts/MeadCo.ScriptX/jQuery-MeadCo.ScriptX.Print.UI.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/jQuery-MeadCo.ScriptX.Print.UI-1.7.0-beta05.js"></script>
 
     <script type="text/javascript">
         function setSimpleFormatting() {
@@ -86,10 +89,10 @@
                         $("#licCheck").text("** UNKNOWN **");
                         $("#errMsg").text(MeadCo.Licensing.ErrorMessage());
                     });
-            }).catch(function() {
+            }).catch(function(e) {
                 $("span[data-purpose='sxversion']").text("** UNKNOWN (Failed to init) **");
                 $("#licCheck").text("** UNKNOWN **");
-                console.log("Warning :: Failed to initialise scriptx, is it installed?");
+                console.log("Warning :: Failed to initialise scriptx, is it installed? : " + e + " (" + MeadCo.Licensing.ErrorMessage() + ")");
             });
         });
     </script>

@@ -24,14 +24,14 @@
 ; (function (name, definition) {
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.Licensing', function () {
-    var moduleversion = "1.5.9.0";
+    var moduleversion = "1.7.0.2";
     var apiLocation = "v1/licensing";
 
     var server = ""; // url to the server, server is CORS restricted
     var licenseGuid = "";
     var licenseRevision = 0;
     var licensePath = ""; // "" => subscription (cloud) not client for Workstation, => value for client license
-    var lastError = "";
+    var lastError = "No license applied";
 
     var module = this;
 
@@ -64,10 +64,8 @@
      * */
     var license = {};
 
-    var bConnected = false;
-
     if (!module.jQuery) {
-        MeadCo.log("**** warning :: no jQuery");
+        MeadCo.warn("**** warning :: no jQuery");
     }
 
     function setServer(serverUrl) {
@@ -85,8 +83,7 @@
         setServer(serverUrl);
         licenseGuid = slicenseGuid;
         license = {};
-        bConnected = false;
-        lastError = "";
+        lastError = "No license applied";
         licenseRevision = 0;
         licensePath = "";
     }
@@ -129,10 +126,9 @@
                     }
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
-                    errorThrown = MeadCo.parseAjaxError("**warning: failure in MeadCo.ScriptX.Licensing.getSubscriptionFromServer: ", jqXHR, textStatus, errorThrown);
-                    lastError = errorThrown;
+                    lastError = MeadCo.parseAjaxError("MeadCo.ScriptX.Licensing.getSubscriptionFromServer: ", jqXHR, textStatus, errorThrown);
                     if (typeof reject === "function") {
-                        reject(errorThrown);
+                        reject(lastError);
                         return;
                     }
                 });
@@ -178,10 +174,9 @@
                     }
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
-                    errorThrown = MeadCo.parseAjaxError("**warning: failure in MeadCo.ScriptX.Print.Licensing.applyLicense: ", jqXHR, textStatus, errorThrown);
-                    lastError = errorThrown;
+                    lastError = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.Licensing.applyLicense: ", jqXHR, textStatus, errorThrown);
                     if (typeof reject === "function") {
-                        reject(errorThrown);
+                        reject(lastError);
                         return;
                     }
                 });
@@ -304,6 +299,17 @@
          */
         get validLicense() {
             return typeof license.guid !== "undefined";
+        },
+
+        /**
+         * Get the text of the last error.
+         * 
+         * @property {string} errorMessage
+         * @memberof MeadCoScriptXPrintLicensing
+         * 
+         */
+        get errorMessage() {
+            return lastError;
         },
 
         /**

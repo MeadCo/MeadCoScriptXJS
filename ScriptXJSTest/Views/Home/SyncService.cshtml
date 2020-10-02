@@ -1,5 +1,8 @@
 ﻿@{
     ViewBag.Title = "Sync Test Page :: Calling ScriptX.Print Service";
+
+    // var serviceUrl = "https://scriptxservices.meadroid.com/";
+    var serviceUrl = "https://magma/scriptxservices/";
 }
 
 <div class="jumbotron">
@@ -28,14 +31,19 @@
 
 @section scripts
 {
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-core.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprintlicensing.js" data-meadco-server="https://scriptxservices.meadroid.com/" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}">></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml.js"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory.js" data-meadco-server="https://scriptxservices.meadroid.com/" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f644}"></script>
-    <script src="~/Scripts/MeadCo.ScriptX/meadco-secmgr.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-core-1.7.0-beta05.js"></script>
 
-    <script src="@Url.Action("Script",new {filename="meadco-scriptx.js"})"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprintlicensing-1.7.0-beta05.js"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprint-1.7.0-beta05.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxprinthtml-1.7.0-beta05.js"></script>
+
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-secmgr-1.7.0-beta05.js"></script>
+    <script src="~/Scripts/MeadCo.ScriptX/meadco-scriptxfactory-1.7.0-beta05.js" data-meadco-server="@serviceUrl" data-meadco-subscription="{13598d2f-8724-467b-ae64-6e53e9e9f642}" data-meadco-syncinit="false"></script>
+
+    <script src="~/Scripts/promise.min.js"></script>
+
+    <script src="@Url.Action("Script", new {filename = "meadco-scriptx.js"})"></script>
 
     <script type="text/javascript">
         function setSimpleFormatting() {

@@ -19,7 +19,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "1.5.9.0";
+    var moduleversion = "1.7.0.0";
 
     /**
      * Enum to describe the units used on measurements - **NOTE** please use MeadCo.ScriptX.Print.MeasurementUnits instead
@@ -160,35 +160,35 @@
     {
         set header(str) {
             MeadCo.log("MeadCo.ScriptX.Print.HTML setting header: " + str);
-            if (str !== null && str.length === 0) {
+            if (str && str.length === 0) {
                 str = "%20";
             }
             settingsCache.header = str;
         },
         get header() {
-            return (settingsCache.header === null || settingsCache.header === "%20") ? "" : settingsCache.header;
+            return ( !settingsCache.header || settingsCache.header === "%20") ? "" : settingsCache.header;
         },
 
         set footer(str) {
-            if (str !== null && str.length === 0) {
+            if (str && str.length === 0) {
                 str = "%20";
             }
             settingsCache.footer = str;
         },
 
         get footer() {
-            return (settingsCache.footer === null || settingsCache.footer === "%20") ? "" : settingsCache.footer;
+            return ( !settingsCache.footer || settingsCache.footer === "%20") ? "" : settingsCache.footer;
         },
 
         set headerFooterFont(str) {
-            if (str.length === 0) {
+            if (str && str.length === 0) {
                 str = "%20";
             }
             settingsCache.headerFooterFont = str;
         },
 
         get headerFooterFont() {
-            return (settingsCache.headerFooterFont === null || settingsCache.headerFooterFont === "%20") ? "" : settingsCache.headerFooterFont;
+            return ( !settingsCache.headerFooterFont || settingsCache.headerFooterFont === "%20") ? "" : settingsCache.headerFooterFont;
         },
 
         get locale() {
@@ -643,8 +643,9 @@
          * @memberof MeadCoScriptXPrintHTML
          * @param {string} serverUrl the 'root' url to the server (the api path will be added by the library)
          * @param {string} licenseGuid the license/subscription identifier
+         * @param {function} onFail the function to call if an error occurs when making the connection
          */
-        connect: function (serverUrl, licenseGuid) {
+        connect: function (serverUrl, licenseGuid, onFail) {
             MeadCo.warn("Print.HTML SYNC connection request");
             MeadCo.ScriptX.Print.connectLite(serverUrl, licenseGuid);
             MeadCo.ScriptX.Print.getFromServer("/htmlPrintDefaults/?units=" + settingsCache.page.units, false,
@@ -654,7 +655,7 @@
                     if (data.device !== null) {
                         MeadCo.ScriptX.Print.connectDeviceAndPrinters(data.device, data.availablePrinters);
                     }
-                });
+                }, onFail);
         },
 
         /**
@@ -702,4 +703,3 @@
     };
 
 });
-

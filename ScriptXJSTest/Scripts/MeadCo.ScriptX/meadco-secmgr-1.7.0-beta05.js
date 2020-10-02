@@ -38,21 +38,22 @@
 ; (function (name, definition, undefined) {
 
     if (this[name] !== undefined || document.getElementById(name) !== null) {
-        console.log("MeadCo security manager anti-polyfill believes it may not be requred.");
+        MeadCo.log("ScriptX.Services MeadCo Security Manager emulation believes it may not be required.");
         if (this[name] !== undefined) {
-            console.log("this[" + name + "] is defined");
+            MeadCo.log("this[" + name + "] is defined");
         }
         if (document.getElementById(name) !== null) {
-            console.log("document.getElementById(" + name + ") is defined");
+            MeadCo.log("document.getElementById(" + name + ") is defined");
         }
         if (this[name].object !== undefined) {
-            console.log("this[" + name + "].object is defined -- not required!!!");
+            MeadCo.log("this[" + name + "].object is defined -- not required!!!");
             return;
         } else {
-            console.log("this[" + name + "].object is *not* defined");
+            MeadCo.log("this[" + name + "].object is *not* defined");
         }
     }
 
+    MeadCo.log("ScriptX.Services MeadCo Security Manager emulation believes it is required.");
     var theModule = definition();
 
     // Assign to the global object (window)
@@ -61,16 +62,17 @@
 })('secmgr', function () {
 
     // protected API
-    var moduleversion = "1.5.9.0";
+    var moduleversion = "1.7.0.3";
     var emulatedVersion = "8.2.0.0";
     var module = this;
+    var logApi = MeadCo;
 
     // protected API
     var printApi = MeadCo.ScriptX.Print;
     var licenseApi = MeadCo.ScriptX.Print.Licensing;
 
     function log(str) {
-        console.log("secmgr anti-polyfill :: " + str);
+        logApi.log("secmgr emulation :: " + str);
     }
 
     // extend the namespace
@@ -102,11 +104,11 @@
 
     log("'secmgr' loaded.");
     if (typeof licenseApi.GetLicenseAsync !== "function" ) {
-        console.error("MeadCo.ScriptX.Print.Licensing not available");
+        MeadCo.error("MeadCo.ScriptX.Print.Licensing not available");
     } 
 
     if (typeof printApi.useAttributes !== "function" ) {
-        console.error("MeadCo.ScriptX.Print not available");
+        MeadCo.error("MeadCo.ScriptX.Print not available");
     } else {
         printApi.useAttributes();
     }

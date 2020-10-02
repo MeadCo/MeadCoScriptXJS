@@ -1,5 +1,21 @@
 # MeadCoScriptXJS
 
+<p align="center">
+	<a href="https://github.com/MeadCo/MeadCoScriptXJS/releases/latest" target="_blank">
+        <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/MeadCo/MeadCoScriptXJS">
+    </a>
+	<a href="https://www.npmjs.com/package/meadco-scriptxjs" target="_blank">
+		<img alt="npm" src="https://img.shields.io/npm/v/meadco-scriptxjs">
+	</a>
+	<a href="https://www.nuget.org/packages/MeadScriptXJS" target="_blank">
+        <img alt="Nuget" src="https://img.shields.io/nuget/v/MeadScriptXJS">
+    </a>
+	<br>
+	<a href="https://github.com/MeadCo/MeadScriptXJS/blob/master/LICENSE" target="_blank">
+		<img alt="MIT License" src="https://img.shields.io/github/license/MeadCo/MeadCoScriptXJS">
+	</a>
+</p>
+
 **MeadCoScriptXJS** is a simple javascript wrapper library for use with [MeadCo's ScriptX Add-on/Services](https://www.meadroid.com)
  to achieve consistent printed output using any browser on any device. This library has been used with our samples system for some time. 
 
@@ -11,10 +27,10 @@ As of version 1.2.0 this library facilitates being able to write the same code f
 [MeadCo's ScriptX Services](https://scriptxservices.meadroid.com) browser agnostic printing services in the cloud, on premise and on Windows PC. 
 The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo/ScriptX.Print.Client) is required for this to work.
 
-v1.5 Added support for ScriptX Services on Windows PC.
+v1.5 and later add support for ScriptX Services on Windows PC.
 
 ## Current version
-1.8.0
+1.9.0-beta01
 
 ## Packages
 
@@ -29,8 +45,15 @@ npm install meadco-scriptxjs --save
 
 ### CDN Use
 
+<p>
+    <br/>
+	<a href="https://www.jsdelivr.com/package/npm/meadco-scriptxjs" target="_blank">
+		<img alt="jsDelivr hits (npm)" src="https://img.shields.io/jsdelivr/npm/hm/meadco-scriptxjs">
+	</a>
+</p>
+
 ```html
-<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.8.1/dist/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.9.0-beta01/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only
@@ -95,7 +118,7 @@ We recommend (and test with) [Promise Polyfill](https://github.com/taylorhakes/p
 </script>
 ```
 ## Copyright
-Copyright © 2013-2019 [Mead & Co Ltd](http://www.meadroid.com).
+Copyright © 2013-2020 [Mead & Co Ltd](http://www.meadroid.com).
 
 ## License 
 **MeadCoScriptXJS** is under MIT license - http://www.opensource.org/licenses/mit-license.php
