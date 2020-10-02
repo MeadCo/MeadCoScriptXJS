@@ -402,7 +402,10 @@
     * Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
     * the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.
     * 
-    * With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server
+    * With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server.
+    * 
+    * From v1.9.0 this function also initialises licensing when ScriptX.Services is being used by the browser
+    * to reduce required coding updates where MeadCo.ScriptX.Init() has been used.
     * 
     * @see {@link https://meadco.github.io/ScriptX.Print.Client/ | MeadCo ScriptX.Services Client Library}
     * 
@@ -420,8 +423,14 @@
                     console.log("found ScriptX.Print Services");
                     console
                         .warn("Synchronous initialisation is deprecated - please update to MeadCo.ScriptX.InitAsync().");
-                    if (!scriptx.Printing.PolyfillInit()) {
-                        console.log("**warning** polyfill failed.");
+
+                    // All ScriptX.Services require the license is already available which my require (4WPC) 
+                    // a post to the server before intialisation can be completed. This is not a code organisation
+                    // that was required by .Addon and so was not coded that way -- we'll force the license
+                    // initialisatinon here. Any code following this call that tests/initialises licencing will
+                    // already be primed.
+                    if ( !MeadCo.Licensing.IsLicensed() || !scriptx.Printing.PolyfillInit() ) {
+                        console.warn("scriptx.Init() licensing or polyfillinit failed.");
                         scriptx.Printing = null;
                         scriptx.Connector = scriptx.Connection.NONE;
                     } else {
@@ -441,6 +450,10 @@
     /**
     * Performs asynchronous initialisation by discovering and connecting to either ScriptX.Addon or
     * ScriptX.Services.
+    * 
+    * From v1.9.0 this function also initialises licensing when ScriptX.Services is being used by the browser
+    * to reduce required coding updates where MeadCo.ScriptX.Init() has been used.
+    *
     *
     * @function InitAsync
     * @memberof MeadCo.ScriptX
@@ -458,11 +471,27 @@
                     console.log("look for Polyfill ..");
                     if (typeof scriptx.Printing.PolyfillInitAsync === "function") {
                         console.log("found async ScriptX.Print Services");
-                        scriptx.Printing.PolyfillInitAsync(function () {
-                            scriptx.Connector = scriptx.Connection.SERVICE;
-                            console.log("scriptx.InitAsync() calling resolve ...");
-                            resolve(scriptx.Connector);
-                        }, reject);
+                        // All ScriptX.Services require the license is already available which my require (4WPC) 
+                        // a post to the server before intialisation can be completed. This is not a code organisation
+                        // that was required by .Addon and so was not coded that way -- we'll force the license
+                        // initialisatinon here. Any code following this call that tests/initialises licencing will
+                        // already be primed.
+                        MeadCo.Licensing.IsLicensedAsync().then(function (license) {
+                                console.log("license is available");
+                                scriptx.Printing.PolyfillInitAsync(function () {
+                                    scriptx.Connector = scriptx.Connection.SERVICE;
+                                    console.log("scriptx.InitAsync() calling resolve ...");
+                                    resolve(scriptx.Connector, license);
+                                }, reject);
+                            })
+                            .catch(function (e) {
+                                reject(e);
+                            });
+                        //scriptx.Printing.PolyfillInitAsync(function () {
+                        //    scriptx.Connector = scriptx.Connection.SERVICE;
+                        //    console.log("scriptx.InitAsync() calling resolve ...");
+                        //    resolve(scriptx.Connector);
+                        //}, reject);
                     } else {
                         scriptx.Connector = scriptx.Connection.ADDON;
                         console.log("no polyfill, using add-on");
@@ -1381,7 +1410,7 @@
 
     /**
     * Performs asynchronous initialisation by discovering and connecting to either ScriptX.Addon or
-    * the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.
+    * the MeadCo ScriptX.Services Client Library emulation of the 'secmgr' object.
     *
     * @function InitAsync
     * @memberof MeadCo.Licensing
@@ -1442,7 +1471,7 @@
             return licensing.LicMgr.result === 0 &amp;&amp; licensing.LicMgr.validLicense;
         }
 
-        console.log("WARNING :: MeadCo.Licensing.Init() failed so IsLicensed will return false.");
+        console.warn("WARNING :: MeadCo.Licensing.Init() failed so IsLicensed will return false.");
         return false;
     };
 

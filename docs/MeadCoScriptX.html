@@ -655,7 +655,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line651">line 651</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line680">line 680</a>
             </span>
         </p>
     
@@ -982,7 +982,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line588">line 588</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line617">line 617</a>
             </span>
         </p>
     
@@ -1307,7 +1307,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line613">line 613</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line642">line 642</a>
             </span>
         </p>
     
@@ -1486,7 +1486,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line858">line 858</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line887">line 887</a>
             </span>
         </p>
     
@@ -1672,7 +1672,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line688">line 688</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line717">line 717</a>
             </span>
         </p>
     
@@ -1858,7 +1858,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line670">line 670</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line699">line 699</a>
             </span>
         </p>
     
@@ -1968,7 +1968,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line889">line 889</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line918">line 918</a>
             </span>
         </p>
     
@@ -2161,7 +2161,7 @@ with all versions of ScriptX. Use the recommended alternatives.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line915">line 915</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line944">line 944</a>
             </span>
         </p>
     
@@ -2283,7 +2283,7 @@ with all versions of ScriptX. Use the recommended alternatives.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line876">line 876</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line905">line 905</a>
             </span>
         </p>
     
@@ -2363,7 +2363,9 @@ the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.</p
     <div class="description">
         <p>Performs synchronous initialisation by discovering and connecting to either ScriptX.Addon or
 the MeadCo ScriptX.Services Client Library emulation of the 'factory' object.</p>
-<p>With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server</p>
+<p>With ScriptX.Print Services this will use a synchronous (blocking, deprecated) call to the server.</p>
+<p>From v1.9.0 this function also initialises licensing when ScriptX.Services is being used by the browser
+to reduce required coding updates where MeadCo.ScriptX.Init() has been used.</p>
     </div>
     
 
@@ -2501,6 +2503,8 @@ ScriptX.Services.</p></p>
     <div class="description">
         <p>Performs asynchronous initialisation by discovering and connecting to either ScriptX.Addon or
 ScriptX.Services.</p>
+<p>From v1.9.0 this function also initialises licensing when ScriptX.Services is being used by the browser
+to reduce required coding updates where MeadCo.ScriptX.Init() has been used.</p>
     </div>
     
 
@@ -2551,7 +2555,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line323">line 323</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line332">line 332</a>
             </span>
         </p>
     
@@ -2732,7 +2736,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line370">line 370</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line399">line 399</a>
             </span>
         </p>
     
@@ -2936,7 +2940,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line966">line 966</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line995">line 995</a>
             </span>
         </p>
     
@@ -3109,7 +3113,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line410">line 410</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line439">line 439</a>
             </span>
         </p>
     
@@ -3282,7 +3286,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line455">line 455</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line484">line 484</a>
             </span>
         </p>
     
@@ -3455,7 +3459,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line400">line 400</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line429">line 429</a>
             </span>
         </p>
     
@@ -3594,7 +3598,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line710">line 710</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line739">line 739</a>
             </span>
         </p>
     
@@ -3729,7 +3733,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line744">line 744</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line773">line 773</a>
             </span>
         </p>
     
@@ -3864,7 +3868,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line509">line 509</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line538">line 538</a>
             </span>
         </p>
     
@@ -4028,7 +4032,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line566">line 566</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line595">line 595</a>
             </span>
         </p>
     
@@ -4251,7 +4255,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line524">line 524</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line553">line 553</a>
             </span>
         </p>
     
@@ -4497,7 +4501,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line540">line 540</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line569">line 569</a>
             </span>
         </p>
     
@@ -4705,7 +4709,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line469">line 469</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line498">line 498</a>
             </span>
         </p>
     
@@ -4911,7 +4915,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line484">line 484</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line513">line 513</a>
             </span>
         </p>
     
@@ -5050,7 +5054,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line725">line 725</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line754">line 754</a>
             </span>
         </p>
     
@@ -5185,7 +5189,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line780">line 780</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line809">line 809</a>
             </span>
         </p>
     
@@ -5313,7 +5317,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line946">line 946</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line975">line 975</a>
             </span>
         </p>
     
@@ -5441,7 +5445,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line956">line 956</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line985">line 985</a>
             </span>
         </p>
     
@@ -5570,7 +5574,7 @@ ScriptX.Services.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line438">line 438</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line467">line 467</a>
             </span>
         </p>
     
@@ -5881,7 +5885,7 @@ before attempting services calls and b) is asynchronous and c) hides a lot of co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line389">line 389</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line418">line 418</a>
             </span>
         </p>
     
@@ -6023,7 +6027,7 @@ both ScriptX.Addon and ScriptX.Services</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line824">line 824</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line853">line 853</a>
             </span>
         </p>
     
