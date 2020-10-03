@@ -29,9 +29,6 @@ The dependency on the [ScriptX Service Client Library](https://github.com/MeadCo
 
 v1.5 and later add support for ScriptX Services on Windows PC.
 
-## Current version
-1.9.0-beta01
-
 ## Packages
 
 ### NuGet Gallery
@@ -53,7 +50,7 @@ npm install meadco-scriptxjs --save
 </p>
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1.9.0-beta01/dist/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1/dist/meadco-scriptx.min.js"></script>
 ```
 
 ## Quick start for working with ScriptX Add-on only
@@ -117,6 +114,22 @@ We recommend (and test with) [Promise Polyfill](https://github.com/taylorhakes/p
    });
 </script>
 ```
+
+### Resources
+
+* [MeadCoScriptXJS Library Reference](https://meadco.github.io/MeadCoScriptXJS)
+
+* [ScriptX.Services Client Library Reference](https://meadco.github.io/ScriptX.Print.Client)
+
+* [Getting Started with ScriptX.Services](https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/GettingStarted)
+
+* [ScriptX Add-on for Internet Explorer API reference](https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn).
+
+* [ScriptX.Services on Cloud](https://scriptxservices.meadroid.com/)
+
+* [ScriptX Services Samples - Cloud, On Premise, for Windows PC](https://scriptxprintsamples.meadroid.com/) the samples make use of MeadCoScriptXJS and ScriptX.Services.Client to deliver samples that work in any scenario with the same code.
+
+
 ## Copyright
 Copyright © 2013-2020 [Mead & Co Ltd](http://www.meadroid.com).
 
