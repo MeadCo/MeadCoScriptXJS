@@ -205,7 +205,7 @@
      * This is the preferred library initialisation call especially when wishing to support working with ScriptX.Services as it a) ensures a license is available
      * before attempting services calls and b) is asynchronous and c) hides a lot of code in a simple call.
      * 
-     * @function Start
+     * @function StartAsync
      * @memberof MeadCoScriptX
      * @param {StartupSettings} settings
      * @returns {Promise} Promise object presents .connection (implementation type) and .license (detail) to resolve and error message to reject
@@ -865,7 +865,7 @@
      * @returns {Promise} Promise object represents boolean with value true if all jobs have been completed (will always be true).
      * @example 
      * MeadCo.ScriptX.PrintPage(false);
-     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bJobsNotComplete) {
+     * MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bAllJobsComplete) {
      *  self.close();
      * })
      */

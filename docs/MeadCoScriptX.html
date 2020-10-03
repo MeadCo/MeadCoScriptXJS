@@ -5629,8 +5629,8 @@ to reduce required coding updates where MeadCo.ScriptX.Init() has been used.</p>
 
 
     
-    <h4 class="name" id=".Start">
-        <a class="href-link" href="#.Start">#</a>
+    <h4 class="name" id=".StartAsync">
+        <a class="href-link" href="#.StartAsync">#</a>
         
             
                 <span class='tag'>static</span>
@@ -5638,7 +5638,7 @@ to reduce required coding updates where MeadCo.ScriptX.Init() has been used.</p>
         
         <span class="code-name">
             
-                Start<span class="signature">(settings)</span><span class="type-signature"> &rarr; {Promise}</span>
+                StartAsync<span class="signature">(settings)</span><span class="type-signature"> &rarr; {Promise}</span>
             
         </span>
     </h4>
@@ -6081,7 +6081,7 @@ both ScriptX.Addon and ScriptX.Services</p>
     <h5>Example</h5>
     
     
-        <pre class="prettyprint"><code>MeadCo.ScriptX.PrintPage(false);MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bJobsNotComplete) { self.close();})</code></pre>
+        <pre class="prettyprint"><code>MeadCo.ScriptX.PrintPage(false);MeadCo.ScriptX.WaitForSpoolingComplete().finally(function(bAllJobsComplete) { self.close();})</code></pre>
     
 
 
