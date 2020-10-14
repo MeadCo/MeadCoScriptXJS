@@ -83,7 +83,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    var version = "1.9.0-beta01";
+    var version = "1.9.0-beta02";
 
     var scriptx = topLevelNs.ScriptX;
 
@@ -322,7 +322,7 @@
                     scriptx.Connector = scriptx.Connection.ADDON;
                 }
             } else {
-                console.log("** Warning -- no factory **");
+                console.warn("** Warning -- no factory **");
             }
         }
 
@@ -334,7 +334,8 @@
     * ScriptX.Services.
     * 
     * From v1.9.0 this function also initialises licensing when ScriptX.Services is being used by the browser
-    * to reduce required coding updates where MeadCo.ScriptX.Init() has been used.
+    * to reduce required coding updates where MeadCo.ScriptX.Init() has been used. 
+    * To obtain the license read the property MeadCo.Licensing.LicMgr.License
     *
     *
     * @function InitAsync
@@ -358,29 +359,24 @@
                         // that was required by .Addon and so was not coded that way -- we'll force the license
                         // initialisatinon here. Any code following this call that tests/initialises licencing will
                         // already be primed.
-                        MeadCo.Licensing.IsLicensedAsync().then(function (license) {
+                        MeadCo.Licensing.IsLicensedAsync().then(function () {
                                 console.log("license is available");
                                 scriptx.Printing.PolyfillInitAsync(function () {
                                     scriptx.Connector = scriptx.Connection.SERVICE;
                                     console.log("scriptx.InitAsync() calling resolve ...");
-                                    resolve(scriptx.Connector, license);
+                                    resolve(scriptx.Connector);
                                 }, reject);
                             })
                             .catch(function (e) {
                                 reject(e);
                             });
-                        //scriptx.Printing.PolyfillInitAsync(function () {
-                        //    scriptx.Connector = scriptx.Connection.SERVICE;
-                        //    console.log("scriptx.InitAsync() calling resolve ...");
-                        //    resolve(scriptx.Connector);
-                        //}, reject);
                     } else {
                         scriptx.Connector = scriptx.Connection.ADDON;
                         console.log("no polyfill, using add-on");
                         resolve(scriptx.Connector);
                     }
                 } else {
-                    console.log("** Warning -- no factory **");
+                    console.warn("** Warning -- no factory **");
                     if (reject) {
                         reject("Unable to find a ScriptX 'factory' object.");
                     }
@@ -1349,7 +1345,6 @@
     licensing.IsLicensed = function () {
 
         if (licensing.Init()) {
-            var l = licensing.LicMgr.License;
             return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
         }
 
