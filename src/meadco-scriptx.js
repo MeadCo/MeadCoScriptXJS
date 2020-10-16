@@ -1346,6 +1346,10 @@
     licensing.IsLicensed = function () {
 
         if (licensing.Init()) {
+            if (licensing.Connector === licensing.Connection.SERVICE) {
+                var l = licensing.LicMgr.License;
+            }
+
             return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
         }
 
