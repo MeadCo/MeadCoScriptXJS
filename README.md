@@ -55,7 +55,7 @@ npm install meadco-scriptxjs --save
 
 ## Quick start for working with ScriptX Add-on only
 
-1. Link to meadco-scriptx.js `<script src="meadco-scriptx.js"></script>`
+1. Link to meadco-scriptx.js `<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1/dist/meadco-scriptx.min.js"></script>`
 2. Initialise the library in the document ready/window loaded event handler, and initialise printing parameters. For example, when using jQuery:
 
 ```javascript
@@ -86,19 +86,18 @@ A promise polyfill is required if the browser does not support promises (for exa
 We recommend (and test with) [Promise Polyfill](https://github.com/taylorhakes/promise-polyfill)
 
 ```javascript
-<script src="/scripts/meadco-scriptx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meadco-scriptxjs@1/dist/meadco-scriptx.min.js"></script>
 
 <!-- ScriptX Services client emulation libraries - depend on jQuery -->
 <script src="/scripts/jquery-3.1.1.js"></script>
 
-<script src="/scripts/MeadCo.ScriptX/core.js"></script>
-<script src="/scripts/MeadCo.ScriptX/scriptxprint.js"></script>
-<script src="/scripts/MeadCo.ScriptX/scriptxprinthtml.js"></script>
-<script src="/scripts/MeadCo.ScriptX/scriptxfactory.js" 
+<!-- A promise library will be required if also targetting IE 11. -->
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/scriptxprint-html@1.7/dist/meadco-scriptxservices.min.js"
         data-meadco-server="https://scriptxservices.meadroid.com" 
         data-meadco-license="xxx-xxx-xxxxxxx-xxx"></script>
 
-<!-- A promise library will be required if targetting IE. -->
 <script type="text/javascript">
    $(window).on('load', function () {
      MeadCo.ScriptX.InitAsync().then(function {
