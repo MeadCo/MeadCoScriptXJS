@@ -86,8 +86,8 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.7.0.7";
-    var emulatedVersion = "8.2.0.0";
+    var moduleversion = "1.7.0.8";
+    var emulatedVersion = "8.3.0.0";
     var servicesVersion = "";
     var printApi = MeadCo.ScriptX.Print;
     var logApi = MeadCo; // could be console

@@ -201,7 +201,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    var version = "1.9.0-beta02";
+    var version = "1.9.0";
 
     var scriptx = topLevelNs.ScriptX;
 
@@ -1226,7 +1226,8 @@
         }
     }
 
-    // if the settings describe a service connection then start it up. Otherwise, assume Addon is being used.
+    // if the settings describe a service connection then start it up. Otherwise, assume service has been connected by
+    // another means (i.e. tag attributes or API) or .Addon is being used.
     //
     // Returns a Promise of resolved or rejected with an error message
     //

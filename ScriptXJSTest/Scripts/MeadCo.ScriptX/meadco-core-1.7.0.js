@@ -54,7 +54,7 @@
 
     // protected API
     var module = this;
-    var version = "1.7.0.1"; // matches the highest version number of sub-classes.
+    var version = "1.7.0.2"; // matches the highest version number of sub-classes.
     var bLog = ((typeof (MeadCo) !== "undefined" && typeof (MeadCo.logEnable) !== "undefined")) ? MeadCo.logEnable : false;
 
     var log = function (str) {

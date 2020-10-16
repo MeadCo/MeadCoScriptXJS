@@ -62,7 +62,7 @@
 })('secmgr', function () {
 
     // protected API
-    var moduleversion = "1.7.0.3";
+    var moduleversion = "1.7.0.4";
     var emulatedVersion = "8.2.0.0";
     var module = this;
     var logApi = MeadCo;
@@ -108,7 +108,7 @@
     } 
 
     if (typeof printApi.useAttributes !== "function" ) {
-        MeadCo.error("MeadCo.ScriptX.Print not available");
+        MeadCo.warn("Attribute based licensing not available as MeadCo.ScriptX.Print is not available");
     } else {
         printApi.useAttributes();
     }
