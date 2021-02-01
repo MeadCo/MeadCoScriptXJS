@@ -83,9 +83,9 @@
         topLevelNs.ScriptX = {};
     }
 
-    var version = "1.9.0";
+    const version = "1.10.0";
 
-    var scriptx = topLevelNs.ScriptX;
+    let scriptx = topLevelNs.ScriptX;
 
     /**
      * Enum to describe the implementation being wrapped : .Addon or .Services
@@ -98,7 +98,7 @@
      * @property {number} ADDON 1 ScriptX.Addon is being wrapped
      * @property {number} SERVICE 2 ScriptX.Services is being wrapped
      */
-    var enumConnection = {
+    const enumConnection = {
         NONE: 0,
         ADDON: 1,
         SERVICE: 2
@@ -115,7 +115,7 @@
      * @property {number} MM 1 millimeters  
      * @property {number} INCHES 2 inches
      */
-    var enumMeasurementUnits = {
+    const enumMeasurementUnits = {
         DEFAULT: 0,
         MM: 1,
         INCHES: 2
@@ -183,14 +183,14 @@
      * @memberof MeadCoScriptX
      * @readonly 
      */
-    var Connector = enumConnection.NONE;
+    let Connector = enumConnection.NONE;
 
     /**
      * The semver version of this library
     * @memberof MeadCoScriptX
     * @readonly
     */
-    var LibVersion = version;
+    const LibVersion = version;
 
     // exposed values.
     scriptx.Connector = enumConnection.NONE;
@@ -311,7 +311,7 @@
                     // that was required by .Addon and so was not coded that way -- we'll force the license
                     // initialisatinon here. Any code following this call that tests/initialises licencing will
                     // already be primed.
-                    if ( !MeadCo.Licensing.IsLicensed() || !scriptx.Printing.PolyfillInit() ) {
+                    if (!MeadCo.Licensing.IsLicensed() || !scriptx.Printing.PolyfillInit()) {
                         console.warn("scriptx.Init() licensing or polyfillinit failed.");
                         scriptx.Printing = null;
                         scriptx.Connector = scriptx.Connection.NONE;
@@ -343,7 +343,7 @@
     * @returns {Promise} Promise object represents enum Connection with value of the connection found (NONE, ADDON or SERVICES)
     */
     scriptx.InitAsync = function () {
-        var prom;
+        let prom;
 
         console.log("scriptx.InitAsync()");
         if (scriptx.Printing === null) {
@@ -360,13 +360,13 @@
                         // initialisatinon here. Any code following this call that tests/initialises licencing will
                         // already be primed.
                         MeadCo.Licensing.IsLicensedAsync().then(function () {
-                                console.log("license is available");
-                                scriptx.Printing.PolyfillInitAsync(function () {
-                                    scriptx.Connector = scriptx.Connection.SERVICE;
-                                    console.log("scriptx.InitAsync() calling resolve ...");
-                                    resolve(scriptx.Connector);
-                                }, reject);
-                            })
+                            console.log("license is available");
+                            scriptx.Printing.PolyfillInitAsync(function () {
+                                scriptx.Connector = scriptx.Connection.SERVICE;
+                                console.log("scriptx.InitAsync() calling resolve ...");
+                                resolve(scriptx.Connector);
+                            }, reject);
+                        })
                             .catch(function (e) {
                                 reject(e);
                             });
@@ -402,7 +402,7 @@
     * @deprecated from version 1.8.0
     */
     scriptx.InitWithVersion = function (strVersion) {
-        var bok = false;
+        let bok = false;
         if (scriptx.Init()) {
             bok = scriptx.IsVersion(strVersion);
             if (!bok)
@@ -440,14 +440,14 @@
      *
      */
     scriptx.IsServices = function () {
-        var connection = scriptx.Connector;
+        let connection = scriptx.Connector;
         // If init() not yet called, try a guess. 
         //
         // This relies on the Add-on and the .services client scripts are all included before this script.
         // But, we do not want to perform a full init here because connection data might not have been specified
         console.log("IsServices() on connector: " + connection);
         if (connection === enumConnection.NONE) {
-            var p = findFactory(false);
+            let p = findFactory(false);
             if (p !== null) {
                 connection = typeof p.PolyfillInit === "function" ? enumConnection.SERVICE : enumConnection.ADDON;
             }
@@ -489,6 +489,21 @@
         }
 
         return false;
+    };
+
+    /**
+     * With ScriptX.Addon, printHtml(Ex) and printPdf(Ex) inherit authorisation cookies from the hosting browser. This does not happen with 
+     * ScriptX.Services and in modern uses the authorisation cookie is hidden from javascript so cannot be automated. The cookie must be exposed 
+     * in the HTML and passed in with a call to this function.
+     * 
+     * @function ApplyContentAuthorisationCookie
+     * @memberof MeadCoScriptX
+     * @param {string} strCookie The cookie in form name=value. use "" to remove use of  cookie authorisation
+     */
+    scriptx.SetContentAuthorisationCookie = function (strCookie) {
+        if (scriptx.IsServices()) {
+            scriptx.Printing.PolyfillAuthorisationCookie = strCookie;
+        }
     };
 
     /**
@@ -608,7 +623,7 @@
     // [optional] data
     // 
     // If no callback data provided, use "Job " + jobIndex - incrementing on each job
-    var jobIndex = 1;
+    let jobIndex = 1;
 
     /**
      * Download and print an HTML document in the background. This is a wrapper on the PrintHtmlEX() API.
@@ -703,7 +718,7 @@
     scriptx.DirectPrintString = function (sPrinterName, sData) {
 
         if (scriptx.Init()) {
-            var rawPrinter = scriptx.Factory.rawPrinting;
+            let rawPrinter = scriptx.Factory.rawPrinting;
 
             rawPrinter.printer = sPrinterName;
             rawPrinter.printString(sData);
@@ -835,7 +850,7 @@
             else {
                 if (reject) {
                     reject();
-                }                
+                }
             }
         });
     };
@@ -889,7 +904,7 @@
     scriptx.CloseWindow = function (oWindow) {
 
         if (scriptx.IsServices()) {
-            scriptx.Printing.WaitForSpoolingComplete(5000,function () {
+            scriptx.Printing.WaitForSpoolingComplete(5000, function () {
                 oWindow.close();
             });
         }
@@ -919,8 +934,8 @@
      * @returns {string[]} array of the names of the available printers available.
      * */
     scriptx.GetAvailablePrinters = function () {
-        var plist = new Array();
-        var name;
+        let plist = new Array();
+        let name;
         if (scriptx.Init()) {
             try {
                 for (var i = 0; (name = scriptx.Printing.EnumPrinters(i)).length > 0; i++) {
@@ -951,11 +966,11 @@
      * @see {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn/factory/SecurityManagerVersion | SecurityManagerVersion API}
      */
     scriptx.GetComponentVersion = function (sComponent) {
-        var a = new Object();
-        var b = new Object();
-        var c = new Object();
-        var d = new Object();
-        var s = "(Not installed)";
+        let a = new Object();
+        let b = new Object();
+        let c = new Object();
+        let d = new Object();
+        let s = "(Not installed)";
 
         try {
             scriptx.Utils.GetComponentVersion(sComponent, a, b, c, d);
@@ -1008,7 +1023,7 @@
     // find an instance of 'factory', either the add-on or polyfill, optionally hook up to
     // the module and return the instance of the printing object (in Add-on this creates the object)
     function findFactory(bRecord) {
-        var f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
+        let f = window.factory || document.getElementById("factory"); // we assume the <object /> has an id of 'factory'
         if (f && typeof f.object !== "undefined" && f.object !== null) {
             if (bRecord) {
                 scriptx.Factory = f;
@@ -1026,9 +1041,9 @@
     // Return true if v1 is later than or equal to v2
     //
     function compareVersions(v1, v2) {
-        var a = v1.split(".");
-        var b = v2.split(".");
-        var i;
+        let a = v1.split(".");
+        let b = v2.split(".");
+        let i;
 
         if (a.length !== b.length)
             return false;
@@ -1120,7 +1135,7 @@
 
         return new Promise(function (resolve, reject) {
             if (settings && settings.serviceConnection) {
-                var sc = settings.serviceConnection;
+                let sc = settings.serviceConnection;
 
                 // connect up licensing so can query license.
                 MeadCo.ScriptX.Print.Licensing.connect(sc.serverUrl, sc.licenseGuid);
@@ -1139,7 +1154,7 @@
                     })
                     .catch(function (e) {
                         reject(e);
-                    });   
+                    });
             }
             else {
                 resolve();
@@ -1153,7 +1168,7 @@
     //
     function if4WPCLicenseApply(sc) {
         return new Promise(function (resolve, reject) {
-           if (sc.licensePath && sc.licenseRevision) {
+            if (sc.licensePath && sc.licenseRevision) {
                 MeadCo.ScriptX.Print.Licensing.applyAsync(
                     sc.licenseGuid,
                     sc.licenseRevision,
@@ -1233,7 +1248,7 @@
 
     topLeveNs.Licensing = {};
 
-    var licensing = topLeveNs.Licensing;
+    let licensing = topLeveNs.Licensing;
 
     licensing.Connection = {
         NONE: 0,
@@ -1296,7 +1311,7 @@
     * @returns {Promise} 
     */
     licensing.InitAsync = function () {
-        var prom;
+        let prom;
 
         console.log("licensing.InitAsync()");
 
@@ -1320,13 +1335,13 @@
                     console.log("** Warning -- no secmgr **");
                     if (reject) {
                         reject();
-                    }  
+                    }
                 }
             } else {
                 if (licensing.Connector === licensing.Connection.NONE) {
                     if (reject) {
                         reject();
-                    }  
+                    }
                 } else {
                     resolve();
                 }
@@ -1347,7 +1362,7 @@
 
         if (licensing.Init()) {
             if (licensing.Connector === licensing.Connection.SERVICE) {
-                var l = licensing.LicMgr.License;
+                let l = licensing.LicMgr.License;
             }
 
             return licensing.LicMgr.result === 0 && licensing.LicMgr.validLicense;
@@ -1378,7 +1393,7 @@
                 .catch(function () {
                     if (reject) {
                         reject(lookupError());
-                    }  
+                    }
                 });
         });
     };
@@ -1408,7 +1423,7 @@
      */
     licensing.ReportError = function (msg) {
 
-        var errMsg = licensing.ErrorMessage();
+        let errMsg = licensing.ErrorMessage();
         if (errMsg !== "") {
             reportError(errMsg, msg);
         }
@@ -1417,7 +1432,7 @@
     // private implementation
     // ErrorMessage
     // returns the error message that describes why licensing failed. returns emoty string if there was no error.
-    var errorLicenseMsgs = new Array("Unable to locate the MeadCo License Manager object - the component may not be installed.",
+    let errorLicenseMsgs = new Array("Unable to locate the MeadCo License Manager object - the component may not be installed.",
         "The license for this site is not valid.",
         "The license for this site not installed on this machine.",
         "The license for this site has not been accepted by the user.",
@@ -1426,8 +1441,8 @@
     );
 
     function lookupError() {
-        var eIndex = -1;
-        var msgSuffix = "";
+        let eIndex = -1;
+        let msgSuffix = "";
 
         if (licensing.LicMgr !== null) {
             console.log("license result: " + licensing.LicMgr.result + " valid: " + licensing.LicMgr.validLicense);
@@ -1479,7 +1494,7 @@
     }
 
     function reportError(eMsg) {
-        var msg = eMsg;
+        let msg = eMsg;
         for (var i = 1; i < arguments.length; i++) {
             if (arguments[i])
                 msg += "\n\n" + arguments[i];
@@ -1490,7 +1505,7 @@
     // try to find the Security Manager add-on on the page.
     // 
     function findSecMgr() {
-        var l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
+        let l = window.secmgr || document.getElementById("secmgr");  // we assume the <object /> has an id of 'secmgr'
         if (l && l.object !== null && typeof l.object !== "undefined") {
             licensing.LicMgr = l.object;
             console.log("Found a secmgr: " + (typeof licensing.LicMgr.result !== "undefined"));

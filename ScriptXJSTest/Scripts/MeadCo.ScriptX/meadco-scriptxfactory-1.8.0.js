@@ -21,7 +21,7 @@
  * 
  * ScriptX Add-on for Internet Explorer intercepts the browser UI for printing. For obvious reasons this is not possible with javascript, however ::
  * 
- * <strong>PLEASE NOTE:</strong> This library replaces window.print()
+ * <strong>PLEASE NOTE:</strong> This library replaces window.print(). 
  * 
  * Full documentation on the properties/methods is provided by the {@link https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXAddOn|technical reference documentation} for the ScriptX Add-on for Internet Explorer. That documentation is not reproduced here.
  * 
@@ -86,7 +86,7 @@
 })('factory', function () {
     // If this is executing, we believe we are needed.
     // protected API
-    var moduleversion = "1.7.0.8";
+    var moduleversion = "1.8.0.2";
     var emulatedVersion = "8.3.0.0";
     var servicesVersion = "";
     var printApi = MeadCo.ScriptX.Print;
@@ -97,34 +97,6 @@
     function log(str) {
         logApi.log("factory emulation :: " + str);
     }
-
-    // extend the namespace
-    module.extendFactoryNamespace = function (name, definition) {
-        var theModule = definition();
-
-        log("MeadCo factory extending namespace: " + name);
-        // walk/build the namespace part by part and assign the module to the leaf
-        var namespaces = name.split(".");
-        var scope = this;
-        for (var i = 0; i < namespaces.length; i++) {
-            var packageName = namespaces[i];
-            if (i === namespaces.length - 1) {
-                if (typeof scope[packageName] === "undefined") {
-                    log("installing implementation at: " + packageName);
-                    scope[packageName] = theModule;
-                } else {
-                    log("Warning - not overwriting package: " + packageName);
-                }
-            } else if (typeof scope[packageName] === "undefined") {
-                log("initialising new: " + packageName);
-                scope[packageName] = {};
-            } else {
-                log("using existing package: " + packageName);
-            }
-            scope = scope[packageName];
-        }
-
-    };
 
     log("'factory' loaded " + moduleversion);
 
@@ -295,13 +267,50 @@
          */
         Shutdown: function () {
             return null;
-        }
+        },
+
+        // extend the namespace
+        extendFactoryNamespace: function (name, definition) {
+            var theModule = definition();
+
+            log("MeadCo factory extending namespace: " + name);
+            // walk/build the namespace part by part and assign the module to the leaf
+            var namespaces = name.split(".");
+            var scope = module;
+            for (var i = 0; i < namespaces.length; i++) {
+                var packageName = namespaces[i];
+                if (i === namespaces.length - 1) {
+                    if (typeof scope[packageName] === "undefined") {
+                        log("installing implementation at: " + packageName);
+                        scope[packageName] = theModule;
+                    } else {
+                        log("Warning - not overwriting package: " + packageName);
+                    }
+                } else if (typeof scope[packageName] === "undefined") {
+                    log("initialising new: " + packageName);
+                    scope[packageName] = {};
+                } else {
+                    log("using existing package: " + packageName);
+                }
+                scope = scope[packageName];
+            }
+        },
+
+        // a Ctrl-P handler function 
+        keyPressCtrlP: function (e) {
+            if (e.ctrlKey && e.keyCode == 80 && !e.shiftKey) {
+                e.preventDefault();
+                log("ctrl-p being handled.");
+                module.print();
+            }
+        },
+
     };
 });
 
 ; (function (name, definition) {
-    if (typeof extendFactoryNamespace === "function") {
-        extendFactoryNamespace(name, definition);
+    if (typeof factory.extendFactoryNamespace === "function") {
+        factory.extendFactoryNamespace(name, definition);
     }
 })('factory.printing', function () {
 
@@ -407,19 +416,6 @@
         MeadCo.error("MeadCo.ScriptX.Print.PDF is not available to ScriptX.Services factory emulation.");
         fnNotifyStarted(false);
         return false;
-    }
-
-    if (typeof module.print === "function") {
-        module.factory.log("overwriting module.print");
-        module.print = function () {
-            module.factory.log("window.print() called and being handled.");
-            promptAndPrint(
-                true,
-                function () {
-                    return printHtml.printDocument();
-                },
-                function () { });
-        };
     }
 
     var iEnhancedFormatting = {
@@ -573,20 +569,26 @@
     if (typeof printApi !== "undefined") {
         printApi.useAttributes();
 
-        // ScriptX.Addon printing intercepts Ctrl-p ...
-        // listen for Ctrl-P and override ...
-        document.addEventListener("keydown", function (e) {
-            if (e.ctrlKey && e.keyCode == 80 && !e.shiftKey) {
-                e.preventDefault();
-                module.factory.log("ctrl-p being handled.");
+        if (typeof module.print === "function") {
+            module.factory.log("overwriting module.print");
+            module.print = function () {
+                module.factory.log("window.print() called and being handled.");
                 promptAndPrint(
                     true,
                     function () {
                         return printHtml.printDocument();
                     },
                     function () { });
-            }
-        });
+            };
+        }
+
+        // ScriptX.Addon printing intercepts Ctrl-p ...
+        // listen for Ctrl-P and override ...
+        var doNotEnable = document.querySelector("[data-meadco-ctrlp='false']") != null;
+        if (!doNotEnable) {
+            module.factory.log("using addEventListener('keydown',factory.keyPressCtrlP) for Ctrl-P");
+            document.addEventListener("keydown", factory.keyPressCtrlP);
+        }
     }
     else {
         MeadCo.error("MeadCo.ScriptX.Print is not available to ScriptX.Services factory emulation.");
@@ -731,7 +733,7 @@
         },
 
         Print: function (bPrompt, sOrOFrame, fnNotifyStarted) { // needs and wants update to ES2015 (for default values)
-            if ( !fnNotifyStarted ) {
+            if (!fnNotifyStarted) {
                 fnNotifyStarted = function (bStarted) { MeadCo.log("A print has started"); };
             }
             if (!sOrOFrame) {
@@ -969,21 +971,7 @@
         },
 
         DefaultPrinter: function () {
-            var i = 0;
-            var printerName = this.printer;
-
-            // optimise that the current printer is the default (often will be)
-            if (printerName !== "" && printApi.deviceSettingsFor(printerName).isDefault) {
-                return printerName;
-            }
-            else {
-                while ((printerName = this.EnumPrinters(i++)) !== "") {
-                    if (printApi.deviceSettingsFor(printerName).isDefault) {
-                        return printerName;
-                    }
-                }
-            }
-            return "";
+            return printApi.deviceSettingsFor("systemdefault").printerName;
         },
 
         // duplicate to cope with COM objects were/are not case sensitive
@@ -1273,15 +1261,22 @@
             } else {
                 printHtml.connectAsync("", "", resolve, reject);
             }
-        }
+        },
 
+        get PolyfillAuthorisationCookie() {
+            return MeadCo.ScriptX.Print.authorisationCookie;
+        },
+
+        set PolyfillAuthorisationCookie(cookie) {
+            MeadCo.ScriptX.Print.authorisationCookie = cookie;
+        }
     };
 
 });
 
 ; (function (name, definition) {
-    if (typeof extendFactoryNamespace === "function") {
-        extendFactoryNamespace(name, definition);
+    if (typeof factory.extendFactoryNamespace === "function") {
+        factory.extendFactoryNamespace(name, definition);
     }
 })('factory.object', function () {
 
@@ -1303,8 +1298,8 @@
 });
 
 ; (function (name, definition) {
-    if (typeof extendFactoryNamespace === "function") {
-        extendFactoryNamespace(name, definition);
+    if (typeof factory.extendFactoryNamespace === "function") {
+        factory.extendFactoryNamespace(name, definition);
     }
 })('factory.object.js', function () {
 

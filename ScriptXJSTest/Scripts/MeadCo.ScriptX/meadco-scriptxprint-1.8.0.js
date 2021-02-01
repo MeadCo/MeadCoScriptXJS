@@ -19,7 +19,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print', function () {
     // module version and the api we are coded for
-    var version = "1.7.0.4";
+    var version = "1.8.0.4";
     var htmlApiLocation = "v1/printHtml";
     var pdfApiLocation = "v1/printPdf";
     var directApiLocation = "v1/printDirect";
@@ -97,6 +97,17 @@
      * @property {Array.<string>} forms Array of the names of the avbailable paper sizes
      * */
     var DeviceSettingsObject; // for doc generator
+
+    /**
+     * Provide authorisation details to access protected content. 
+     * 
+     * @typedef AccessControl
+     * @memberof MeadCoScriptXPrint
+     * @property {string} cookie The authorisation cookie in the form name=value
+     * */
+    var AccessControl = {
+        cookie: ""
+    };
 
     /**
      * Description of a code version. Semver is used 
@@ -189,6 +200,7 @@
 
     /**
      * Information about the service that is connected to - version detail and facilities available
+     * See also: https://www.meadroid.com/Developers/KnowledgeBank/TechnicalReference/ScriptXServices/WebServiceAPIReference/ServiceDescription/GET
      * 
      * @typedef ServiceDescriptionObject
      * @memberof MeadCoScriptXPrint
@@ -336,7 +348,7 @@
 
      * @param {ContentType} contentType enum type of content given (html snippet, url)
      * @param {string} content the content - a url, html snippet or complete html
-     * @param {object} htmlPrintSettings the settings to use - device annd html such as headers and footers
+     * @param {object} htmlPrintSettings the settings to use - page and html such as headers and footers
      * @param {function({string})} fnDone function to call when printing complete (and output returned), arg is null on no error, else error message
      * @param {function(status,sInformation,data)} fnProgress function to call when job status is updated
      * @param {any} data object to give pass to fnProgress
@@ -350,7 +362,7 @@
         }
         var devInfo;
 
-        if ( !content || (typeof content === "string" && content.length === 0)) {
+        if (!content || (typeof content === "string" && content.length === 0)) {
             MeadCo.ScriptX.Print.reportError("Request to print no content - access denied?");
             if (typeof fnDone === "function") {
                 fnDone("Request to print no content");
@@ -369,6 +381,7 @@
             Content: content,
             Settings: htmlPrintSettings,
             Device: devInfo,
+            ProtectedContentAccess: AccessControl,
             OnProgress: fnProgress,
             UserData: data
         };
@@ -460,7 +473,7 @@
 
         var devInfo;
 
-        if ( !document || (typeof document === "string" && document.length === 0)) {
+        if (!document || (typeof document === "string" && document.length === 0)) {
             MeadCo.ScriptX.Print.reportError("The document to print must be given.");
             if (typeof fnDone === "function") {
                 fnDone("Request to print no content");
@@ -479,6 +492,7 @@
             Description: pdfPrintSettings.jobDescription,
             Settings: pdfPrintSettings,
             Device: devInfo,
+            ProtectedContentAccess: AccessControl,
             OnProgress: fnProgress,
             UserData: data
         };
@@ -583,7 +597,7 @@
             }
         }
 
-        if ( !content || (typeof content === "string" && content.length === 0)) {
+        if (!content || (typeof content === "string" && content.length === 0)) {
             MeadCo.ScriptX.Print.reportError("Request to print no content - access denied?");
             if (typeof fnDone === "function") {
                 fnDone("Request to print no content");
@@ -656,7 +670,7 @@
     function connectToServer(serverUrl, clientLicenseGuid) {
         setServer(serverUrl, clientLicenseGuid);
         // note that this will silently fail if no advanced printing license
-        getDeviceSettings({ name: "default", async: false });
+        getDeviceSettings({ name: "systemdefault", async: false });
 
         // also (async) cache server description
         getFromServer("", true,
@@ -669,7 +683,7 @@
         setServer(serverUrl, clientLicenseGuid);
         // note that this will silently fail if no advanced printing license
         getDeviceSettings({
-            name: "default",
+            name: "systemdefault",
             done: resolve,
             async: true,
             fail: reject
@@ -866,7 +880,7 @@
             if (!bWaiting) {
                 MeadCo.log("Going to request status with .ajax");
                 bWaiting = true;
-                $.ajax(serverAndApi + "/status/" + jobId,
+                jQuery.ajax(serverAndApi + "/status/" + jobId,
                     {
                         dataType: "json",
                         method: "GET",
@@ -942,6 +956,12 @@
 
     function addOrUpdateDeviceSettings(data) {
         if (typeof data.printerName === "string") {
+            if (data.isDefault) {
+                for (var i = 0; i < deviceSettings.length; i++) {
+                    deviceSettings[i].isDefault = false;
+                }
+            }
+
             deviceSettings[data.printerName] = data;
             if (data.isDefault && printerName.length === 0) {
                 printerName = data.printerName;
@@ -949,9 +969,10 @@
         }
     }
 
-    function getDeviceSettings(oRequest) {
+    function getDeviceSettings(oRequest, useLicenseGuid) {
         oRequest.name = oRequest.name.replace(/\\/g, "||");
         MeadCo.log("Request get device info: " + oRequest.name);
+        var theLicense = arguments.length > 1 ? useLicenseGuid : licenseGuid;
 
         if (module.jQuery) {
             var serviceUrl = server + "/deviceinfo/" + encodeURIComponent(oRequest.name) + "/0";
@@ -963,7 +984,7 @@
                     cache: false,
                     async: oRequest.async, // => async if we have a callback
                     headers: {
-                        "Authorization": "Basic " + btoa(licenseGuid + ":")
+                        "Authorization": "Basic " + btoa(theLicense + ":")
                     }
                 })
                 .done(function (data) {
@@ -974,12 +995,19 @@
                     }
                 })
                 .fail(function (jqXhr, textStatus, errorThrown) {
+                    if (oRequest.name === "systemdefault") {
+                        console.warn("request for systemdefault printer failed - please update to ScriptX.Services 2.11.1");
+                        oRequest.name = "default";
+                        oRequest.async = false;
+                        getDeviceSettings(oRequest, theLicense);
+                    }
+                    else {
+                        errorThrown = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.getDeviceSettings:", jqXhr, textStatus, errorThrown);
+                        MeadCo.log("failed to getdevice: " + errorThrown);
 
-                    errorThrown = MeadCo.parseAjaxError("MeadCo.ScriptX.Print.getDeviceSettings:", jqXhr, textStatus, errorThrown);
-                    MeadCo.log("failed to getdevice: " + errorThrown);
-
-                    if (typeof oRequest.fail === "function") {
-                        oRequest.fail(errorThrown);
+                        if (typeof oRequest.fail === "function") {
+                            oRequest.fail(errorThrown);
+                        }
                     }
                 });
         } else {
@@ -998,6 +1026,11 @@
                 getDeviceSettings({
                     name: sPrinterName,
                     async: false,
+                    done: function (printerData) {
+                        if (sPrinterName.toLowerCase() === "systemdefault") {
+                            sPrinterName = printerData.printerName;
+                        }
+                    },
                     fail: function (eTxt) { MeadCo.ScriptX.Print.reportError(eTxt); }
                 });
             }
@@ -1028,12 +1061,12 @@
             //
             // meadco-subscription present => cloud/on premise service
             // meadco-license present => for Windows PC service
-            $("[data-meadco-subscription]").each(function () {
+            jQuery("[data-meadco-subscription]").each(function () {
                 if (typeof printApi === "undefined" || typeof printHtml === "undefined") {
                     console.warn("Unable to auto-connect subscription - print or printHtml API not present (yet?)");
                 } else {
                     if (!bDoneAuto) {
-                        var $this = $(this);
+                        var $this = jQuery(this);
                         var data = $this.data();
                         MeadCo.log("Auto connect susbcription to: " +
                             data.meadcoServer + ", or " + data.meadcoPrinthtmlserver +
@@ -1072,12 +1105,12 @@
                 return false;
             });
 
-            $("[data-meadco-license]").each(function () {
+            jQuery("[data-meadco-license]").each(function () {
                 if (typeof printApi === "undefined" || typeof printHtml === "undefined" || typeof licenseApi === "undefined") {
                     console.warn("Unable to auto-connect client license - print or printHtml or license API not present (yet?)");
                 } else {
                     if (!bDoneAuto) {
-                        var $this = $(this);
+                        var $this = jQuery(this);
                         var data = $this.data();
                         MeadCo.log("Auto connect client license to: " +
                             data.meadcoServer +
@@ -1116,7 +1149,7 @@
                                     data.meadcoLicenseRevision,
                                     data.meadcoLicensePath);
 
-                                if (licenseApi.result != 0 && reportError ) {
+                                if (licenseApi.result != 0 && reportError) {
                                     MeadCo.ScriptX.Print.reportError(licenseApi.errorMessage);
                                 }
                             }
@@ -1179,6 +1212,20 @@
 
         set onErrorAction(action) {
             errorAction = action;
+        },
+
+        /**
+         * Get/set the cookie to be used to authorise access to protected content
+         * 
+         * @memberof MeadCoScriptXPrint
+         * @property {string} authorisationCookie - the cookie in the form name=value
+         */
+        get authorisationCookie() {
+            return AccessControl.cookie;
+        },
+
+        set authorisationCookie(cookie) {
+            AccessControl.cookie = cookie;
         },
 
         /** 
@@ -1274,23 +1321,12 @@
         },
 
         /**
-         * search for processing attibutes for connection and subscription/license and process
-         * them. The attibutes can be on any element
+         * search for processing attibutes for connection and subscription/license and process them. The attibutes can be on any element. This function is called automatically by factory emulation and licensing emulation scripts so does not usually 
+         * need to be called by document script.
          * 
-         * data-meadco-server value is the root url, api/v1/printhtml, api/v1/licensing will be added by the library
-         * data-meadco-syncinit default is true for synchronous calls to the server, value 'false' to use asynchronous calls to the server
-         * 
-         * data-meadco-subscription present => cloud/on premise service, value is the subscription GUID
-         * data-meadco-license present => for Windows PC service, value is the license GUID
-         *
-         * If data-meadco-license is present then the following additional attributes can be used:
-         * 
-         * data-meadco-license-revision, value is the revision number of the license
-         * data-meadco-license-path,, value is the path to the license file (sxlic.mlf). A value of "warehouse" will cause the license to be downloaded from MeadCo's License Warehouse
-         * 
-         * Synchronous AJAX calls are deprecated in all browsers but may be useful to "quick start" use of older code. It is recommended that code is moved
+         * Please note synchronous AJAX calls are deprecated in all browsers but may be useful to "quick start" use of older code. It is recommended that code is moved
          * to using asynchronous calls as soon as practical. The MeadCoScriptXJS library can assist with this as it delivers promise rather than callback based code.
-         *  
+         * 
          * @function useAttributes
          * @memberof MeadCoScriptXPrint
          * @example
@@ -1309,6 +1345,19 @@
          *      data-meadco-license-path="warehouse"
          *      data-meadco-license-revision="3">
          * </script>
+         * 
+         * data-meadco-server value is the root url, api/v1/printhtml, api/v1/licensing will be added by the library
+         * data-meadco-syncinit default is true for synchronous calls to the server, value 'false' to use asynchronous calls to the server
+         * 
+         * data-meadco-subscription present => cloud/on premise service, value is the subscription GUID
+         * data-meadco-license present => for Windows PC service, value is the license GUID
+         *
+         * If data-meadco-license is present then the following additional attributes can be used:
+         * 
+         * data-meadco-license-revision, value is the revision number of the license
+         * data-meadco-license-path, value is the path to the license file (sxlic.mlf). A value of "warehouse" will cause the license to be downloaded from MeadCo's License Warehouse
+         * data-meadco-reporterror, default is "true", value "false" suppresses error messages during the initial connection to the service (only)
+         * 
          */
         useAttributes: function () {
             processAttributes();
@@ -1386,7 +1435,7 @@
          */
         serviceDescription: function () {
 
-            if ( !cachedServiceDescription ) {
+            if (!cachedServiceDescription) {
                 getFromServer("", false,
                     function (data) { cachedServiceDescription = data; },
                     function (e) {
@@ -1406,7 +1455,7 @@
          */
         serviceDescriptionAsync: function (resolve, reject) {
 
-            if ( !cachedServiceDescription ) {
+            if (!cachedServiceDescription) {
                 getFromServer("", true,
                     function (data) {
                         cachedServiceDescription = data;

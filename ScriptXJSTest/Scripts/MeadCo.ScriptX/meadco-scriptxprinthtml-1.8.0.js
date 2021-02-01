@@ -19,7 +19,7 @@
     extendMeadCoNamespace(name, definition);
 })('MeadCo.ScriptX.Print.HTML', function () {
 
-    var moduleversion = "1.7.0.0";
+    var moduleversion = "1.8.0.0";
 
     /**
      * Enum to describe the units used on measurements - **NOTE** please use MeadCo.ScriptX.Print.MeasurementUnits instead
@@ -397,7 +397,7 @@
     function persistData($element) {
         // preserve all form values.
         // Radiobuttons and checkboxes
-        $(":checked", $element).each(function () {
+        jQuery(":checked", $element).each(function () {
             this.setAttribute('checked', 'checked');
         });
 
@@ -406,21 +406,21 @@
             len = types.length;
 
         for (var i = 0; i < len; i++) {
-            $("input[type=" + types[i] + "]", $element).each(function () {
-                this.setAttribute('value', $(this).val());
+            jQuery("input[type=" + types[i] + "]", $element).each(function () {
+                this.setAttribute('value', jQuery(this).val());
             });
         }
 
-        $("select", $element).each(function () {
-            var $select = $(this);
-            $("option", $select).each(function () {
-                if ($select.val() === $(this).val())
+        jQuery("select", $element).each(function () {
+            var $select = jQuery(this);
+            jQuery("option", $select).each(function () {
+                if ($select.val() === jQuery(this).val())
                     this.setAttribute('selected', 'selected');
             });
         });
 
-        $("textarea", $element).each(function () {
-            this.innerHTML = $(this).val();
+        jQuery("textarea", $element).each(function () {
+            this.innerHTML = jQuery(this).val();
         });
     }
 
@@ -435,23 +435,23 @@
 
         var $html = $htmlDoc.clone();
 
-        $("script", $html).remove();
-        $("object", $html).remove();
+        jQuery("script", $html).remove();
+        jQuery("object", $html).remove();
 
-        if (!$("head>base", $html).length) {
+        if (!jQuery("head>base", $html).length) {
             MeadCo.log("No base element, fabricating one to: " + getBaseHref());
-            var base = $("<base>",
+            var base = jQuery("<base>",
                 {
                     href: getBaseHref()
                 });
-            $("head", $html).prepend(base);
+            jQuery("head", $html).prepend(base);
         }
 
         return $html.html();
     }
 
     function documentHtml() {
-        return printableHtmlDocument($("html"));
+        return printableHtmlDocument(jQuery("html"));
     }
 
     function documentContent() {
@@ -464,10 +464,10 @@
 
     function frameContent(sFrame) {
         if (this.jQuery) {
-            var $frame = $("#" + sFrame);
+            var $frame = jQuery("#" + sFrame);
 
             if (!$frame.length) {
-                $frame = $('iframe[name=' + sFrame + ']');
+                $frame = jQuery('iframe[name=' + sFrame + ']');
                 if (!$frame.length) {
                     throw new Error("Unable to get frame content - frame does not exist");
                 }
