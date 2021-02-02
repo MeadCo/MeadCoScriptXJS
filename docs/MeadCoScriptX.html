@@ -344,7 +344,7 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         
             <span class='tag'>static</span>
         
-            <span class='tag'>readonly</span>
+            <span class='tag'>constant</span>
         
     
     <span class="code-name">
@@ -421,6 +421,162 @@ not implemented in the browser we recommend (and test with) https://github.com/t
         <div class='vertical-section'>
             <h1>Methods</h1>
             <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".ApplyContentAuthorisationCookie">
+        <a class="href-link" href="#.ApplyContentAuthorisationCookie">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                ApplyContentAuthorisationCookie<span class="signature">(strCookie)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    <p class="summary">With ScriptX.Addon, printHtml(Ex) and printPdf(Ex) inherit authorisation cookies from the hosting browser.</p>
+    
+    
+    <div class="description">
+        <p>With ScriptX.Addon, printHtml(Ex) and printPdf(Ex) inherit authorisation cookies from the hosting browser. This does not happen with
+ScriptX.Services and in modern uses the authorisation cookie is hidden from javascript so cannot be automated. The cookie must be exposed
+in the HTML and passed in with a call to this function.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>strCookie</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The cookie in form name=value. use &quot;&quot; to remove use of  cookie authorisation</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="meadco-scriptx.js.html" class="button">View Source</a>
+            <span>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line494">line 494</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
             
                 <div class="member">
 
@@ -655,7 +811,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line676">line 676</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line691">line 691</a>
             </span>
         </p>
     
@@ -982,7 +1138,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line613">line 613</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line628">line 628</a>
             </span>
         </p>
     
@@ -1307,7 +1463,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line638">line 638</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line653">line 653</a>
             </span>
         </p>
     
@@ -1486,7 +1642,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line883">line 883</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line898">line 898</a>
             </span>
         </p>
     
@@ -1672,7 +1828,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line713">line 713</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line728">line 728</a>
             </span>
         </p>
     
@@ -1858,7 +2014,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line695">line 695</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line710">line 710</a>
             </span>
         </p>
     
@@ -1968,7 +2124,7 @@ See MeadCo.ScriptX.WaitForSpoolingComplete() for how to implement synchronous co
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line914">line 914</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line929">line 929</a>
             </span>
         </p>
     
@@ -2161,7 +2317,7 @@ with all versions of ScriptX. Use the recommended alternatives.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line940">line 940</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line955">line 955</a>
             </span>
         </p>
     
@@ -2283,7 +2439,7 @@ with all versions of ScriptX. Use the recommended alternatives.</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line901">line 901</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line916">line 916</a>
             </span>
         </p>
     
@@ -2941,7 +3097,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line991">line 991</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line1006">line 1006</a>
             </span>
         </p>
     
@@ -3599,7 +3755,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line735">line 735</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line750">line 750</a>
             </span>
         </p>
     
@@ -3734,7 +3890,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line769">line 769</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line784">line 784</a>
             </span>
         </p>
     
@@ -3869,7 +4025,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line534">line 534</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line549">line 549</a>
             </span>
         </p>
     
@@ -4033,7 +4189,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line591">line 591</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line606">line 606</a>
             </span>
         </p>
     
@@ -4256,7 +4412,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line549">line 549</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line564">line 564</a>
             </span>
         </p>
     
@@ -4502,7 +4658,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line565">line 565</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line580">line 580</a>
             </span>
         </p>
     
@@ -4710,7 +4866,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line494">line 494</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line509">line 509</a>
             </span>
         </p>
     
@@ -4916,7 +5072,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line509">line 509</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line524">line 524</a>
             </span>
         </p>
     
@@ -5055,7 +5211,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line750">line 750</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line765">line 765</a>
             </span>
         </p>
     
@@ -5190,7 +5346,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line805">line 805</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line820">line 820</a>
             </span>
         </p>
     
@@ -5318,7 +5474,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line971">line 971</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line986">line 986</a>
             </span>
         </p>
     
@@ -5446,7 +5602,7 @@ To obtain the license read the property MeadCo.Licensing.LicMgr.License</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line981">line 981</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line996">line 996</a>
             </span>
         </p>
     
@@ -6028,7 +6184,7 @@ both ScriptX.Addon and ScriptX.Services</p>
         <p class="tag-source">
             <a href="meadco-scriptx.js.html" class="button">View Source</a>
             <span>
-                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line849">line 849</a>
+                <a href="meadco-scriptx.js.html">meadco-scriptx.js</a>, <a href="meadco-scriptx.js.html#line864">line 864</a>
             </span>
         </p>
     
