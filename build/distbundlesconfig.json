@@ -1,7 +1,6 @@
 ﻿[
   {
     "outputFileName": "./dist/meadco-scriptx.min.js",
-    "kickfile":  "",
     "inputFiles": [
       "./src/meadco-scriptx.js"
     ]
