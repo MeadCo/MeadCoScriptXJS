@@ -30,7 +30,7 @@
     "docs:build": "gulp buildDocs",
     "docs:dev": "npm-run-all --parallel watch:docs view:docs",
     "watch:docs": "onchange \"docs-src/**/*.*\" \"src/**/*.js\" -- npm run docs:build",
-    "view:docs": "http-server docs -o http://127.0.0.1:8080/index.html"
+    "view:docs": "http-server docs -o /index.html"
   },
   "devDependencies": {
     "lodash.template": ">=4.5.0",

@@ -5,8 +5,7 @@
     "destination": "./docs/",
     "readme": "./docs-src/readme.md",
     "recurse": true,
-    "verbose": true,
-    "tutorials": "./docs-src/tutorials"
+    "verbose": true
   },
   "source": {
     "include": [ "./src" ],
