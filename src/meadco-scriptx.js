@@ -496,7 +496,7 @@
      * ScriptX.Services and in modern uses the authorisation cookie is hidden from javascript so cannot be automated. The cookie must be exposed 
      * in the HTML and passed in with a call to this function.
      * 
-     * @function ApplyContentAuthorisationCookie
+     * @function SetContentAuthorisationCookie
      * @memberof MeadCoScriptX
      * @param {string} strCookie The cookie in form name=value. use "" to remove use of  cookie authorisation
      */
