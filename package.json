@@ -1,6 +1,6 @@
 {
   "name": "meadco-scriptxjs",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "Wrapper library for working with MeadCo ScriptX add-on for Internet Explorer and ScriptX.Print Services",
   "main": "meadco-scriptx.js",
   "repository": {

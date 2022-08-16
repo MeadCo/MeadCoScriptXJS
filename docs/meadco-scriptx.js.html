@@ -201,7 +201,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    const version = "1.10.0";
+    const version = "1.10.1";
 
     let scriptx = topLevelNs.ScriptX;
 
@@ -1452,13 +1452,13 @@
                 } else {
                     console.log("** Warning -- no secmgr **");
                     if (reject) {
-                        reject();
+                        reject("ScriptX could not be found - is it installed?");
                     }
                 }
             } else {
                 if (licensing.Connector === licensing.Connection.NONE) {
                     if (reject) {
-                        reject();
+                        reject("ScriptX could not be found - is it installed?");
                     }
                 } else {
                     resolve();
@@ -1572,7 +1572,7 @@
                     break;
 
                 case 5: // scriptx.print service error
-                    if (typeof licensing.LicMgr.errorMessage === "function") {
+                    if (typeof licensing.LicMgr.errorMessage === "string") {
                         return licensing.LicMgr.errorMessage;
                     }
                     eIndex = 5;
