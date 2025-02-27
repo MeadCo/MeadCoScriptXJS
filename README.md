@@ -16,18 +16,78 @@
 	</a>
 </p>
 
-**MeadCoScriptXJS** is a simple javascript wrapper library for use with [MeadCo's ScriptX Services or ScriptX Addon](https://www.meadroid.com)
- to achieve consistent printed output using any browser on any device. This library has been used with our samples system for some time. 
+**MeadCoScriptXJS** is a JavaScript library that provides a wrapper around 
+MeadCo's ScriptX functionality. ScriptX is a solution for consistent printing from web browsers, 
+available in two forms: [ScriptX Add-on (for Internet Explorer) and ScriptX Services (for any browser)](https://www.meadroid.com).
+
+This library has been used with our samples system for some time. 
 
 The aim of the library is to hide differences between versions of ScriptX and provide easy access to some common functionality.
 The library works with both free and licensed ScriptX. Some convenience wrappers require licensed ScriptX functionality.
 
-As of version 1.2.0 this library facilitates being able to write the same code for both the 
-[ScriptX Add-on](http://www.meadroid.com) for Internet Explorer and 
-[ScriptX Services](https://www.meadroid.com) browser agnostic printing services in the cloud, on premise and on Windows PC. 
-A dependency on the [ScriptX Service Client Library](https://github.com/MeadCo/ScriptX.Print.Client) is required for this to work.
+### Key Components
 
-Version 1.5.0 and later add support for ScriptX Services on Windows PC.
+The library is organized into two main namespaces:
+
+1. **MeadCo.ScriptX** - Wraps the core printing functionality
+2. **MeadCo.Licensing** - Handles license management
+
+#### Core Functionality
+
+The `MeadCo.ScriptX` namespace provides core functionality:
+
+##### Connection Types
+
+The library supports two connection modes:
+- `ADDON`: Direct connection to ScriptX Add-on in IE
+- `SERVICE`: Connection to ScriptX.Services for cross-browser compatibility
+
+##### Initialization
+The library provides multiple initialization methods:
+- `MeadCo.ScriptX.Init()` - Synchronous initialization (deprecated)
+- `MeadCo.ScriptX.InitAsync()` - Asynchronous initialization using promises
+- `MeadCo.ScriptX.StartAsync()` - Complete initialization including services connection and print settings
+
+##### Printing Functions
+The library includes wrappers for common printing tasks:
+- `PrintPage()` - Print the current document
+- `PrintFrame()` - Print a specific frame
+- `BackgroundPrintURL()` - Download and print HTML from a URL
+- `BackgroundPrintHTML()` - Print provided HTML content
+- `DirectPrintString()` - Send raw data directly to a printer
+- `PreviewPage()` - Preview the document before printing
+
+##### Dialog Functions
+Functions to launch printing-related dialogs:
+- `PageSetup()` - Configure page settings
+- `PrintSetup()` - Configure printer settings
+
+##### Utility Functions
+- `GetAvailablePrinters()` - List available printers
+- `GetComponentVersion()` - Get component version information
+- `WaitForSpoolingComplete()` - Wait for print jobs to complete
+- `CloseWindow()` - Close window after ensuring print jobs complete
+
+##### Browser Compatibility
+The library handles differences between:
+- Synchronous operations in ScriptX Add-on
+- Asynchronous operations in ScriptX.Services
+- Provides promise-based wrappers to unify APIs
+
+#### Licensing Module
+
+The `MeadCo.Licensing` namespace provides functionality to:
+- Initialize the licensing system
+- Check if the current document is properly licensed
+- Report licensing errors
+
+#### Modern vs Legacy Support
+
+The library provides two API patterns:
+1. Traditional callback-based methods (e.g., `PrintPage()`)
+2. Promise-based methods (e.g., `PrintPage2()`) for modern asynchronous code
+
+The code is designed to be backward compatible with older browsers while also supporting modern JavaScript practices when available.
 
 ## Packages
 
