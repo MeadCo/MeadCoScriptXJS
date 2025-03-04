@@ -1,24 +1,11 @@
 "use strict";  
 
-const gulp = require("gulp"),
-    uglify = require('gulp-uglify'),
-    rename = require('gulp-rename'),
-    replace = require('gulp-replace'),
-    merge = require("merge-stream"),
-    packagedef = require("./package.json");;
-
-
-//    concat = require("gulp-concat"),
-//    cssmin = require("gulp-cssmin"),
-//    htmlmin = require("gulp-htmlmin"),
-//    terser = require("gulp-terser"),
-//    merge = require("merge-stream"),
-//    pipeline = require('readable-stream').pipeline,
-//    bundleconfig = require("./build/distbundlesconfig.json"),
-//    replace = require('gulp-replace'),
-//    jsdoc = require('gulp-jsdoc3'),
-//    packagedef = require("./package.json");
-
+const gulp = require("gulp");
+const terser = require('gulp-terser');
+const rename = require('gulp-rename');
+const replace = require('gulp-replace');
+const merge = require("merge-stream");
+const packagedef = require("./package.json");
 
 /**
  * Minifies JavaScript files in the src folder and generates source maps
@@ -28,7 +15,7 @@ function minifyAndMapJavaScriptToDist() {
 
     var tasks = gulp.src(['src/**/*.js', '!src/**/*.min.js'], { base: 'src', sourcemaps: true })
         .pipe(rename({ suffix: '.min' }))
-        .pipe(uglify())
+        .pipe(terser())
         .pipe(gulp.dest('dist',{ sourcemaps: '.' }));
 
     return merge(tasks);
