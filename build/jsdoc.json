@@ -1,6 +1,6 @@
 {
   "opts": {
-    "template": "./node_modules/better-docs",
+    "template": "./node_modules/docdash",
     "encoding": "utf8",
     "destination": "./docs/",
     "readme": "./docs-src/readme.md",
@@ -18,39 +18,45 @@
   },
   "plugins": [
     "plugins/markdown",
-    "node_modules/better-docs/category",
     "plugins/summarize"
   ],
   "templates": {
     "cleverLinks": false,
     "monospaceLinks": false,
-    "search": true,
+    "search": false,
     "default": {
       "staticFiles": {
         "include": [
         ]
       }
-    },
-    "better-docs": {
-      "name": "MeadCoScriptXJS",
-      "title": "MeadCoScriptXJS Library",
-      "css": "style.css",
-      "hideGenerator": true,
-      "navLinks": [
-        {
-          "label": "Github",
-          "href": "https://github.com/MeadCo/MeadCoScriptXJS"
-        },
-        {
-          "label": "Then to now walk through",
-          "href": "https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow"
-        },
-        {
-          "label": "Samples",
-          "href": "https://scriptxprintsamples.meadroid.com"
-        }
-      ]
+    }
+  },
+  "docdash": {
+    "static": [ "true" ], // Display the static members inside the navbar
+    "typedefs": [ "true" ], // Include typedefs in menu
+    "private": [ "false" ], // set to false to not show @private in navbar
+    "removeQuotes": [ "trim" ], // Remove single and double quotes, trim removes only surrounding ones
+    "ShortenTypes": [ "true" ], // If set to true this will resolve the display name of all types as the shortened name only (after the final period).
+
+    "menu": { // Adding additional menu items after Home
+      "GitHub": { // Menu item name
+        "href": "https://github.com/MeadCo/MeadCoScriptXJS", //the rest of HTML properties to add to manu item
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "website_link"
+      },
+      "Then to now walk through": {
+        "href": "https://www.meadroid.com/Developers/KnowledgeBank/HowToGuides/ScriptXServices/ThenToNow",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "forum_link"
+      },
+      "Samples": {
+        "href": "https://scriptxprintsamples.meadroid.com",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "forum_link"
+      }
     }
   }
-
 }
