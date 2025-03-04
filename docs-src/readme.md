@@ -1,4 +1,5 @@
-### Current version {@packageversion}
+# MeadCoScriptXJS library
+#### Current version {@packageversion}
 
 ## Background
 

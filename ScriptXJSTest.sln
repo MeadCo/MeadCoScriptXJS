@@ -28,6 +28,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{D59EEC98-6719-494F-928E-EDEB96ECF4DE}"
 	ProjectSection(SolutionItems) = preProject
 		dist\meadco-scriptx.min.js = dist\meadco-scriptx.min.js
+		dist\meadco-scriptx.min.js.map = dist\meadco-scriptx.min.js.map
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs-src", "docs-src", "{3508093D-5FD0-475F-BA57-EDEBC51D566C}"
