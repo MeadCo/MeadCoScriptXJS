@@ -83,7 +83,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    const version = "1.10.1";
+    const version = "1.10.2";
 
     let scriptx = topLevelNs.ScriptX;
 
@@ -1168,7 +1168,7 @@
     //
     function if4WPCLicenseApply(sc) {
         return new Promise(function (resolve, reject) {
-            if (sc.licensePath && sc.licenseRevision) {
+            if (sc.licensePath && typeof sc.licenseRevision != 'undefined') {
                 MeadCo.ScriptX.Print.Licensing.applyAsync(
                     sc.licenseGuid,
                     sc.licenseRevision,
