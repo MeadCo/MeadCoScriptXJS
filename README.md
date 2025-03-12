@@ -197,7 +197,7 @@ Please note that the library is not dependent upon jQuery or any other libraries
 
 
 ## Copyright
-Copyright © 2013-2021 [Mead & Co Ltd](http://www.meadroid.com).
+Copyright © 2013-2025 [Mead & Co Ltd](http://www.meadroid.com).
 
 ## License 
 **MeadCoScriptXJS** is under MIT license - http://www.opensource.org/licenses/mit-license.php

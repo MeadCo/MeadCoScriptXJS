@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <script type="text/javascript">
+        var MeadCo = {
+            logEnable: true,
+            useFetch: false
+        }
+    </script>
+    <!-- sync init requires jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+    <script src="meadco-scriptx.js"></script>
+    <script src="scriptxprint-html/dist/meadco-scriptxservices.min.js"
+            data-meadco-server="http://127.0.0.1:41191"
+            data-meadco-license="{5091E665-8916-4D21-996E-00A2DE5DE416}"
+            data-meadco-license-path="warehouse"
+            data-meadco-license-revision="0"
+            data-meadco-syncinit="true"
+            data-meadco-reporterror="false"></script>
+</head>
+<body>
+    <div id="test-element">Initial Content</div>
+</body>
+</html>
