@@ -76,21 +76,70 @@ function sendJsonResponse(res, statusCode, data) {
     res.end(JSON.stringify(data));
 }
 
+function createDeviceInfo(printer) {
+    return {
+        "printerName": printer.name,
+        "paperSizeName": "A4",
+        "paperSourceName": "",
+        "collate": 0,
+        "copies": 0,
+        "duplex": 0,
+        "units": 0,
+        "paperPageSize": {
+            "width": 197,
+            "height": 500
+        },
+        "unprintableMargins": {
+            "left": "10",
+            "top": "10",
+            "bottom": "10",
+            "right": "10"
+        },
+        "status": 0,
+        "port": "LPT1:",
+        "attributes": 0,
+        "serverName": "",
+        "shareName": "",
+        "location": "",
+        "isLocal": true,
+        "isNetwork": false,
+        "isShared": false,
+        "isDefault": true,
+        "bins": [
+            ""
+        ],
+        "forms": [
+            "A4",
+            "Letter", ,
+            "Legal",
+            "Executive",
+            "A3",
+            "A5",
+            "B4"
+        ]
+    }
+}
+
 // Create routes based on ScriptX Services API
 const routes = {
     // Printer API
-    "/api/v1/deviceinfo/printers": {
-        GET: (req, res) => {
-            sendJsonResponse(res, 200, serviceState.printers);
-        }
-    },
-    "/api/v1/deviceinfo/printers/default": {
+    "/api/v1/printHtml/deviceinfo/systemdefault/": {
         GET: (req, res) => {
             const defaultPrinter = serviceState.printers.find(p => p.isDefault);
             if (defaultPrinter) {
-                sendJsonResponse(res, 200, defaultPrinter);
+                sendJsonResponse(res, 200, createDeviceInfo(defaultPrinter));
             } else {
-                sendJsonResponse(res, 404, "Default printer not found" );
+                sendJsonResponse(res, 404, "Default printer not found");
+            }
+        }
+    },
+    "/api/v1/printHtml/deviceinfo/default/": {
+        GET: (req, res) => {
+            const defaultPrinter = serviceState.printers.find(p => p.isDefault);
+            if (defaultPrinter) {
+                sendJsonResponse(res, 200, createDeviceInfo(defaultPrinter));
+            } else {
+                sendJsonResponse(res, 404, "Default printer not found");
             }
         }
     },
@@ -134,47 +183,7 @@ const routes = {
                             "extraFirstFooterHeight": 0
                         }
                     },
-                    "device": {
-                        "printerName": defaultPrinter.name,
-                        "paperSizeName": "A4",
-                        "paperSourceName": "",
-                        "collate": 0,
-                        "copies": 0,
-                        "duplex": 0,
-                        "units": 0,
-                        "paperPageSize": {
-                            "width": 197,
-                            "height": 500
-                        },
-                        "unprintableMargins": {
-                            "left": "10",
-                            "top": "10",
-                            "bottom": "10",
-                            "right": "10"
-                        },
-                        "status": 0,
-                        "port": "LPT1:",
-                        "attributes": 0,
-                        "serverName": "",
-                        "shareName": "",
-                        "location": "",
-                        "isLocal": true,
-                        "isNetwork": false,
-                        "isShared": false,
-                        "isDefault": true,
-                        "bins": [
-                            ""
-                        ],
-                        "forms": [
-                            "A4",
-                            "Letter", ,
-                            "Legal",
-                            "Executive",
-                            "A3",
-                            "A5",
-                            "B4"
-                        ]
-                    },
+                    "device": createDeviceInfo(defaultPrinter),
                     "availablePrinters": [
                         "Microsoft Print to PDF",
                         "Microsoft XPS Document Writer"
@@ -256,53 +265,84 @@ const routes = {
     },
 
     // Print HTML API
-    "/api/v1/print/html": {
+    "/api/v1/printHtml/print": {
         POST: async (req, res) => {
             try {
                 const printData = await parseRequestBody(req);
+
+                console.log("POST Print data: ", printData);
 
                 // Create a new print job
                 const jobId = serviceState.nextJobId++;
                 const printJob = {
                     id: jobId,
-                    status: "queued",
-                    content: printData.content || "Empty document",
-                    printer: printData.printer || "Default Printer",
+                    status: 1,
+                    contentType: printData.ContentType,
+                    content: printData.Content || "Empty document",
+                    printer: printData.Device.printerName || "Default Printer",
                     createdAt: new Date().toISOString(),
-                    completedAt: null
+                    completedAt: null,
+                    timerId: null
                 };
 
                 serviceState.printJobs.push(printJob);
 
                 // Simulate job processing
-                setTimeout(() => {
+                printJob.timerId = setInterval(() => {
+                    console.log("Simulate print job processing: ", jobId);
                     const job = serviceState.printJobs.find(j => j.id === jobId);
+
                     if (job) {
-                        job.status = "completed";
-                        job.completedAt = new Date().toISOString();
+                        console.log(`Job found at state: ${job.status}`);
+                        job.status = job.status == 1 ? 3 : job.status == 3 ? 5 : 6;
+                        if (job.status == 6) {
+                            clearInterval(job.timerId);
+                            job.completedAt = new Date().toISOString();
+                        }
                     }
                 }, 2000);
 
-                sendJsonResponse(res, 202, { jobId: jobId, status: "accepted" });
+                sendJsonResponse(res, 202, { jobIdentifier: jobId.toString(), status: 1, message: "" });
             } catch (error) {
-                sendJsonResponse(res, 400, "Invalid print request data");
+                sendJsonResponse(res, 400, `print failed: ${error}`);
             }
         }
     },
     // Print job status API
-    "/api/v1/print/jobs": {
+    "/api/v1/printHtml/status/": {
         GET: (req, res) => {
-            sendJsonResponse(res, 200, serviceState.printJobs);
+            const parsedUrl = url.parse(req.url, true);
+            const pathname = parsedUrl.pathname;
+            const jobId = parseInt(pathname.substring(pathname.lastIndexOf("/") + 1));
+            const job = serviceState.printJobs.find(j => j.id === jobId);
+
+            if (job) {
+                if (job.status == 6) {
+                    console.log("Job completed: ", jobId);
+                    const jobIndex = serviceState.printJobs.findIndex(j => j.id === jobId);
+                    if (jobIndex !== -1) {
+                        serviceState.printJobs.splice(jobIndex, 1);
+                    };
+                }
+                sendJsonResponse(res, 200, {
+                    "message": job.status == 6 ? "completed" : `printing: ${job.status}`, 
+                    "status": job.status,
+                    "jobIdentifier": jobId.toString()
+                });
+            }
+            else {
+                sendJsonResponse(res, 404, "Job not found");
+            }
         }
     },
 
     // Service description
-    "/api": {
+    "/api/": {
         GET: (req, res) => {
             sendJsonResponse(res, 200, {
                 serviceClass: 3,
                 currentAPIVersion: "1",
-                serviceVersion: { major: 1, minor: 0, build: 0, revision: 0, majorRevision: 1, minorRevision: 0 },
+                serviceVersion: { major: 3, minor: 2, build: 1, revision: 0, majorRevision: 3, minorRevision: 2 },
                 printHTML: true,
                 printPDF: true,
                 printDIRECT: true,
@@ -318,6 +358,12 @@ function generateGuid() {
         const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
+}
+
+// Function to remove characters after the last '/' character in a string
+function removeAfterLastSlash(str) {
+    const lastSlashIndex = str.lastIndexOf('/');
+    return lastSlashIndex !== -1 ? str.substring(0, lastSlashIndex + 1) : str;
 }
 
 // Create the service server
@@ -345,7 +391,17 @@ const serviceServer = http.createServer(async (req, res) => {
     }
     // Handle 404 for API routes
     else if (pathname.startsWith('/api/')) {
-        sendJsonResponse(res, 404, "API endpoint not found");
+
+        const apiPath = removeAfterLastSlash(pathname);
+
+        if (routes[apiPath] && routes[apiPath][method]) {
+            await routes[apiPath][method](req, res);
+        }
+        else {
+            console.warn("API endpoint not found: ", apiPath);
+            console.log(routes);
+            sendJsonResponse(res, 404, "API endpoint not found");
+        }
     }
     // Serve static files for non-API routes 
     else {
@@ -407,7 +463,8 @@ module.exports = {
         console.log(routes);
         resolve();
     }),
-    port: PORT
+    port: PORT,
+    jobCount: () => serviceState.printJobs.length
 };
 
 if (require.main === module) {
