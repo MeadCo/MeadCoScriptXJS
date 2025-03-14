@@ -1,9 +1,9 @@
 const server = require("./server");
 const packageDescription = require("../package.json");
+
 const serverUrl = `http://127.0.0.1:${server.port}`;
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+const licenseGuid = "{5091E665-8916-4D21-996E-00A2DE5DE416}";
+
 
 describe("No attribute initialisation", () => {
     beforeAll(async () => {
@@ -32,11 +32,11 @@ describe("No attribute initialisation", () => {
     });
 
     test("Library programatic asynchronous initialisation", async () => {
-        const result = await page.evaluate(async (url) => {
+        const result = await page.evaluate(async (url,license) => {
             return await window.MeadCo.ScriptX.StartAsync({
                                                   serviceConnection: {
                                                   serverUrl: url,
-                                                  licenseGuid: "{5091E665-8916-4D21-996E-00A2DE5DE416}",
+                                                  licenseGuid: license,
                                                   licenseRevision: 0,
                                                   licensePath: "warehouse"
                                               },
@@ -48,11 +48,11 @@ describe("No attribute initialisation", () => {
                                                   }
                                               }
             });
-        }, serverUrl);
+        }, serverUrl, licenseGuid);
 
         console.log(result);
         expect(result.connection).toBe(2);
-        expect(result.license.guid).toBe("{5091E665-8916-4D21-996E-00A2DE5DE416}");
+        expect(result.license.guid).toBe(licenseGuid);
     });
 });
 
@@ -127,11 +127,11 @@ describe("Asynchronous initialisation with scripted configuration", () => {
     });
 
     test("StartAsync API initialises with a connection", async () => {
-        const result = await page.evaluate(async () => {
+        const result = await page.evaluate(async (url,license) => {
             return await window.MeadCo.ScriptX.StartAsync({
                 serviceConnection: {
-                    serverUrl: "http://127.0.0.1:41191",
-                    licenseGuid: "{5091E665-8916-4D21-996E-00A2DE5DE416}",
+                    serverUrl: url,
+                    licenseGuid: license,
                     licenseRevision: 0,
                     licensePath: "warehouse"
                 },
@@ -143,10 +143,11 @@ describe("Asynchronous initialisation with scripted configuration", () => {
                     }
                 }
             });
-        });
+        }, serverUrl, licenseGuid);
 
+        console.log(result);
         expect(result.connection).toBe(2);
-        expect(result.license.guid).toBe("{5091E665-8916-4D21-996E-00A2DE5DE416}");
+        expect(result.license.guid).toBe(licenseGuid);
 
     });
 
