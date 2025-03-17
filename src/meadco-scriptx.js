@@ -83,7 +83,7 @@
         topLevelNs.ScriptX = {};
     }
 
-    const version = "1.10.2";
+    const version = "1.10.3";
 
     let scriptx = topLevelNs.ScriptX;
 
