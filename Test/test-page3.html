@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <script type="text/javascript">
+        var MeadCo = {
+            logEnable: true
+        }
+    </script>
+    <script src="dist/meadco-scriptx.min.js"></script>
+    <!--<script src="scriptxprint-html/dist/meadco-scriptxservices.min.js"
+            data-meadco-server="http://127.0.0.1:41191"
+            data-meadco-license="{5091E665-8916-4D21-996E-00A2DE5DE416}"
+            data-meadco-license-path="warehouse"
+            data-meadco-license-revision="0"
+            data-meadco-syncinit="false"
+            data-meadco-reporterror="false"></script>-->
+
+    <script src="scriptxprint-html/dist/meadco-scriptxservices.min.js"></script>
+
+
+    <!--
+        4. Overload the error report functions of ScriptX.Services libraries
+        to use the error reporting code for this application
+    -->
+    <script type="text/javascript">
+        if (typeof MeadCo === "object" && typeof MeadCo.ScriptX === "object" && typeof MeadCo.ScriptX.Print === "object") {
+            // overload cloud print library report error
+            MeadCo.ScriptX.Print.reportServerError = function (errorTxt) {
+            }
+
+            MeadCo.ScriptX.Print.reportFeatureNotImplemented = function (featureDescription) {
+            }
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        //// SetupPrint
+        //// Initialise print attributes, will be reset when the document closes.
+        //function SetupPrint() {
+        //    const p = MeadCo.ScriptX.Printing;
+        //    p.header = "Basic Use :: Print and Preview";
+        //    p.footer = "&D&b&b&p of &P";
+        //    p.orientation = "landscape";
+        //}
+
+        //window.addEventListener('load', async () => {
+        //    try {
+        //        console.log("Initialising MeadCo.ScriptX ...");
+        //        await MeadCo.ScriptX.InitAsync();
+
+        //        // SetupPrint();
+
+        //        console.log(MeadCo.ScriptX.IsVersion("8.3.0.0"), typeof (MeadCo.ScriptX.IsVersion("8.3.0.0")));
+        //    }
+        //    catch (error) {
+        //        console.error(error);
+        //    }
+        //});
+
+        window.addEventListener('load', async () => {
+            try {
+                console.log("Initialising MeadCo.ScriptX ...");
+                result = await MeadCo.ScriptX.StartAsync({
+                    serviceConnection: {
+                        serverUrl: "http://127.0.0.1:41191",
+                        licenseGuid: "{5091E665-8916-4D21-996E-00A2DE5DE416}",
+                        licenseRevision: 0,
+                        licensePath: "warehouse"
+                    },
+                    printSettings: {
+                        header: "Page &p of &P",
+                        footer: "&D",
+                        pageSetup: {
+                            orientation: "landscape"
+                        }
+                    }
+                });
+
+                console.log(result);
+
+                console.log(MeadCo.ScriptX.ServicesVersion());
+
+                console.log("Header: " + MeadCo.ScriptX.Printing.header);
+                console.log("Footer: " + MeadCo.ScriptX.Printing.footer);
+                console.log("Orientation: " + MeadCo.ScriptX.Printing.orientation);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="test-element">Initial Content</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 {
   "name": "meadco-scriptxjs",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "Wrapper library for working with MeadCo ScriptX add-on for Internet Explorer and ScriptX.Print Services",
   "main": "meadco-scriptx.js",
   "repository": {
@@ -26,12 +26,13 @@
     "dist/*.js"
   ],
   "scripts": {
-    "dist": "gulp buildDist",
-    "docs:build:old": "gulp buildDocs",
+    "dist": "gulp BuildDist",
     "docs:build": "npx jsdoc -c ./build/jsdoc.json",
     "docs:dev": "npm-run-all --parallel watch:docs view:docs",
     "watch:docs": "onchange \"docs-src/**/*.*\" \"src/**/*.js\" -- npm run docs:build",
-    "view:docs": "http-server docs -o /index.html"
+    "view:docs": "http-server docs -o /index.html",
+    "test": "jest",
+    "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
     "del": "^8.0.0",
@@ -39,11 +40,16 @@
     "gulp": "^5.0.0",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.1.4",
-    "gulp-terser": "^2.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-puppeteer": "^11.0.0",
+    "jest-html-reporter": "^4.0.1",
+    "jest-puppeteer": "^11.0.0",
     "jsdoc": "^4.0.4",
-    "merge-stream": "^2.0.0"
-  },
-  "dependencies": {
-    "scriptxprint-html": "^1.8.0"
+    "merge-stream": "^2.0.0",
+    "puppeteer": "^24.4.0",
+    "scriptxprint-html": "^1.16.1",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-stream": "^7.0.0"
   }
 }

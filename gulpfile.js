@@ -1,11 +1,13 @@
 "use strict";  
 
 const gulp = require("gulp");
-const terser = require('gulp-terser');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const merge = require("merge-stream");
 const packagedef = require("./package.json");
+const webpackConfig = require('./webpack.config.js');
 
 /**
  * Minifies JavaScript files in the src folder and generates source maps
@@ -13,10 +15,9 @@ const packagedef = require("./package.json");
  */
 function minifyAndMapJavaScriptToDist() {
 
-    var tasks = gulp.src(['src/**/*.js', '!src/**/*.min.js'], { base: 'src', sourcemaps: true })
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(terser())
-        .pipe(gulp.dest('dist',{ sourcemaps: '.' }));
+    var tasks = gulp.src(['src/**/*.js', '!src/**/*.min.js'], { base: 'src' })
+        .pipe(webpackStream(webpackConfig, webpack))
+        .pipe(gulp.dest('dist'));
 
     return merge(tasks);
 
@@ -46,7 +47,7 @@ function compileDocs(done) {
     const { exec } = require('child_process');
 
     console.log("Building documentation.");
-    exec('npx jsdoc -c ./build/jsdoc.json', (err, stdout, stderr) => {
+    exec('npx jsdoc -c ./configs/jsdoc.json', (err, stdout, stderr) => {
         if (err) {
             console.error(stderr);
             return done(err);
@@ -74,7 +75,7 @@ function processDocs1() {
 
 // static docs files that jsdocs won't put where we want
 function docStatics() {
-    return gulp.src('./docs-src/build/**').pipe(gulp.dest('./docs/build/'));
+    return gulp.src('./docs-src/configs/**').pipe(gulp.dest('./docs/configs/'));
 }
 
 
