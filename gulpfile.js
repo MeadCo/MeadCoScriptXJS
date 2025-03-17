@@ -47,7 +47,7 @@ function compileDocs(done) {
     const { exec } = require('child_process');
 
     console.log("Building documentation.");
-    exec('npx jsdoc -c ./build/jsdoc.json', (err, stdout, stderr) => {
+    exec('npx jsdoc -c ./configs/jsdoc.json', (err, stdout, stderr) => {
         if (err) {
             console.error(stderr);
             return done(err);
@@ -75,7 +75,7 @@ function processDocs1() {
 
 // static docs files that jsdocs won't put where we want
 function docStatics() {
-    return gulp.src('./docs-src/build/**').pipe(gulp.dest('./docs/build/'));
+    return gulp.src('./docs-src/configs/**').pipe(gulp.dest('./docs/configs/'));
 }
 
 
