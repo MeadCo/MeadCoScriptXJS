@@ -407,19 +407,24 @@ const serviceServer = http.createServer(async (req, res) => {
     else {
         let filePath = path.join(__dirname, "test-page.html");
         if (pathname !== "/") {
-            if (pathname === "/meadco-scriptx.js") {
-                filePath = path.join(__dirname, "../src/meadco-scriptx.js");
+            if (pathname.startsWith("/src")) {
+                filePath = path.join(__dirname, "../src", pathname.substring(5));
             }
             else {
-                if (pathname.startsWith("/scriptxprint-html/dist/dist")) {
-                    filePath = path.join(__dirname, "../node_modules/scriptxprint-html/dist", pathname.substring("/scriptxprint-html/dist/dist".length));
+                if (pathname.startsWith("/dist")) {
+                    filePath = path.join(__dirname, "../dist", pathname.substring(5));
                 }
                 else {
-                    if (pathname.startsWith("/scriptxprint-html/dist")) {
-                        filePath = path.join(__dirname, "../node_modules/scriptxprint-html/dist", pathname.substring("/scriptxprint-html/dist".length));
+                    if (pathname.startsWith("/scriptxprint-html/dist/dist")) {
+                        filePath = path.join(__dirname, "../node_modules/scriptxprint-html/dist", pathname.substring("/scriptxprint-html/dist/dist".length));
                     }
                     else {
-                        filePath = path.join(__dirname, pathname);
+                        if (pathname.startsWith("/scriptxprint-html/dist")) {
+                            filePath = path.join(__dirname, "../node_modules/scriptxprint-html/dist", pathname.substring("/scriptxprint-html/dist".length));
+                        }
+                        else {
+                            filePath = path.join(__dirname, pathname);
+                        }
                     }
                 }
              }
