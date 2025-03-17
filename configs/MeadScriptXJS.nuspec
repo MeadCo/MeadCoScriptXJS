@@ -6,7 +6,7 @@
         <title>MeadCo ScriptX JS Library</title>
         <authors>Pete Cole,MeadCo</authors>
         <owners>MeadCo</owners>
-        <license>MIT</license>
+        <license type="expression">MIT</license>
         <projectUrl>https://github.com/MeadCo/MeadCoScriptXJS</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>This library implements a javascript wrapper on MeadCo's ScriptX Add-on for Microsoft Internet Explorer and ScriptX.Print Services for any browser, any device. The library provides for checking successful instantiation of the Add-on and implements convenience wrappers on some common functionality.
