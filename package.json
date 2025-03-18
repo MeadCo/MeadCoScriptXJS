@@ -1,6 +1,6 @@
 {
   "name": "meadco-scriptxjs",
-  "version": "1.10.7",
+  "version": "1.10.8",
   "description": "Wrapper library for working with MeadCo ScriptX add-on for Internet Explorer and ScriptX.Print Services",
   "main": "meadco-scriptx.js",
   "repository": {
@@ -33,7 +33,7 @@
     "watch:docs": "onchange \"docs-src/**/*.*\" \"src/**/*.js\" -- npm run docs:build",
     "view:docs": "http-server docs -o /index.html",
     "test": "jest",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config ./webpack.config.js"
   },
   "devDependencies": {
     "del": "^8.0.0",

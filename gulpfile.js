@@ -17,7 +17,7 @@ function minifyAndMapJavaScriptToDist() {
 
     var tasks = gulp.src(['src/**/*.js', '!src/**/*.min.js'], { base: 'src' })
         .pipe(webpackStream(webpackConfig, webpack))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('./dist'));
 
     return merge(tasks);
 
