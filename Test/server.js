@@ -2,7 +2,6 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const url = require("url");
-const { exec } = require('child_process');
 
 const PORT = 41191; // standard ScriptX.Services 4WPC port
 

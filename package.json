@@ -27,12 +27,12 @@
   ],
   "scripts": {
     "dist": "gulp BuildDist",
-    "docs:build": "npx jsdoc -c ./build/jsdoc.json",
+    "docs:build": "npx jsdoc -c ./configs/jsdoc.json",
     "docs:dev": "npm-run-all --parallel watch:docs view:docs",
     "watch:docs": "onchange \"docs-src/**/*.*\" \"src/**/*.js\" -- npm run docs:build",
     "view:docs": "http-server docs -o /index.html",
     "test": "jest",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config ./configs/webpack.config.js"
   },
   "devDependencies": {
     "del": "^8.0.0",

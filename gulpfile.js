@@ -7,7 +7,7 @@ const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const merge = require("merge-stream");
 const packagedef = require("./package.json");
-const webpackConfig = require('./webpack.config.js');
+const webpackConfig = require('./configs/webpack.config.js');
 
 /**
  * Minifies JavaScript files in the src folder and generates source maps
